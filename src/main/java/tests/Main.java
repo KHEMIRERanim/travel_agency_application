@@ -124,8 +124,8 @@ public class Main {
                 );
             }
             System.out.println("\nTotal clients: " + clients.size());*/
-            // Ready-made example data
-            System.out.print("Enter Client ID for the reclamation: ");
+            // ajout reclamation
+            /*System.out.print("Enter Client ID for the reclamation: ");
             int clientId = scanner.nextInt();
             scanner.nextLine(); // consume newline         // Existing client ID from your database
             String type = "Complaint";
@@ -148,7 +148,86 @@ public class Main {
 
             reclamationService.ajouter(sampleReclamation);
             System.out.println("\n✅ Reclamation added successfully!");
-            System.out.println("Generated ID: " + sampleReclamation.getId_reclamation());
+            System.out.println("Generated ID: " + sampleReclamation.getId_reclamation());*/
+        //delete reclamation
+            /*System.out.print("Enter reclamation ID to delete: ");
+            int reclamationId = scanner.nextInt();
+
+            // Create minimal Reclamation object with just the ID set
+            Reclamation toDelete = new Reclamation(0, "dummy", "01/01/2000", "dummy");
+            toDelete.setId_reclamation(reclamationId);
+
+            reclamationService.supprimer(toDelete);
+            System.out.println("Reclamation " + reclamationId + " deleted!");*/
+// ===== RECLAMATION MODIFICATION =====
+           /* System.out.print("Enter reclamation ID to modify: ");
+            int recId = scanner.nextInt();
+            scanner.nextLine(); // Clear buffer
+
+// Get existing reclamation
+            Reclamation existingRec = reclamationService.getById(recId);
+            if (existingRec == null) {
+                System.out.println("Reclamation not found!");
+                return;
+            }
+
+// Show current data (excluding client ID)
+            System.out.println("\nCurrent reclamation data:");
+            System.out.println("1. Type: " + existingRec.getType());
+            System.out.println("2. Incident Date: " + existingRec.getDateIncident());
+            System.out.println("3. Description: " + existingRec.getDescription());
+
+// Get field to update
+            System.out.print("\nEnter field number to update (1-3): ");
+            int choice = scanner.nextInt();
+            scanner.nextLine();
+
+// Create updated reclamation (keeping original client ID)
+            Reclamation updatedRec = new Reclamation(
+                    existingRec.getId_reclamation(),
+                    existingRec.getClientId(), // Preserve original client ID
+                    existingRec.getType(),
+                    existingRec.getDateIncident(),
+                    existingRec.getDescription()
+            );
+
+// Get and set new value
+            System.out.print("Enter new value: ");
+            String newValue = scanner.nextLine();
+
+            switch (choice) {
+                case 1 -> updatedRec.setType(newValue);
+                case 2 -> updatedRec.setDateIncident(newValue);
+                case 3 -> updatedRec.setDescription(newValue);
+                default -> {
+                    System.out.println("Invalid choice!");
+                    return;
+                }
+            }
+
+// Perform update
+            reclamationService.modifier(updatedRec);
+            System.out.println("Reclamation updated successfully!");*/
+
+            // 1. Get all reclamations
+            List<Reclamation> reclamations = reclamationService.recuperer();
+
+            // 2. Display results
+            System.out.println("=== LIST OF RECLAMATIONS ===");
+            System.out.println("ID\tClient\tType\t\tDate\t\tDescription");
+            System.out.println("------------------------------------------------------------");
+
+            for (Reclamation r : reclamations) {
+                System.out.println(
+                        r.getId_reclamation() + "\t" +
+                                r.getClientId() + "\t" +
+                                r.getType() + "\t" +
+                                r.getDateIncident() + "\t" +
+                                r.getDescription()
+                );
+            }
+
+            System.out.println("\nTotal reclamations: " + reclamations.size());
 
         } catch (SQLException e) {
             System.err.println("Database error: " + e.getMessage());
