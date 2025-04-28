@@ -5,7 +5,6 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
-
 import java.io.IOException;
 
 public class MainFX extends Application {
@@ -16,18 +15,20 @@ public class MainFX extends Application {
 
     @Override
     public void start(Stage primaryStage) {
-        FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/AjouterPersonne.fxml"));
+        // Charger le fichier FXML
+        FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/AjouterVol.fxml"));
 
         try {
-
-            Parent root  = fxmlLoader.load();
+            // Charger la scène
+            Parent root = fxmlLoader.load();
             Scene scene = new Scene(root);
+
+            // Configurer la scène et la fenêtre
             primaryStage.setScene(scene);
-            primaryStage.setTitle("Ajouter Personnes");
+            primaryStage.setTitle("AjouterVol");
             primaryStage.show();
         } catch (IOException e) {
-            System.out.println(e.getMessage());
+            System.out.println("Erreur de chargement du fichier FXML : " + e.getMessage());
         }
-
     }
 }
