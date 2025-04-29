@@ -1,35 +1,34 @@
 package entities;
 
-public class Hotels {
+public class ReservationHotel {
+    private int id_reservation;
     private int hotel_id;
-    private String nom_hotel;
-    private String destination;
-    private String check_in;
-    private String check_out;
-    private double prix;
-    private String type_chambre;
-    private String status;
+    private int id_utilisateur;
+    private String checkin_date;
+    private String checkout_date;
 
-    // Constructeur avec id
-    public Hotels(int hotel_id, String nom_hotel, String destination, String check_in, String check_out, double prix, String type_chambre, String status) {
+    public ReservationHotel(int id_reservation, int hotel_id, int id_utilisateur, String checkin_date, String checkout_date) {
+        this.id_reservation =  id_reservation;
         this.hotel_id = hotel_id;
-        this.nom_hotel = nom_hotel;
-        this.destination = destination;
-        this.check_in = check_in;
-        this.check_out = check_out;
-        this.prix = prix;
-        this.type_chambre = type_chambre;
-        this.status = status;
+        this.id_utilisateur = id_utilisateur;
+        this.checkin_date = checkin_date;
+        this.checkout_date = checkout_date;
+
     }
-    // Constructeur sans id
-    public Hotels(String nom_hotel, String destination, String check_in, String check_out, double prix, String type_chambre, String status){
-        this.nom_hotel = nom_hotel;
-        this.destination = destination;
-        this.check_in = check_in;
-        this.check_out = check_out;
-        this.prix = prix;
-        this.type_chambre = type_chambre;
-        this.status = status;
+    public ReservationHotel(int hotel_id, int id_utilisateur, String checkin_date, String checkout_date) {
+        this.hotel_id = hotel_id;
+        this.id_utilisateur = id_utilisateur;
+        this.checkin_date = checkin_date;
+        this.checkout_date = checkout_date;
+
+    }
+
+    public int getId_reservation() {
+        return id_reservation;
+    }
+
+    public void setId_reservation(int id_reservation) {
+        this.id_reservation = id_reservation;
     }
 
     public int getHotel_id() {
@@ -40,74 +39,39 @@ public class Hotels {
         this.hotel_id = hotel_id;
     }
 
-    public String getNom_hotel() {
-        return nom_hotel;
+    public int getId_utilisateur() {
+        return id_utilisateur;
     }
 
-    public void setNom_hotel(String nom_hotel) {
-        this.nom_hotel = nom_hotel;
+    public void setId_utilisateur(int id_utilisateur) {
+        this.id_utilisateur = id_utilisateur;
     }
 
-    public String getDestination() {
-        return destination;
+    public String getCheckin_date() {
+        return checkin_date;
     }
 
-    public void setDestination(String destination) {
-        this.destination = destination;
+    public void setCheckin_date(String checkin_date) {
+        this.checkin_date = checkin_date;
     }
 
-    public String getCheck_in() {
-        return check_in;
+    public String getCheckout_date() {
+        return checkout_date;
     }
 
-    public void setCheck_in(String check_in) {
-        this.check_in = check_in;
-    }
-
-    public String getCheck_out() {
-        return check_out;
-    }
-
-    public void setCheck_out(String check_out) {
-        this.check_out = check_out;
-    }
-
-    public double getPrix() {
-        return prix;
-    }
-
-    public void setPrix(double prix) {
-        this.prix = prix;
-    }
-
-    public String getType_chambre() {
-        return type_chambre;
-    }
-
-    public void setType_chambre(String type_chambre) {
-        this.type_chambre = type_chambre;
-    }
-
-    public String getStatus() {
-        return status;
-    }
-
-    public void setStatus(String status) {
-        this.status = status;
+    public void setCheckout_date(String checkout_date) {
+        this.checkout_date = checkout_date;
     }
 
     @Override
     public String toString() {
-        return "Hotel{" +
-                "hotel_id=" + hotel_id +
-                ", nom_hotel='" + nom_hotel + '\'' +
-                ", destination='" + destination + '\'' +
-                ", check_in='" + check_in + '\'' +
-                ", check_out='" + check_out + '\'' +
-                ", prix=" + prix +
-                ", type_chambre='" + type_chambre + '\'' +
-                ", status='" + status + '\'' +
+        return "ReservationHotel{" +
+                "id_reservation=" + id_reservation +
+                ", hotel_id=" + hotel_id +
+                ", id_utilisateur=" + id_utilisateur +
+                ", checkin_date='" + checkin_date + '\'' +
+                ", checkout_date='" + checkout_date + '\'' +
                 '}';
     }
+
 }
-    
