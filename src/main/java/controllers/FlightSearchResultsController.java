@@ -3,8 +3,11 @@ package controllers;
 import entities.Flight;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.image.Image;
@@ -18,6 +21,7 @@ import javafx.scene.text.FontWeight;
 import javafx.stage.Stage;
 
 import java.io.File;
+import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.List;
 
@@ -33,6 +37,11 @@ public class FlightSearchResultsController {
     private Button backButton;
 
     private int requiredSeats;
+    private ChercherVolController sourceController;
+
+    public void setSourceController(ChercherVolController controller) {
+        this.sourceController = controller;
+    }
 
     public void setFlights(List<Flight> flights, int requiredPassengers) {
         this.requiredSeats = requiredPassengers;
@@ -43,18 +52,52 @@ public class FlightSearchResultsController {
         // Clear existing content
         flightsContainer.getChildren().clear();
 
+        // Check if no flights were found
+        if (flights.isEmpty()) {
+            displayNoFlightsMessage();
+            return;
+        }
+
         // Create a VBox for each flight
         for (Flight flight : flights) {
             VBox flightBox = createFlightBox(flight);
             flightsContainer.getChildren().add(flightBox);
         }
+    }
 
-        // If no flights found, display a message
-        if (flights.isEmpty()) {
-            Label noResultsLabel = new Label("No flights matching your criteria were found.");
-            noResultsLabel.setStyle("-fx-text-fill: #616161; -fx-font-size: 16px;");
-            flightsContainer.getChildren().add(noResultsLabel);
+    private void displayNoFlightsMessage() {
+        VBox messageBox = new VBox();
+        messageBox.setAlignment(Pos.CENTER);
+        messageBox.setSpacing(20);
+        messageBox.setPadding(new Insets(40));
+        messageBox.setStyle("-fx-background-color: white; -fx-background-radius: 8; -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.1), 10, 0, 0, 4);");
+
+        Label headerLabel = new Label("No matching flights found");
+        headerLabel.setFont(Font.font("System", FontWeight.BOLD, 20));
+        headerLabel.setStyle("-fx-text-fill: #F44336;");
+
+        Label suggestionLabel = new Label("Please try different search criteria or dates.");
+        suggestionLabel.setFont(Font.font("System", 16));
+        suggestionLabel.setStyle("-fx-text-fill: #616161;");
+
+        // Add an image if you want
+        ImageView noResultsImage = new ImageView();
+        try {
+            File file = new File("src/main/resources/ImageVol/no_results.png");
+            if (file.exists()) {
+                Image image = new Image(file.toURI().toString());
+                noResultsImage.setImage(image);
+                noResultsImage.setFitHeight(120);
+                noResultsImage.setFitWidth(120);
+                noResultsImage.setPreserveRatio(true);
+                messageBox.getChildren().add(noResultsImage);
+            }
+        } catch (Exception e) {
+            System.out.println("Error loading no results image: " + e.getMessage());
         }
+
+        messageBox.getChildren().addAll(headerLabel, suggestionLabel);
+        flightsContainer.getChildren().add(messageBox);
     }
 
     private VBox createFlightBox(Flight flight) {
@@ -139,9 +182,15 @@ public class FlightSearchResultsController {
         priceLabel.setFont(Font.font("System", FontWeight.BOLD, 18));
         priceLabel.setStyle("-fx-text-fill: #FF6F00;");
 
-        // Show available seats
+        // Available seats info with appropriate styling based on availability
         Label seatsLabel = new Label(flight.getAvailable_seats() + " seats available");
-        seatsLabel.setStyle("-fx-text-fill: #616161;");
+
+        // Change the color of the seats label based on availability
+        if (requiredSeats > 0 && flight.getAvailable_seats() < requiredSeats) {
+            seatsLabel.setStyle("-fx-text-fill: #F44336; -fx-font-weight: bold;");
+        } else {
+            seatsLabel.setStyle("-fx-text-fill: #4CAF50;");
+        }
 
         // Date information
         SimpleDateFormat dateFormat = new SimpleDateFormat("dd MMM yyyy");
@@ -153,6 +202,13 @@ public class FlightSearchResultsController {
         confirmButton.setStyle("-fx-background-color: #FF9E0C; -fx-text-fill: white; -fx-font-weight: bold; -fx-background-radius: 5;");
         confirmButton.setPrefWidth(120);
         confirmButton.setPrefHeight(30);
+
+        // Disable confirm button if not enough seats available
+        if (requiredSeats > 0 && flight.getAvailable_seats() < requiredSeats) {
+            confirmButton.setDisable(true);
+            confirmButton.setStyle("-fx-background-color: #BDBDBD; -fx-text-fill: white; -fx-font-weight: bold; -fx-background-radius: 5;");
+        }
+
         confirmButton.setOnAction(e -> handleFlightConfirmation(flight));
 
         // Add a spacer region to push the confirm button to the right
@@ -163,6 +219,13 @@ public class FlightSearchResultsController {
 
         // Add all sections to flight box
         flightBox.getChildren().addAll(topSection, routeSection, bottomSection);
+
+        // Add a warning message if seats are insufficient
+        if (requiredSeats > 0 && flight.getAvailable_seats() < requiredSeats) {
+            Label warningLabel = new Label("Not enough seats available for your party of " + requiredSeats);
+            warningLabel.setStyle("-fx-text-fill: #F44336; -fx-font-style: italic;");
+            flightBox.getChildren().add(warningLabel);
+        }
 
         return flightBox;
     }
@@ -175,9 +238,19 @@ public class FlightSearchResultsController {
 
     @FXML
     void goBack(ActionEvent event) {
-        // Close this window
-        Stage stage = (Stage) backButton.getScene().getWindow();
-        stage.close();
+        try {
+            // Load the search view
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/ChercherVol.fxml"));
+            Parent root = loader.load();
+
+            // Replace the current scene with the search scene
+            Stage stage = (Stage) backButton.getScene().getWindow();
+            stage.setScene(new Scene(root));
+            stage.setTitle("Flight Search");
+        } catch (IOException e) {
+            System.out.println("Error returning to search screen: " + e.getMessage());
+            e.printStackTrace();
+        }
     }
 
     private void handleFlightConfirmation(Flight flight) {

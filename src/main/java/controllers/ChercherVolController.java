@@ -84,29 +84,40 @@ public class ChercherVolController {
                     .filter(flight -> (finalTotalPassengers == 0 || flight.getAvailable_seats() >= finalTotalPassengers))
                     .collect(Collectors.toList());
 
-            // Open the results window
+            // Load the results view in the same window
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/FlightSearchResults.fxml"));
             Parent root = loader.load();
 
             // Pass the filtered flights to the results controller
             FlightSearchResultsController resultsController = loader.getController();
             resultsController.setFlights(filteredFlights, finalTotalPassengers);
+            resultsController.setSourceController(this);
 
-            // Show the results window
-            Stage stage = new Stage();
-            stage.setTitle("Flight Search Results");
+            // Replace the current scene with the results scene
+            Stage stage = (Stage) btnRechercherVol.getScene().getWindow();
             stage.setScene(new Scene(root));
-            stage.show();
-
-            // Close the current window (optional)
-            // Stage currentStage = (Stage) btnRechercherVol.getScene().getWindow();
-            // currentStage.close();
+            stage.setTitle("Flight Search Results");
 
         } catch (SQLException e) {
             System.out.println("Database error: " + e.getMessage());
             e.printStackTrace();
         } catch (IOException e) {
             System.out.println("FXML loading error: " + e.getMessage());
+            e.printStackTrace();
+        }
+    }
+
+    // Method to reload the search scene (will be called from the results scene)
+    public void reloadSearchScene() {
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/ChercherVol.fxml"));
+            Parent root = loader.load();
+
+            Stage stage = (Stage) btnRechercherVol.getScene().getWindow();
+            stage.setScene(new Scene(root));
+            stage.setTitle("Flight Search");
+        } catch (IOException e) {
+            System.out.println("Error reloading search scene: " + e.getMessage());
             e.printStackTrace();
         }
     }
