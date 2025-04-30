@@ -4,13 +4,14 @@ import java.sql.Date;
 
 public class Flight {
     private int flight_id,flight_duration,available_seats;
-    private String departure,destination ,airline,flight_number;
+    private String departure,destination ,airline,flight_number, image_url;
     private Timestamp arrival_Time, departure_Time;
     private Date flight_date;
     private double price;
+
     public Flight(int flight_id, int flight_duration, String flight_number, int available_seats,
                   String departure, String destination, String airline,
-                  Timestamp arrival_Time, Timestamp departure_Time, Date flight_date, double price) {
+                  Timestamp arrival_Time, Timestamp departure_Time, Date flight_date, double price, String image_url) {
         this.flight_id = flight_id;
         this.flight_duration = flight_duration;
         this.flight_number = flight_number;
@@ -22,11 +23,12 @@ public class Flight {
         this.departure_Time = departure_Time;
         this.flight_date = flight_date;
         this.price = price;
+        this.image_url = image_url;
     }
 
     public Flight(int flight_duration, String flight_number, int available_seats,
                   String departure, String destination, String airline,
-                  Timestamp arrival_Time, Timestamp departure_Time, Date flight_date, double price) {
+                  Timestamp arrival_Time, Timestamp departure_Time, Date flight_date, double price, String image_url) {
         this.flight_duration = flight_duration;
         this.flight_number = flight_number;
         this.available_seats = available_seats;
@@ -37,9 +39,8 @@ public class Flight {
         this.departure_Time = departure_Time;
         this.flight_date = flight_date;
         this.price = price;
+        this.image_url = image_url;
     }
-
-
 
     public int getFlight_id() {
         return flight_id;
@@ -129,6 +130,14 @@ public class Flight {
         this.price = price;
     }
 
+    public String getImage_url() {
+        return image_url;
+    }
+
+    public void setImage_url(String image_url) {
+        this.image_url = image_url;
+    }
+
     @Override
     public String toString() {
         return "Flight{" +
@@ -143,6 +152,7 @@ public class Flight {
                 ", departure_Time=" + departure_Time +
                 ", flight_date=" + flight_date +
                 ", price=" + price +
+                ", image_url='" + image_url + '\'' +
                 '}';
     }
 }

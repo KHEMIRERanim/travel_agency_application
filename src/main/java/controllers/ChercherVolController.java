@@ -1,16 +1,22 @@
 package controllers;
 
+import entities.Flight;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.scene.control.Alert;
-import javafx.scene.control.Alert.AlertType;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
+import javafx.scene.control.Button;
 import javafx.scene.control.DatePicker;
 import javafx.scene.control.TextField;
-import javafx.scene.layout.FlowPane;
-import javafx.scene.layout.VBox;
-import javafx.scene.control.Label;
+import javafx.stage.Stage;
+import services.ServiceFlight;
 
-import java.time.LocalDate;
+import java.io.IOException;
+import java.sql.Date;
+import java.sql.SQLException;
+import java.util.List;
+import java.util.stream.Collectors;
 
 public class ChercherVolController {
 
@@ -21,102 +27,87 @@ public class ChercherVolController {
     private TextField destinationchercher;
 
     @FXML
+    private DatePicker flightdatechercher;
+
+    @FXML
     private TextField adultchercher;
 
     @FXML
     private TextField childchercher;
 
     @FXML
-    private DatePicker flightdatechercher;
+    private Button btnRechercherVol;
 
     @FXML
-    private DatePicker returndatechercher;
-
-    @FXML
-    private FlowPane flowPane;
-
-    @FXML
-    public void recherchervol(ActionEvent event) {
-        System.out.println("Recherche de vol lancée...");
-
-        String departure = departurechercher.getText();
-        String destination = destinationchercher.getText();
-        String departureDate = (flightdatechercher.getValue() != null) ? flightdatechercher.getValue().toString() : "";
-        String returnDate = (returndatechercher.getValue() != null) ? returndatechercher.getValue().toString() : "";
-        String numAdults = adultchercher.getText();
-        String numChildren = childchercher.getText();
-
-        System.out.println("Champs saisis :");
-        System.out.println("Départ : " + departure);
-        System.out.println("Destination : " + destination);
-        System.out.println("Date de départ : " + departureDate);
-        System.out.println("Date de retour : " + returnDate);
-        System.out.println("Adultes : " + numAdults);
-        System.out.println("Enfants : " + numChildren);
-
-        if (departure.isEmpty() || destination.isEmpty() || departureDate.isEmpty() || returnDate.isEmpty() || numAdults.isEmpty() || numChildren.isEmpty()) {
-            showAlert("Veuillez remplir tous les champs.", AlertType.WARNING);
-            System.out.println("Erreur : champs vides.");
-            return;
-        }
-
-        if (isReturnDateBeforeDeparture(departureDate, returnDate)) {
-            showAlert("La date de retour doit être postérieure à la date de départ.", AlertType.WARNING);
-            System.out.println("Erreur : la date de retour est avant la date de départ.");
-            return;
-        }
-
+    void recherchervol(ActionEvent event) {
         try {
-            boolean flightFound = simulateFlightSearch(departure, destination, departureDate, returnDate, numAdults, numChildren);
-
-            if (flightFound) {
-                displaySearchResults(departure, destination, departureDate, returnDate);
-                showAlert("Un vol correspondant a été trouvé !", AlertType.INFORMATION);
-                System.out.println("Vol trouvé.");
-            } else {
-                showAlert("Aucun vol ne correspond aux critères.", AlertType.INFORMATION);
-                System.out.println("Aucun vol trouvé.");
+            // Gather search parameters
+            String departure = departurechercher.getText().trim();
+            String destination = destinationchercher.getText().trim();
+            Date flightDate = null;
+            if (flightdatechercher.getValue() != null) {
+                flightDate = Date.valueOf(flightdatechercher.getValue());
             }
 
-        } catch (Exception e) {
-            showAlert("Erreur lors de la recherche de vols. Veuillez vérifier la connexion à la base de données.", AlertType.ERROR);
-            System.out.println("Exception : " + e.getMessage());
+            // Parse passenger counts
+            int adultCount = 0;
+            int childCount = 0;
+
+            try {
+                adultCount = Integer.parseInt(adultchercher.getText().trim());
+            } catch (NumberFormatException e) {
+                System.out.println("Invalid adult count: " + e.getMessage());
+            }
+
+            try {
+                childCount = Integer.parseInt(childchercher.getText().trim());
+            } catch (NumberFormatException e) {
+                System.out.println("Invalid child count: " + e.getMessage());
+            }
+
+            int totalPassengers = adultCount + childCount;
+
+            // Search for flights
+            ServiceFlight serviceFlight = new ServiceFlight();
+            List<Flight> allFlights = serviceFlight.recuperer();
+
+            // Filter flights based on search criteria
+            final String finalDeparture = departure;
+            final String finalDestination = destination;
+            final Date finalFlightDate = flightDate;
+            final int finalTotalPassengers = totalPassengers;
+
+            List<Flight> filteredFlights = allFlights.stream()
+                    .filter(flight -> (finalDeparture.isEmpty() || flight.getDeparture().equalsIgnoreCase(finalDeparture)))
+                    .filter(flight -> (finalDestination.isEmpty() || flight.getDestination().equalsIgnoreCase(finalDestination)))
+                    .filter(flight -> (finalFlightDate == null || flight.getFlight_date().equals(finalFlightDate)))
+                    .filter(flight -> (finalTotalPassengers == 0 || flight.getAvailable_seats() >= finalTotalPassengers))
+                    .collect(Collectors.toList());
+
+            // Open the results window
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/FlightSearchResults.fxml"));
+            Parent root = loader.load();
+
+            // Pass the filtered flights to the results controller
+            FlightSearchResultsController resultsController = loader.getController();
+            resultsController.setFlights(filteredFlights, finalTotalPassengers);
+
+            // Show the results window
+            Stage stage = new Stage();
+            stage.setTitle("Flight Search Results");
+            stage.setScene(new Scene(root));
+            stage.show();
+
+            // Close the current window (optional)
+            // Stage currentStage = (Stage) btnRechercherVol.getScene().getWindow();
+            // currentStage.close();
+
+        } catch (SQLException e) {
+            System.out.println("Database error: " + e.getMessage());
+            e.printStackTrace();
+        } catch (IOException e) {
+            System.out.println("FXML loading error: " + e.getMessage());
             e.printStackTrace();
         }
-    }
-
-    private void showAlert(String message, AlertType alertType) {
-        Alert alert = new Alert(alertType);
-        alert.setTitle("Résultat de recherche de vol");
-        alert.setHeaderText(null);
-        alert.setContentText(message);
-        alert.showAndWait();
-    }
-
-    private boolean isReturnDateBeforeDeparture(String departureDate, String returnDate) {
-        LocalDate depDate = LocalDate.parse(departureDate);
-        LocalDate retDate = LocalDate.parse(returnDate);
-        return retDate.isBefore(depDate);
-    }
-
-    private boolean simulateFlightSearch(String departure, String destination, String departureDate, String returnDate, String numAdults, String numChildren) throws Exception {
-        if (departure.equalsIgnoreCase("DBERROR")) {
-            throw new Exception("Erreur de base de données simulée.");
-        }
-        return !departure.equalsIgnoreCase(destination);
-    }
-
-    private void displaySearchResults(String departure, String destination, String departureDate, String returnDate) {
-        flowPane.getChildren().clear();
-
-        VBox flightResult = new VBox(10);
-        flightResult.setStyle("-fx-background-color: #f0f0f0; -fx-padding: 10; -fx-background-radius: 5;");
-
-        flightResult.getChildren().add(new Label("Départ : " + departure));
-        flightResult.getChildren().add(new Label("Destination : " + destination));
-        flightResult.getChildren().add(new Label("Date de départ : " + departureDate));
-        flightResult.getChildren().add(new Label("Date de retour : " + returnDate));
-
-        flowPane.getChildren().add(flightResult);
     }
 }

@@ -13,9 +13,9 @@
                 <Font name="System Bold" size="24.0" />
             </font>
         </Text>
-        <ScrollPane layoutX="14.0" layoutY="62.0" prefHeight="391.0" prefWidth="629.0">
+        <ScrollPane layoutX="14.0" layoutY="62.0" prefHeight="691.0" prefWidth="1170.0">
             <content>
-                <VBox fx:id="flightsContainer" prefWidth="610.0" spacing="10" style="-fx-padding: 10;" />
+                <VBox fx:id="flightsContainer" prefWidth="1150.0" spacing="10" style="-fx-padding: 10;" />
             </content>
         </ScrollPane>
     </children>

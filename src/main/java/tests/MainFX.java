@@ -12,7 +12,7 @@ public class MainFX extends Application {
     public void start(Stage primaryStage) {
         try {
             // Charger l'interface principale du menu
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("/MenuPrincipale.fxml"));
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/ChercherVol.fxml"));
             Parent root = loader.load();
 
             // Créer la scène avec le contenu chargé
