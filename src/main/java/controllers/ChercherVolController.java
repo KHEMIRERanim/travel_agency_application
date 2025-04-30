@@ -67,11 +67,11 @@ public class ChercherVolController {
 
             int totalPassengers = adultCount + childCount;
 
-            // Search for flights
+
             ServiceFlight serviceFlight = new ServiceFlight();
             List<Flight> allFlights = serviceFlight.recuperer();
 
-            // Filter flights based on search criteria
+
             final String finalDeparture = departure;
             final String finalDestination = destination;
             final Date finalFlightDate = flightDate;
@@ -84,16 +84,16 @@ public class ChercherVolController {
                     .filter(flight -> (finalTotalPassengers == 0 || flight.getAvailable_seats() >= finalTotalPassengers))
                     .collect(Collectors.toList());
 
-            // Load the results view in the same window
+
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/FlightSearchResults.fxml"));
             Parent root = loader.load();
 
-            // Pass the filtered flights to the results controller
+
             FlightSearchResultsController resultsController = loader.getController();
             resultsController.setFlights(filteredFlights, finalTotalPassengers);
             resultsController.setSourceController(this);
 
-            // Replace the current scene with the results scene
+
             Stage stage = (Stage) btnRechercherVol.getScene().getWindow();
             stage.setScene(new Scene(root));
             stage.setTitle("Flight Search Results");
@@ -107,7 +107,7 @@ public class ChercherVolController {
         }
     }
 
-    // Method to reload the search scene (will be called from the results scene)
+
     public void reloadSearchScene() {
         try {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/ChercherVol.fxml"));

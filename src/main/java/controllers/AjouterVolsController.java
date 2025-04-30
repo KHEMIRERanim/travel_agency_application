@@ -93,7 +93,7 @@ public class AjouterVolsController {
 
             showAlert(Alert.AlertType.INFORMATION, "Succès", "Vol ajouté avec succès !");
 
-            // Réinitialiser les champs après l'ajout
+
             clearFields();
 
         } catch (NumberFormatException e) {

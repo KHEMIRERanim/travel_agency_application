@@ -11,25 +11,24 @@ public class MainFX extends Application {
     @Override
     public void start(Stage primaryStage) {
         try {
-            // Charger l'interface principale du menu
+
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/ChercherVol.fxml"));
             Parent root = loader.load();
 
-            // Créer la scène avec le contenu chargé
+
             Scene scene = new Scene(root);
             primaryStage.setScene(scene);
 
-            // Définir la taille initiale de la fenêtre (par exemple, largeur 1200px et hauteur 800px)
-            primaryStage.setWidth(1200);  // Largeur
-            primaryStage.setHeight(800);  // Hauteur
 
-            // Titre de la fenêtre
+            primaryStage.setWidth(1200);
+            primaryStage.setHeight(800);
+
+
             primaryStage.setTitle("Gestion des Vols");
 
-            // Empêcher le redimensionnement de la fenêtre (facultatif)
+
             primaryStage.setResizable(false);
 
-            // Afficher la fenêtre
             primaryStage.show();
 
         } catch (Exception e) {

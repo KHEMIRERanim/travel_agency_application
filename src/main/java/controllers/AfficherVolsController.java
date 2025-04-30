@@ -59,7 +59,7 @@ public class AfficherVolsController implements Initializable {
 
         HBox mainContent = new HBox(15);
 
-        // Image section
+
         VBox imageSection = new VBox();
         imageSection.setPrefWidth(200);
         imageSection.setStyle("-fx-alignment: center;");
@@ -82,11 +82,11 @@ public class AfficherVolsController implements Initializable {
 
         imageSection.getChildren().add(flightImage);
 
-        // Info section
+
         VBox infoSection = new VBox(5);
         HBox.setHgrow(infoSection, Priority.ALWAYS);
 
-        // Header
+
         HBox header = new HBox(10);
         Label flightNumberLabel = new Label(flight.getFlight_number());
         flightNumberLabel.setFont(Font.font("System", FontWeight.BOLD, 16));
@@ -97,7 +97,7 @@ public class AfficherVolsController implements Initializable {
         idLabel.setStyle("-fx-text-fill: #999;");
         header.getChildren().addAll(flightNumberLabel, airlineLabel, idLabel);
 
-        // Route
+
         HBox routeBox = new HBox(10);
         Label departureLabel = new Label(flight.getDeparture());
         departureLabel.setFont(Font.font("System", FontWeight.BOLD, 14));
@@ -107,7 +107,7 @@ public class AfficherVolsController implements Initializable {
         destinationLabel.setFont(Font.font("System", FontWeight.BOLD, 14));
         routeBox.getChildren().addAll(departureLabel, arrowLabel, destinationLabel);
 
-        // Times
+
         HBox timeBox = new HBox(10);
         String departureTime = flight.getDeparture_Time().toLocalDateTime().toLocalTime().format(timeFormatter);
         String arrivalTime = flight.getArrival_Time().toLocalDateTime().toLocalTime().format(timeFormatter);
@@ -118,7 +118,7 @@ public class AfficherVolsController implements Initializable {
         dateLabel.setFont(Font.font("System", 14));
         timeBox.getChildren().addAll(timeLabel, dateLabel);
 
-        // Info
+
         HBox infoBox = new HBox(20);
         Label durationLabel = new Label("Durée: " + flight.getFlight_duration() + " min");
         Label seatsLabel = new Label("Places: " + flight.getAvailable_seats());

@@ -94,15 +94,15 @@ public class ModifierVolController {
         editDeparture.setText(flight.getDeparture());
         editDestination.setText(flight.getDestination());
 
-        // Format departure time (HH:mm)
+
         LocalDateTime departureDateTime = flight.getDeparture_Time().toLocalDateTime();
         editDepartureTime.setText(departureDateTime.toLocalTime().format(timeFormatter));
 
-        // Format arrival time (HH:mm)
+
         LocalDateTime arrivalDateTime = flight.getArrival_Time().toLocalDateTime();
         editArrivalTime.setText(arrivalDateTime.toLocalTime().format(timeFormatter));
 
-        // Set flight date
+
         editFlightDate.setValue(flight.getFlight_date().toLocalDate());
 
         editFlightDuration.setText(String.valueOf(flight.getFlight_duration()));
@@ -119,7 +119,7 @@ public class ModifierVolController {
         }
 
         try {
-            // Validate and retrieve data from fields
+
             if (editFlightNumber.getText().isEmpty() || editDeparture.getText().isEmpty() ||
                     editDestination.getText().isEmpty() || editAirline.getText().isEmpty() ||
                     editFlightDuration.getText().isEmpty() || editAvailableSeats.getText().isEmpty() ||
@@ -146,7 +146,7 @@ public class ModifierVolController {
             Timestamp departureTimestamp = Timestamp.valueOf(departureDateTime);
             Timestamp arrivalTimestamp = Timestamp.valueOf(arrivalDateTime);
 
-            // Update flight object properties
+
             currentFlight.setFlight_number(editFlightNumber.getText());
             currentFlight.setDeparture(editDeparture.getText());
             currentFlight.setDestination(editDestination.getText());
@@ -158,7 +158,7 @@ public class ModifierVolController {
             currentFlight.setArrival_Time(arrivalTimestamp);
             currentFlight.setFlight_date(flightDate);
 
-            // Update in database
+
             serviceFlight.modifier(currentFlight);
 
             statusLabel.setText("Vol modifié avec succès !");

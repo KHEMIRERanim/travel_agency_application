@@ -32,7 +32,7 @@ public class MenuPrincipalController {
             contentArea.getChildren().clear();
             contentArea.getChildren().add(view);
 
-            // Adapter la taille de la fenêtre
+
             Stage stage = (Stage) contentArea.getScene().getWindow();
             stage.setWidth(1200);
             stage.setHeight(800);
@@ -52,18 +52,18 @@ public class MenuPrincipalController {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/AfficherVols.fxml"));
             Parent view = loader.load();
 
-            // Ajouter le contenu à contentArea
+
             contentArea.getChildren().clear();
             contentArea.getChildren().add(view);
 
-            // Récupérer le Stage actuel (fenêtre)
+
             Stage stage = (Stage) contentArea.getScene().getWindow();
 
-            // Définir la taille de la fenêtre (par exemple, largeur 1200px et hauteur 800px)
-            stage.setWidth(1200);  // Largeur
-            stage.setHeight(800);  // Hauteur
 
-            // Ajuster la taille de la fenêtre en fonction du contenu de la scène
+            stage.setWidth(1200);
+            stage.setHeight(800);
+
+
             stage.sizeToScene();
 
         } catch (IOException e) {
@@ -77,18 +77,18 @@ public class MenuPrincipalController {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/ModifierVol.fxml"));
             Parent view = loader.load();
 
-            // Ajouter le contenu à contentArea
+
             contentArea.getChildren().clear();
             contentArea.getChildren().add(view);
 
-            // Récupérer le Stage actuel (fenêtre)
+
             Stage stage = (Stage) contentArea.getScene().getWindow();
 
-            // Définir la taille de la fenêtre (par exemple, largeur 1200px et hauteur 800px)
-            stage.setWidth(1200);  // Largeur
-            stage.setHeight(800);  // Hauteur
 
-            // Ajuster la taille de la fenêtre en fonction du contenu de la scène
+            stage.setWidth(1200);
+            stage.setHeight(800);
+
+
             stage.sizeToScene();
 
         } catch (IOException e) {

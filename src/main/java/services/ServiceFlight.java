@@ -27,7 +27,7 @@ public class ServiceFlight implements IService<Flight> {
 
         PreparedStatement ps = con.prepareStatement(req);
 
-        // Remplir les paramètres dans le bon ordre
+
         ps.setString(1, flight.getDeparture());
         ps.setString(2, flight.getDestination());
         ps.setTimestamp(3, flight.getDeparture_Time());
@@ -99,7 +99,7 @@ public class ServiceFlight implements IService<Flight> {
             double price = rs.getDouble("price");
             String image_url = rs.getString("image_url");
 
-            // Création de l'objet Flight avec les données récupérées
+
             Flight flight = new Flight(flight_id, flight_duration, flight_number, available_seats,
                     departure, destination, airline, arrival_time, departure_time, flight_date, price, image_url);
 
