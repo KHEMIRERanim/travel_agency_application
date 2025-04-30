@@ -5,30 +5,39 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
-import java.io.IOException;
 
 public class MainFX extends Application {
 
-    public static void main(String[] args) {
-        launch(args);
-    }
-
     @Override
     public void start(Stage primaryStage) {
-        // Charger le fichier FXML
-        FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/AjouterVol.fxml"));
-
         try {
-            // Charger la scène
-            Parent root = fxmlLoader.load();
-            Scene scene = new Scene(root);
+            // Charger l'interface principale du menu
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/MenuPrincipale.fxml"));
+            Parent root = loader.load();
 
-            // Configurer la scène et la fenêtre
+            // Créer la scène avec le contenu chargé
+            Scene scene = new Scene(root);
             primaryStage.setScene(scene);
-            primaryStage.setTitle("AjouterVol");
+
+            // Définir la taille initiale de la fenêtre (par exemple, largeur 1200px et hauteur 800px)
+            primaryStage.setWidth(1200);  // Largeur
+            primaryStage.setHeight(800);  // Hauteur
+
+            // Titre de la fenêtre
+            primaryStage.setTitle("Gestion des Vols");
+
+            // Empêcher le redimensionnement de la fenêtre (facultatif)
+            primaryStage.setResizable(false);
+
+            // Afficher la fenêtre
             primaryStage.show();
-        } catch (IOException e) {
-            System.out.println("Erreur de chargement du fichier FXML : " + e.getMessage());
+
+        } catch (Exception e) {
+            e.printStackTrace();
         }
+    }
+
+    public static void main(String[] args) {
+        launch(args);
     }
 }

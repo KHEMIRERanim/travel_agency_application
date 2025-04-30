@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.ScrollPane?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+<?import javafx.scene.text.Text?>
+
+<AnchorPane prefHeight="800.0" prefWidth="1200.0" style="-fx-background-color: transparent;" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controllers.AfficherVolsController">
+    <children>
+        <Text layoutX="217.0" layoutY="40.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Liste des Vols" textAlignment="CENTER">
+            <font>
+                <Font name="System Bold" size="24.0" />
+            </font>
+        </Text>
+        <ScrollPane layoutX="14.0" layoutY="62.0" prefHeight="391.0" prefWidth="629.0">
+            <content>
+                <VBox fx:id="flightsContainer" prefWidth="610.0" spacing="10" style="-fx-padding: 10;" />
+            </content>
+        </ScrollPane>
+    </children>
+</AnchorPane>

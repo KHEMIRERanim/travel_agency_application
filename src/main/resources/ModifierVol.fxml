@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.DatePicker?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.shape.Rectangle?>
+<?import javafx.scene.text.Font?>
+<?import javafx.scene.text.Text?>
+
+<AnchorPane prefHeight="800.0" prefWidth="1200.0" style="-fx-background-color: transparent;" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controllers.ModifierVolController">
+    <children>
+        <Rectangle arcHeight="20.0" arcWidth="20.0" fill="#ffebfb" height="800.0" layoutX="0.0" layoutY="0.0" stroke="WHITE" strokeType="INSIDE" width="1200.0" />
+        <Text layoutX="217.0" layoutY="40.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Modifier Vol" textAlignment="CENTER">
+            <font>
+                <Font name="System Bold" size="24.0" />
+            </font>
+        </Text>
+
+        <TextField fx:id="searchFlightId" layoutX="153.0" layoutY="59.0" prefHeight="30.0" prefWidth="200.0" promptText="ID du vol" style="-fx-border-color: #39909D; -fx-border-radius: 5;" />
+        <Button fx:id="btnSearch" layoutX="362.0" layoutY="59.0" mnemonicParsing="false" onAction="#searchFlight" prefHeight="30.0" prefWidth="144.0" style="-fx-background-color: #039BE5; -fx-text-fill: white; -fx-background-radius: 5;" text="Rechercher" />
+
+        <Label layoutX="73.0" layoutY="66.0" text="ID Vol:" />
+
+        <!-- Flight details fields -->
+        <TextField fx:id="editFlightNumber" layoutX="80.0" layoutY="111.0" prefHeight="26.0" prefWidth="226.0" promptText="Flight number" style="-fx-border-color: #39909D; -fx-border-radius: 5;" />
+        <TextField fx:id="editDeparture" layoutX="350.0" layoutY="111.0" prefHeight="26.0" prefWidth="226.0" promptText="Departure" style="-fx-border-color: #39909D; -fx-border-radius: 5;" />
+        <TextField fx:id="editDestination" layoutX="80.0" layoutY="160.0" prefHeight="26.0" prefWidth="226.0" promptText="Destination" style="-fx-border-color: #39909D; -fx-border-radius: 5;" />
+        <TextField fx:id="editDepartureTime" layoutX="350.0" layoutY="160.0" prefHeight="26.0" prefWidth="226.0" promptText="Departure Time (HH:mm)" style="-fx-border-color: #39909D; -fx-border-radius: 5;" />
+        <TextField fx:id="editArrivalTime" layoutX="80.0" layoutY="209.0" prefHeight="26.0" prefWidth="226.0" promptText="Arrival Time (HH:mm)" style="-fx-border-color: #39909D; -fx-border-radius: 5;" />
+        <DatePicker fx:id="editFlightDate" layoutX="350.0" layoutY="209.0" prefHeight="26.0" prefWidth="226.0" promptText="Flight Date" style="-fx-border-color: #39909D; -fx-border-radius: 5;" />
+        <TextField fx:id="editFlightDuration" layoutX="80.0" layoutY="257.0" prefHeight="26.0" prefWidth="226.0" promptText="Flight Duration" style="-fx-border-color: #39909D; -fx-border-radius: 5;" />
+        <TextField fx:id="editAvailableSeats" layoutX="350.0" layoutY="257.0" prefHeight="26.0" prefWidth="226.0" promptText="Available Seats" style="-fx-border-color: #39909D; -fx-border-radius: 5;" />
+        <TextField fx:id="editAirline" layoutX="80.0" layoutY="306.0" prefHeight="26.0" prefWidth="226.0" promptText="Airline" style="-fx-border-color: #39909D; -fx-border-radius: 5;" />
+        <TextField fx:id="editPrice" layoutX="350.0" layoutY="306.0" prefHeight="26.0" prefWidth="226.0" promptText="Price" style="-fx-border-color: #39909D; -fx-border-radius: 5;" />
+
+        <Button fx:id="btnModify" layoutX="253.0" layoutY="374.0" mnemonicParsing="false" onAction="#modifyFlight" prefHeight="35.0" prefWidth="152.0" style="-fx-background-color: FF7757; -fx-background-radius: 5;" text="Modifier" />
+
+        <Label fx:id="statusLabel" alignment="CENTER" layoutX="129.0" layoutY="422.0" prefHeight="17.0" prefWidth="400.0" textAlignment="CENTER" textFill="#0d6efd" />
+    </children>
+</AnchorPane>
