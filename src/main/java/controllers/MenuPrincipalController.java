@@ -10,7 +10,6 @@ import javafx.stage.Stage;
 import java.io.IOException;
 
 public class MenuPrincipalController {
-
     @FXML
     private Button btnAjouter;
 
@@ -19,6 +18,9 @@ public class MenuPrincipalController {
 
     @FXML
     private Button btnModifier;
+
+    @FXML
+    private Button btnSupprimer; // Nouveau bouton ajouté
 
     @FXML
     private AnchorPane contentArea;
@@ -32,19 +34,14 @@ public class MenuPrincipalController {
             contentArea.getChildren().clear();
             contentArea.getChildren().add(view);
 
-
             Stage stage = (Stage) contentArea.getScene().getWindow();
             stage.setWidth(1200);
             stage.setHeight(800);
             stage.sizeToScene();
-
         } catch (IOException e) {
             e.printStackTrace();
         }
     }
-
-
-
 
     @FXML
     void ouvrirAfficher() {
@@ -52,20 +49,13 @@ public class MenuPrincipalController {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/AfficherVols.fxml"));
             Parent view = loader.load();
 
-
             contentArea.getChildren().clear();
             contentArea.getChildren().add(view);
 
-
             Stage stage = (Stage) contentArea.getScene().getWindow();
-
-
             stage.setWidth(1200);
             stage.setHeight(800);
-
-
             stage.sizeToScene();
-
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -77,23 +67,33 @@ public class MenuPrincipalController {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/ModifierVol.fxml"));
             Parent view = loader.load();
 
-
             contentArea.getChildren().clear();
             contentArea.getChildren().add(view);
 
-
             Stage stage = (Stage) contentArea.getScene().getWindow();
-
-
             stage.setWidth(1200);
             stage.setHeight(800);
-
-
             stage.sizeToScene();
-
         } catch (IOException e) {
             e.printStackTrace();
         }
     }
 
+    @FXML
+    void ouvrirSupprimer() { // Nouvelle méthode pour ouvrir l'interface de suppression
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/SupprimerVols.fxml"));
+            Parent view = loader.load();
+
+            contentArea.getChildren().clear();
+            contentArea.getChildren().add(view);
+
+            Stage stage = (Stage) contentArea.getScene().getWindow();
+            stage.setWidth(1200);
+            stage.setHeight(800);
+            stage.sizeToScene();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
 }

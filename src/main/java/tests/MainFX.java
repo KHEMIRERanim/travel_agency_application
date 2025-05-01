@@ -12,7 +12,7 @@ public class MainFX extends Application {
     public void start(Stage primaryStage) {
         try {
 
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("/ChercherVol.fxml"));
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/MenuPrincipale.fxml"));
             Parent root = loader.load();
 
 
