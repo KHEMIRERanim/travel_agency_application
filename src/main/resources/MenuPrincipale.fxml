@@ -8,7 +8,7 @@
 
 <AnchorPane prefHeight="800.0" prefWidth="1200.0" style="-fx-background-color: #E0F7FA;" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controllers.MenuPrincipalController">
     <children>
-        <VBox layoutX="14.0" layoutY="100.0" prefHeight="546.0" prefWidth="199.0" spacing="20.0" style="-fx-background-color: #B2EBF2; -fx-background-radius: 10;">
+        <VBox layoutX="14.0" layoutY="100.0" prefHeight="476.0" prefWidth="199.0" spacing="20.0" style="-fx-background-color: #B2EBF2; -fx-background-radius: 10;">
             <children>
                 <Button fx:id="btnAjouter" mnemonicParsing="false" onAction="#ouvrirAjouter" prefHeight="50.0" prefWidth="200.0" style="-fx-background-color: #039BE5; -fx-text-fill: white; -fx-background-radius: 5;" text="Ajouter Vol">
                     <font>
@@ -25,18 +25,18 @@
                         <Font size="14.0" />
                     </font>
                 </Button>
-                <Button fx:id="btnSupprimer" mnemonicParsing="false" onAction="#ouvrirSupprimer" prefHeight="50.0" prefWidth="200.0" style="-fx-background-color: #FF5252; -fx-text-fill: white; -fx-background-radius: 5;" text="Supprimer Vol">
-                    <font>
-                        <Font size="14.0" />
-                    </font>
-                </Button>
+            <Button fx:id="btnsupprimer" mnemonicParsing="false" onAction="#ouvrirSupprimer" prefHeight="50.0" prefWidth="200.0" style="-fx-background-color: #039BE5; -fx-text-fill: white; -fx-background-radius: 5;" text="supprimer Vol">
+               <font>
+                  <Font size="14.0" />
+               </font>
+            </Button>
             </children>
         </VBox>
-        <Text layoutX="475.0" layoutY="66.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Gestion des Vols" textAlignment="CENTER">
+        <Text fill="#145de0" layoutX="475.0" layoutY="66.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Gestion des Vols" textAlignment="CENTER">
             <font>
-                <Font name="System Bold" size="36.0" />
+                <Font name="Book Antiqua" size="36.0" />
             </font>
         </Text>
-        <AnchorPane fx:id="contentArea" layoutX="229.0" layoutY="100.0" prefHeight="676.0" prefWidth="957.0" style="-fx-background-color: #ffebfb; -fx-background-radius: 10;" />
+        <AnchorPane fx:id="contentArea" layoutX="229.0" layoutY="100.0" prefHeight="476.0" prefWidth="882.0" style="-fx-background-color: #ffebfb; -fx-background-radius: 10;" />
     </children>
 </AnchorPane>

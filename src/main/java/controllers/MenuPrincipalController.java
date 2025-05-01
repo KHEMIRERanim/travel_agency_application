@@ -20,10 +20,9 @@ public class MenuPrincipalController {
     private Button btnModifier;
 
     @FXML
-    private Button btnSupprimer; // Nouveau bouton ajouté
-
-    @FXML
     private AnchorPane contentArea;
+    @FXML
+    private Button btnsupprimer;
 
     @FXML
     void ouvrirAjouter() {

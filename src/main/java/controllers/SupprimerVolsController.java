@@ -10,9 +10,8 @@ import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.layout.FlowPane;
 import javafx.scene.layout.HBox;
-import javafx.scene.layout.Priority;
-import javafx.scene.layout.Region;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
@@ -26,7 +25,7 @@ import java.util.ResourceBundle;
 public class SupprimerVolsController implements Initializable {
 
     @FXML
-    private VBox flightsContainer;
+    private FlowPane flightsContainer;
 
     @FXML
     private Label statusLabel;
@@ -54,7 +53,7 @@ public class SupprimerVolsController implements Initializable {
                 return;
             }
 
-            // Ajouter chaque vol dans un bloc vertical
+            // Ajouter chaque vol dans un bloc
             for (Flight flight : flights) {
                 flightsContainer.getChildren().add(createFlightBlock(flight));
             }
@@ -70,22 +69,11 @@ public class SupprimerVolsController implements Initializable {
         flightBlock.setAlignment(Pos.CENTER);
         flightBlock.setSpacing(10);
         flightBlock.setPadding(new Insets(15));
-        flightBlock.setStyle("-fx-background-color: white; -fx-border-color: #039BE5; -fx-border-radius: 10; -fx-background-radius: 10;");
+        flightBlock.setPrefWidth(320); // Largeur fixe pour les blocs (un peu plus petit)
+        flightBlock.setPrefHeight(400); // Hauteur fixe pour uniformité
+        flightBlock.setStyle("-fx-background-color: #f0f9ff; -fx-border-color: #039BE5; -fx-border-radius: 10; -fx-background-radius: 10;");
 
-        // En-tête avec numéro de vol et compagnie aérienne
-        HBox headerBox = new HBox();
-        headerBox.setAlignment(Pos.CENTER);
-        headerBox.setSpacing(10);
-
-        Label flightNumberLabel = new Label("Vol " + flight.getFlight_number());
-        flightNumberLabel.setFont(Font.font("System", FontWeight.BOLD, 18));
-
-        Label airlineLabel = new Label("| " + flight.getAirline());
-        airlineLabel.setFont(Font.font("System", 16));
-
-        headerBox.getChildren().addAll(flightNumberLabel, airlineLabel);
-
-        // Image du vol
+        // Image du vol (taille moyenne)
         ImageView flightImage = new ImageView();
         try {
             Image image = new Image(flight.getImage_url());
@@ -93,45 +81,51 @@ public class SupprimerVolsController implements Initializable {
         } catch (Exception e) {
             // Image par défaut en cas d'erreur
             try {
-                Image defaultImage = new Image("https://via.placeholder.com/400x225?text=Avion");
+                Image defaultImage = new Image("https://via.placeholder.com/200x150?text=Avion");
                 flightImage.setImage(defaultImage);
             } catch (Exception ex) {
-                // Ignorer
+                // Ignorer si même l'image par défaut échoue
             }
         }
 
-        // Configurer la taille de l'image
-        flightImage.setFitWidth(500);
-        flightImage.setFitHeight(280);
+        // Configurer la taille de l'image (moyenne)
+        flightImage.setFitWidth(200);
+        flightImage.setFitHeight(150);
         flightImage.setPreserveRatio(true);
         flightImage.setSmooth(true);
 
-        // Informations du vol
-        VBox infoBox = new VBox();
-        infoBox.setSpacing(5);
-        infoBox.setAlignment(Pos.CENTER_LEFT);
+        // Destination - en gras et plus grand
+        Label destinationLabel = new Label(flight.getDestination());
+        destinationLabel.setFont(Font.font("System", FontWeight.BOLD, 20));
+        destinationLabel.setAlignment(Pos.CENTER);
 
-        Label routeLabel = new Label(flight.getDeparture() + " → " + flight.getDestination());
-        routeLabel.setFont(Font.font("System", FontWeight.BOLD, 16));
+        // Date
+        Label dateLabel = new Label(flight.getFlight_date().toString());
+        dateLabel.setFont(Font.font("System", 16));
+        dateLabel.setAlignment(Pos.CENTER);
 
-        Label dateLabel = new Label("Date: " + flight.getFlight_date());
-        dateLabel.setFont(Font.font("System", 14));
+        // Prix
+        Label priceLabel = new Label("$" + flight.getPrice());
+        priceLabel.setFont(Font.font("System", FontWeight.BOLD, 18));
+        priceLabel.setAlignment(Pos.CENTER);
 
-        Label timeLabel = new Label("Départ: " + flight.getDeparture_Time() + " | Arrivée: " + flight.getArrival_Time());
-        timeLabel.setFont(Font.font("System", 14));
+        // Informations de vol (numéro, départ -> arrivée)
+        Label flightInfoLabel = new Label("Vol " + flight.getFlight_number() + " | " +
+                flight.getDeparture() + " → " + flight.getDestination());
+        flightInfoLabel.setFont(Font.font("System", 12));
+        flightInfoLabel.setAlignment(Pos.CENTER);
 
-        Label durationLabel = new Label("Durée: " + flight.getFlight_duration() + " minutes");
-        durationLabel.setFont(Font.font("System", 14));
-
-        Label priceLabel = new Label("Prix: " + flight.getPrice() + " €");
-        priceLabel.setFont(Font.font("System", FontWeight.BOLD, 16));
-
-        infoBox.getChildren().addAll(routeLabel, dateLabel, timeLabel, durationLabel, priceLabel);
+        // Horaires
+        Label timeLabel = new Label(formatTime(flight.getDeparture_Time().toString()) + " - " +
+                formatTime(flight.getArrival_Time().toString()) + " (" +
+                flight.getFlight_duration() + " min)");
+        timeLabel.setFont(Font.font("System", 12));
+        timeLabel.setAlignment(Pos.CENTER);
 
         // Bouton de suppression
-        Button deleteButton = new Button("Supprimer ce vol");
-        deleteButton.setStyle("-fx-background-color: #FF5252; -fx-text-fill: white; -fx-font-weight: bold; -fx-padding: 10 20; -fx-background-radius: 5;");
-        deleteButton.setPrefWidth(200);
+        Button deleteButton = new Button("Supprimer");
+        deleteButton.setStyle("-fx-background-color: #FF5252; -fx-text-fill: white; -fx-font-weight: bold; -fx-padding: 8 15; -fx-background-radius: 5;");
+        deleteButton.setPrefWidth(120);
 
         // Action du bouton supprimer
         deleteButton.setOnAction(event -> {
@@ -145,9 +139,36 @@ public class SupprimerVolsController implements Initializable {
         });
 
         // Ajouter tous les éléments au bloc
-        flightBlock.getChildren().addAll(headerBox, flightImage, infoBox, deleteButton);
+        flightBlock.getChildren().addAll(
+                flightImage,
+                destinationLabel,
+                dateLabel,
+                priceLabel,
+                flightInfoLabel,
+                timeLabel,
+                deleteButton
+        );
 
         return flightBlock;
+    }
+
+    // Méthode pour formater l'heure à partir d'un timestamp (prend juste HH:mm)
+    private String formatTime(String timestamp) {
+        if (timestamp == null || timestamp.isEmpty()) {
+            return "00:00";
+        }
+
+        try {
+            // Format typique: yyyy-MM-dd HH:mm:ss.0
+            String[] parts = timestamp.split(" ");
+            if (parts.length > 1) {
+                String time = parts[1];
+                return time.substring(0, 5); // prend juste HH:mm
+            }
+            return "00:00";
+        } catch (Exception e) {
+            return "00:00";
+        }
     }
 
     private void showAlert(Alert.AlertType alertType, String title, String header, String content) {
