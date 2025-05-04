@@ -54,6 +54,8 @@ public class ModifierVolController {
     private ServiceFlight serviceFlight = new ServiceFlight();
     private Flight currentFlight;
     private DateTimeFormatter timeFormatter = DateTimeFormatter.ofPattern("HH:mm");
+    @FXML
+    private Label lblCurrentImage;
 
     // Méthode pour initialiser les données du vol à modifier
     public void initData(Flight flight) {

@@ -3,28 +3,31 @@ package controllers;
 import entities.Flight;
 import services.ServiceFlight;
 import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
-import javafx.scene.Parent;
-import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
+import javafx.scene.control.DatePicker;
 import javafx.scene.control.Label;
+import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.FlowPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.animation.ScaleTransition;
-import javafx.stage.Stage;
 import javafx.util.Duration;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
 import java.io.File;
-import java.io.IOException;
 import java.net.URL;
 import java.sql.SQLException;
+import java.sql.Timestamp;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
+import java.time.format.DateTimeParseException;
 import java.util.List;
 import java.util.ResourceBundle;
 
@@ -36,13 +39,69 @@ public class AfficherVolsController implements Initializable {
     @FXML
     private Label statusLabel;
 
+    // Main flight listing pane
+    @FXML
+    private AnchorPane mainPane;
+
+    // Edit flight pane
+    @FXML
+    private AnchorPane editPane;
+
+    // Edit form fields
+    @FXML
+    private TextField editFlightNumber;
+
+    @FXML
+    private TextField editDeparture;
+
+    @FXML
+    private TextField editDestination;
+
+    @FXML
+    private TextField editDepartureTime;
+
+    @FXML
+    private TextField editArrivalTime;
+
+    @FXML
+    private DatePicker editFlightDate;
+
+    @FXML
+    private TextField editFlightDuration;
+
+    @FXML
+    private TextField editAvailableSeats;
+
+    @FXML
+    private TextField editAirline;
+
+    @FXML
+    private TextField editPrice;
+
+    @FXML
+    private Button btnSaveChanges;
+
+    @FXML
+    private Button btnReturnToList;
+
+    @FXML
+    private Label editStatusLabel;
+
     private final ServiceFlight serviceFlight = new ServiceFlight();
     private final DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
     private final DateTimeFormatter timeFormatter = DateTimeFormatter.ofPattern("HH:mm");
 
+    private Flight currentFlight; // Store the current flight being edited
+
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         loadFlights();
+
+        // Set up the return button action
+        btnReturnToList.setOnAction(event -> showFlightListView());
+
+        // Set up the save changes button action
+        btnSaveChanges.setOnAction(event -> saveFlightChanges());
     }
 
     private void loadFlights() {
@@ -67,7 +126,7 @@ public class AfficherVolsController implements Initializable {
     private VBox createFlightCard(Flight flight) {
         VBox card = new VBox();
         card.setPrefWidth(320);
-        card.setPrefHeight(380);  // Augmenté pour accommoder les deux boutons
+        card.setPrefHeight(380);
         card.setStyle("-fx-background-color: white; -fx-border-color: #039BE5; -fx-border-radius: 8; " +
                 "-fx-padding: 12; -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.1), 5, 0, 0, 5);");
         card.setSpacing(10);
@@ -177,14 +236,8 @@ public class AfficherVolsController implements Initializable {
         modifyButton.setOnMouseEntered(e -> modifyScaleIn.play());
         modifyButton.setOnMouseExited(e -> modifyScaleOut.play());
 
-        // Action pour modifier un vol
-        modifyButton.setOnAction(event -> {
-            try {
-                openModifyFlightWindow(flight);
-            } catch (IOException e) {
-                showAlert(Alert.AlertType.ERROR, "Erreur", "Erreur lors de l'ouverture de la fenêtre de modification: " + e.getMessage());
-            }
-        });
+        // Action pour modifier un vol - Changé pour afficher la vue de modification
+        modifyButton.setOnAction(event -> showEditFlightView(flight));
 
         // Bouton de suppression
         Button deleteButton = new Button("Supprimer");
@@ -232,19 +285,135 @@ public class AfficherVolsController implements Initializable {
         return card;
     }
 
-    // Méthode pour ouvrir la fenêtre de modification avec les informations du vol
-    private void openModifyFlightWindow(Flight flight) throws IOException {
-        FXMLLoader loader = new FXMLLoader(getClass().getResource("/ModifierVol.fxml"));
-        Parent root = loader.load();
+    // Méthode pour afficher la vue de modification et masquer la liste des vols
+    private void showEditFlightView(Flight flight) {
+        this.currentFlight = flight;
 
-        // Récupérer le contrôleur et passer les informations du vol
-        ModifierVolController controller = loader.getController();
-        controller.initData(flight);
+        // Remplir les champs avec les données du vol
+        editFlightNumber.setText(flight.getFlight_number());
+        editDeparture.setText(flight.getDeparture());
+        editDestination.setText(flight.getDestination());
 
-        Stage stage = new Stage();
-        stage.setTitle("Modifier Vol");
-        stage.setScene(new Scene(root));
-        stage.show();
+        // Formatage de l'heure de départ et d'arrivée
+        LocalTime departureTime = flight.getDeparture_Time().toLocalDateTime().toLocalTime();
+        LocalTime arrivalTime = flight.getArrival_Time().toLocalDateTime().toLocalTime();
+        editDepartureTime.setText(departureTime.format(timeFormatter));
+        editArrivalTime.setText(arrivalTime.format(timeFormatter));
+
+        // Date du vol
+        editFlightDate.setValue(flight.getFlight_date().toLocalDate());
+
+        // Autres champs
+        editFlightDuration.setText(String.valueOf(flight.getFlight_duration()));
+        editAvailableSeats.setText(String.valueOf(flight.getAvailable_seats()));
+        editAirline.setText(flight.getAirline());
+        editPrice.setText(String.valueOf(flight.getPrice()));
+
+        // Afficher la vue d'édition et masquer la liste
+        mainPane.setVisible(false);
+        mainPane.setManaged(false);
+        editPane.setVisible(true);
+        editPane.setManaged(true);
+    }
+
+    // Méthode pour afficher la liste des vols et masquer la vue de modification
+    private void showFlightListView() {
+        // Réinitialiser le statut
+        editStatusLabel.setText("");
+
+        // Recharger la liste des vols
+        loadFlights();
+
+        // Afficher la liste et masquer l'édition
+        mainPane.setVisible(true);
+        mainPane.setManaged(true);
+        editPane.setVisible(false);
+        editPane.setManaged(false);
+    }
+
+    // Méthode pour enregistrer les modifications du vol
+    private void saveFlightChanges() {
+        try {
+            // Récupérer les valeurs des champs
+            String flightNumber = editFlightNumber.getText();
+            String departure = editDeparture.getText();
+            String destination = editDestination.getText();
+
+            // Vérifier et parser l'heure de départ et d'arrivée
+            LocalTime depTime;
+            LocalTime arrTime;
+            try {
+                depTime = LocalTime.parse(editDepartureTime.getText(), timeFormatter);
+                arrTime = LocalTime.parse(editArrivalTime.getText(), timeFormatter);
+            } catch (DateTimeParseException e) {
+                showAlert(Alert.AlertType.ERROR, "Erreur de format",
+                        "Format d'heure invalide. Utilisez le format HH:mm");
+                return;
+            }
+
+            // Vérifier la date
+            LocalDate flightDate = editFlightDate.getValue();
+            if (flightDate == null) {
+                showAlert(Alert.AlertType.ERROR, "Erreur", "Veuillez sélectionner une date");
+                return;
+            }
+
+            // Créer les timestamps
+            LocalDateTime departureDateTime = LocalDateTime.of(flightDate, depTime);
+            LocalDateTime arrivalDateTime = LocalDateTime.of(flightDate, arrTime);
+            Timestamp departureTimestamp = Timestamp.valueOf(departureDateTime);
+            Timestamp arrivalTimestamp = Timestamp.valueOf(arrivalDateTime);
+
+            // Parser les valeurs numériques
+            int duration, availableSeats;
+            double price;
+            try {
+                duration = Integer.parseInt(editFlightDuration.getText());
+                availableSeats = Integer.parseInt(editAvailableSeats.getText());
+                price = Double.parseDouble(editPrice.getText());
+            } catch (NumberFormatException e) {
+                showAlert(Alert.AlertType.ERROR, "Erreur de format",
+                        "Format numérique invalide pour la durée, les places ou le prix");
+                return;
+            }
+
+            String airline = editAirline.getText();
+
+            // Mettre à jour l'objet vol
+            currentFlight.setFlight_number(flightNumber);
+            currentFlight.setDeparture(departure);
+            currentFlight.setDestination(destination);
+            currentFlight.setDeparture_Time(departureTimestamp);
+            currentFlight.setArrival_Time(arrivalTimestamp);
+            currentFlight.setFlight_date(java.sql.Date.valueOf(flightDate));
+            currentFlight.setFlight_duration(duration);
+            currentFlight.setAvailable_seats(availableSeats);
+            currentFlight.setAirline(airline);
+            currentFlight.setPrice(price);
+
+            // Enregistrer les modifications
+            serviceFlight.modifier(currentFlight);
+
+            // Afficher un message de succès
+            editStatusLabel.setText("Vol modifié avec succès!");
+            editStatusLabel.setStyle("-fx-text-fill: green;");
+
+            // Retourner à la liste des vols après un court délai
+            new Thread(() -> {
+                try {
+                    Thread.sleep(1500); // Attendre 1.5 secondes
+                    javafx.application.Platform.runLater(this::showFlightListView);
+                } catch (InterruptedException e) {
+                    Thread.currentThread().interrupt();
+                }
+            }).start();
+
+        } catch (SQLException e) {
+            showAlert(Alert.AlertType.ERROR, "Erreur SQL",
+                    "Erreur lors de la modification du vol: " + e.getMessage());
+            editStatusLabel.setText("Erreur lors de la modification");
+            editStatusLabel.setStyle("-fx-text-fill: red;");
+        }
     }
 
     private void showAlert(Alert.AlertType alertType, String title, String message) {

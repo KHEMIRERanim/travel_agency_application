@@ -1,42 +1,209 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.DatePicker?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.TextField?>
+<?import javafx.scene.effect.DropShadow?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.paint.Color?>
+<?import javafx.scene.paint.LinearGradient?>
+<?import javafx.scene.paint.Stop?>
 <?import javafx.scene.shape.Rectangle?>
+<?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
-<AnchorPane prefHeight="1000.0" prefWidth="1150.0" style="-fx-background-color: #E0F7FA;" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controllers.AjouterVolsController" >
+<AnchorPane prefHeight="793.0" prefWidth="1134.0" style="-fx-background-color: #ffebfb;" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controllers.AjouterVolsController">
    <children>
-      <Rectangle arcHeight="20.0" arcWidth="20.0" fill="#ffebfb" height="554.0" layoutX="103.0" layoutY="156.0" stroke="WHITE" strokeType="INSIDE" width="961.0" />
-      <TextField fx:id="AddFlightnumber" layoutX="138.0" layoutY="219.0" prefHeight="26.0" prefWidth="226.0" promptText="Flight number" style="-fx-border-color: #39909D; -fx-border-radius: 5;" />
-      <TextField fx:id="AddDeparture" layoutX="391.0" layoutY="219.0" prefHeight="26.0" prefWidth="226.0" promptText="Departure" style="-fx-border-color: #39909D; -fx-border-radius: 5;" />
-      <TextField fx:id="AddDestination" layoutX="656.0" layoutY="219.0" prefHeight="26.0" prefWidth="226.0" promptText="Destination" style="-fx-border-color: #39909D; -fx-border-radius: 5;" />
-      <TextField fx:id="AddDeparture_Time" layoutX="130.0" layoutY="338.0" prefHeight="26.0" prefWidth="226.0" promptText="Departure Time" style="-fx-border-color: #39909D; -fx-border-radius: 5;" />
-      <TextField fx:id="AddAirline" layoutX="656.0" layoutY="441.0" prefHeight="26.0" prefWidth="226.0" promptText="Airline" style="-fx-border-color: #39909D; -fx-border-radius: 5;" />
-      <TextField fx:id="AddArrivalTime" layoutX="391.0" layoutY="338.0" prefHeight="26.0" prefWidth="226.0" promptText="Arrival Time" style="-fx-border-color: #39909D; -fx-border-radius: 5;" />
-      <TextField fx:id="AddFlightDuration" layoutX="130.0" layoutY="442.0" prefHeight="26.0" prefWidth="226.0" promptText="Flight Duration" style="-fx-border-color: #39909D; -fx-border-radius: 5;" />
-      <Text layoutX="136.0" layoutY="198.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Flight number" wrappingWidth="213.15423583984375" />
-      <Text layoutX="397.0" layoutY="197.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Departure" wrappingWidth="213.15423583984375" />
-      <Text layoutX="656.0" layoutY="196.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Destination" wrappingWidth="213.15423583984375" />
-      <Text layoutX="130.0" layoutY="323.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Departure Time" wrappingWidth="213.15423583984375" />
-      <Text layoutX="397.0" layoutY="322.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Arrival Time" wrappingWidth="213.15423583984375" />
-      <Text layoutX="656.0" layoutY="322.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Flight Date" wrappingWidth="213.15423583984375" />
-      <Text layoutX="136.0" layoutY="427.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Flight Duration" wrappingWidth="213.15423583984375" />
-      <Text layoutX="391.0" layoutY="426.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Available Seats" wrappingWidth="213.15423583984375" />
-      <Text layoutX="656.0" layoutY="426.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Airline" wrappingWidth="213.15423583984375" />
-      <TextField fx:id="AddPrice" layoutX="129.0" layoutY="522.0" prefHeight="26.0" prefWidth="226.0" promptText="Price" style="-fx-border-color: #39909D; -fx-border-radius: 5;" />
-      <Text layoutX="130.0" layoutY="502.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Price" wrappingWidth="213.15423583984375" />
-      <DatePicker fx:id="AddFlightDate" layoutX="656.0" layoutY="338.0" prefHeight="26.0" prefWidth="226.0" promptText="Flight Date" style="-fx-border-color: #39909D; -fx-border-radius: 5;" />
-      <Button layoutX="763.0" layoutY="634.0" mnemonicParsing="false" onAction="#AddFlight" prefHeight="35.0" prefWidth="204.0" style="-fx-background-color: FF7757; -fx-background-radius: 5;" text="Add Flight" />
-      <TextField fx:id="AddAvailableSeats" layoutX="377.0" layoutY="442.0" prefHeight="26.0" prefWidth="226.0" promptText="Available Seats" style="-fx-border-color: #39909D; -fx-border-radius: 5;" />
+      <!-- Fond principal avec effet d'ombre -->
+      <Rectangle arcHeight="30.0" arcWidth="30.0" height="737.0" layoutX="80.0" layoutY="16.0" stroke="transparent" strokeType="INSIDE" width="774.0">
+         <effect>
+            <DropShadow color="#00000066" height="20" radius="9.5" width="20" />
+         </effect>
+         <fill>
+            <LinearGradient endX="0.7310605916109952" endY="1.0" startX="0.46212119134989654" startY="0.31439398274277197">
+               <stops>
+                  <Stop>
+                     <color>
+                        <Color red="0.8444444537162781" green="0.9222221970558167" blue="1.0" />
+                     </color>
+                  </Stop>
+                  <Stop offset="1.0">
+                     <color>
+                        <Color red="1.0" green="0.6884567737579346" blue="0.6185185313224792" />
+                     </color>
+                  </Stop>
+               </stops>
+            </LinearGradient>
+         </fill>
+      </Rectangle>
 
-      <!-- Remplacer le TextField par un Button et un Label pour l'image -->
-      <Button fx:id="btnChooseImage" layoutX="398.0" layoutY="522.0" onAction="#chooseImage" prefHeight="26.0" prefWidth="200.0" style="-fx-background-color: #39909D; -fx-text-fill: white; -fx-background-radius: 5;" text="Choisir une image" />
-      <Label fx:id="lblImagePath" layoutX="610.0" layoutY="522.0" prefHeight="26.0" prefWidth="272.0" style="-fx-border-color: #39909D; -fx-border-radius: 5; -fx-padding: 5;" text="Aucune image sélectionnée" />
+      <!-- En-tête du formulaire -->
+      <HBox alignment="CENTER" layoutX="80.0" layoutY="17.0" prefHeight="79.0" prefWidth="774.0" style="-fx-background-color: #c4377c; -fx-background-radius: 30 30 0 0;">
+         <children>
+            <ImageView fitHeight="40.0" fitWidth="40.0" preserveRatio="true">
+               <image>
+                  <Image url="@../resources/images/airplane_icon.png" />
+               </image>
+            </ImageView>
+            <Label text="AJOUTER UN NOUVEAU VOL" textFill="WHITE">
+               <font>
+                  <Font name="System Bold" size="24.0" />
+               </font>
+               <HBox.margin>
+                  <Insets left="15.0" />
+               </HBox.margin>
+            </Label>
+         </children>
+      </HBox>
 
-      <Text layoutX="398.0" layoutY="502.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Image" wrappingWidth="213.15423583984375" />
+      <!-- Champs du formulaire avec style amélioré -->
+      <TextField fx:id="AddFlightnumber" layoutX="169.0" layoutY="164.0" prefHeight="40.0" prefWidth="300.0" promptText="Ex: AF1234" style="-fx-background-color: #F5F5F5; -fx-border-color: #D1C4E9; -fx-border-radius: 5; -fx-background-radius: 5;">
+         <font>
+            <Font size="14.0" />
+         </font>
+      </TextField>
+
+      <Text layoutX="169.0" layoutY="154.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Numéro de vol">
+         <font>
+            <Font name="System Bold" size="14.0" />
+         </font>
+      </Text>
+
+      <TextField fx:id="AddDeparture" layoutX="169.0" layoutY="234.0" prefHeight="40.0" prefWidth="300.0" promptText="Ex: Paris (CDG)" style="-fx-background-color: #F5F5F5; -fx-border-color: #D1C4E9; -fx-border-radius: 5; -fx-background-radius: 5;">
+         <font>
+            <Font size="14.0" />
+         </font>
+      </TextField>
+
+      <Text layoutX="169.0" layoutY="224.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Départ">
+         <font>
+            <Font name="System Bold" size="14.0" />
+         </font>
+      </Text>
+
+      <TextField fx:id="AddArrivalTime" layoutX="169.0" layoutY="304.0" prefHeight="40.0" prefWidth="300.0" promptText="Ex: 14:30" style="-fx-background-color: #F5F5F5; -fx-border-color: #D1C4E9; -fx-border-radius: 5; -fx-background-radius: 5;">
+         <font>
+            <Font size="14.0" />
+         </font>
+      </TextField>
+
+      <Text layoutX="169.0" layoutY="294.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Heure d'arrivée">
+         <font>
+            <Font name="System Bold" size="14.0" />
+         </font>
+      </Text>
+
+      <DatePicker fx:id="AddFlightDate" layoutX="169.0" layoutY="374.0" prefHeight="40.0" prefWidth="300.0" promptText="JJ/MM/AAAA" style="-fx-background-color: #F5F5F5; -fx-border-color: #D1C4E9; -fx-border-radius: 5; -fx-background-radius: 5;">
+         <effect>
+            <DropShadow color="#00000022" height="5" radius="2" width="5" />
+         </effect>
+      </DatePicker>
+
+      <Text layoutX="169.0" layoutY="364.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Date du vol">
+         <font>
+            <Font name="System Bold" size="14.0" />
+         </font>
+      </Text>
+
+      <TextField fx:id="AddDestination" layoutX="519.0" layoutY="164.0" prefHeight="40.0" prefWidth="300.0" promptText="Ex: New York (JFK)" style="-fx-background-color: #F5F5F5; -fx-border-color: #D1C4E9; -fx-border-radius: 5; -fx-background-radius: 5;">
+         <font>
+            <Font size="14.0" />
+         </font>
+      </TextField>
+
+      <Text layoutX="519.0" layoutY="154.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Destination">
+         <font>
+            <Font name="System Bold" size="14.0" />
+         </font>
+      </Text>
+
+      <TextField fx:id="AddDeparture_Time" layoutX="519.0" layoutY="234.0" prefHeight="40.0" prefWidth="300.0" promptText="Ex: 09:45" style="-fx-background-color: #F5F5F5; -fx-border-color: #D1C4E9; -fx-border-radius: 5; -fx-background-radius: 5;">
+         <font>
+            <Font size="14.0" />
+         </font>
+      </TextField>
+
+      <Text layoutX="519.0" layoutY="224.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Heure de départ">
+         <font>
+            <Font name="System Bold" size="14.0" />
+         </font>
+      </Text>
+
+      <TextField fx:id="AddFlightDuration" layoutX="519.0" layoutY="304.0" prefHeight="40.0" prefWidth="300.0" promptText="Ex: 05:45" style="-fx-background-color: #F5F5F5; -fx-border-color: #D1C4E9; -fx-border-radius: 5; -fx-background-radius: 5;">
+         <font>
+            <Font size="14.0" />
+         </font>
+      </TextField>
+
+      <Text layoutX="519.0" layoutY="294.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Durée du vol">
+         <font>
+            <Font name="System Bold" size="14.0" />
+         </font>
+      </Text>
+
+      <TextField fx:id="AddAvailableSeats" layoutX="519.0" layoutY="374.0" prefHeight="40.0" prefWidth="300.0" promptText="Ex: 120" style="-fx-background-color: #F5F5F5; -fx-border-color: #D1C4E9; -fx-border-radius: 5; -fx-background-radius: 5;">
+         <font>
+            <Font size="14.0" />
+         </font>
+      </TextField>
+
+      <Text layoutX="519.0" layoutY="364.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Sièges disponibles">
+         <font>
+            <Font name="System Bold" size="14.0" />
+         </font>
+      </Text>
+
+      <TextField fx:id="AddAirline" layoutX="169.0" layoutY="444.0" prefHeight="40.0" prefWidth="300.0" promptText="Ex: Air France" style="-fx-background-color: #F5F5F5; -fx-border-color: #D1C4E9; -fx-border-radius: 5; -fx-background-radius: 5;">
+         <font>
+            <Font size="14.0" />
+         </font>
+      </TextField>
+
+      <Text layoutX="169.0" layoutY="434.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Compagnie aérienne">
+         <font>
+            <Font name="System Bold" size="14.0" />
+         </font>
+      </Text>
+
+      <TextField fx:id="AddPrice" layoutX="519.0" layoutY="444.0" prefHeight="40.0" prefWidth="300.0" promptText="Ex: 450.00" style="-fx-background-color: #F5F5F5; -fx-border-color: #D1C4E9; -fx-border-radius: 5; -fx-background-radius: 5;">
+         <font>
+            <Font size="14.0" />
+         </font>
+      </TextField>
+
+      <Text layoutX="519.0" layoutY="434.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Prix (€)">
+         <font>
+            <Font name="System Bold" size="14.0" />
+         </font>
+      </Text>
+
+      <!-- Section pour l'image -->
+      <Rectangle arcHeight="15.0" arcWidth="15.0" fill="#F5F7FF" height="158.0" layoutX="219.0" layoutY="514.0" stroke="#D1C4E9" strokeType="INSIDE" width="528.0" />
+
+      <Text layoutX="219.0" layoutY="504.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Image de l'avion">
+         <font>
+            <Font name="System Bold" size="14.0" />
+         </font>
+      </Text>
+
+      <Button fx:id="btnChooseImage" layoutX="390.0" layoutY="546.0" onAction="#chooseImage" prefHeight="45.0" prefWidth="180.0" style="-fx-background-color: #c4377c; -fx-text-fill: white; -fx-background-radius: 22; -fx-font-weight: bold;" text="Choisir une image">
+         <effect>
+            <DropShadow color="#00000040" height="10" radius="4.5" width="10" />
+         </effect>
+      </Button>
+
+      <Label fx:id="lblImagePath" alignment="CENTER" layoutX="269.0" layoutY="599.0" prefHeight="30.0" prefWidth="450.0" style="-fx-border-color: #D1C4E9; -fx-border-radius: 5; -fx-padding: 5; -fx-background-color: white; -fx-background-radius: 5;" text="Aucune image sélectionnée" />
+
+      <!-- Bouton d'ajout -->
+      <Button layoutX="333.0" layoutY="683.0" mnemonicParsing="false" onAction="#AddFlight" prefHeight="50.0" prefWidth="300.0" style="-fx-background-color: #FF5722; -fx-background-radius: 25; -fx-font-weight: bold; -fx-font-size: 16px;" text="AJOUTER LE VOL" textFill="WHITE">
+         <effect>
+            <DropShadow color="#00000060" height="15" radius="7" width="15" />
+         </effect>
+      </Button>
    </children>
 </AnchorPane>

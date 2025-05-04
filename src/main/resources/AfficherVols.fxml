@@ -12,20 +12,20 @@
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
-<AnchorPane prefHeight="800.0" prefWidth="1200.0" style="-fx-background-color: transparent;" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controllers.AfficherVolsController">
+<AnchorPane prefHeight="1300.0" prefWidth="949.0" style="-fx-background-color: transparent;" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controllers.AfficherVolsController">
     <children>
         <!-- Main Flights List View -->
-        <AnchorPane fx:id="mainPane" prefHeight="800.0" prefWidth="1200.0" style="-fx-background-color: #ffebfb; -fx-background-radius: 10;">
+        <AnchorPane fx:id="mainPane" prefHeight="831.0" prefWidth="1130.0" style="-fx-background-color: #ffebfb; -fx-background-radius: 10;">
             <children>
                 <Label layoutX="477.0" layoutY="14.0" text="Liste des Vols" textAlignment="CENTER">
                     <font>
                         <Font name="System Bold" size="24.0" />
                     </font>
                 </Label>
-                <ScrollPane fitToWidth="true" layoutX="50.0" layoutY="60.0" prefHeight="700.0" prefWidth="1100.0" style="-fx-background-color: transparent; -fx-border-color: #039BE5; -fx-border-radius: 5;">
+                <ScrollPane fitToWidth="true" layoutX="31.0" layoutY="56.0" prefHeight="718.0" prefWidth="1053.0" style="-fx-background-color: transparent; -fx-border-color: #039BE5; -fx-border-radius: 5;">
                     <content>
                         <!-- Utilisation de FlowPane pour organiser les vols horizontalement et automatiquement -->
-                        <FlowPane fx:id="flightsContainer" hgap="20.0" vgap="20.0" prefWidth="1080.0" style="-fx-background-color: #ffebfb; -fx-padding: 15;" alignment="TOP_CENTER">
+                        <FlowPane fx:id="flightsContainer" alignment="TOP_CENTER" hgap="20.0" prefWidth="1080.0" style="-fx-background-color: #ffebfb; -fx-padding: 15;" vgap="20.0">
                             <!-- Les vols seront ajoutés ici dynamiquement -->
                         </FlowPane>
                     </content>
@@ -39,7 +39,7 @@
         </AnchorPane>
 
         <!-- Edit Flight View - Hidden by default -->
-        <AnchorPane fx:id="editPane" prefHeight="800.0" prefWidth="1200.0" style="-fx-background-color: #ffebfb; -fx-background-radius: 10;" visible="false" managed="false">
+        <AnchorPane fx:id="editPane" managed="false" prefHeight="800.0" prefWidth="1200.0" style="-fx-background-color: #ffebfb; -fx-background-radius: 10;" visible="false">
             <children>
                 <Rectangle arcHeight="20.0" arcWidth="20.0" fill="#ffebfb" height="800.0" stroke="WHITE" strokeType="INSIDE" width="1200.0" />
                 <Text layoutX="450.0" layoutY="60.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Modifier Vol" textAlignment="CENTER">
@@ -79,7 +79,7 @@
                 <Label layoutX="542.0" layoutY="306.0" text="Prix:" />
                 <TextField fx:id="editPrice" layoutX="600.0" layoutY="306.0" prefHeight="26.0" prefWidth="226.0" promptText="Price" style="-fx-border-color: #39909D; -fx-border-radius: 5;" />
 
-                <VBox spacing="15" alignment="CENTER" layoutX="400.0" layoutY="374.0" prefHeight="100.0" prefWidth="400.0">
+                <VBox alignment="CENTER" layoutX="400.0" layoutY="374.0" prefHeight="100.0" prefWidth="400.0" spacing="15">
                     <Button fx:id="btnSaveChanges" mnemonicParsing="false" prefHeight="50.0" prefWidth="200.0" style="-fx-background-color: #039BE5; -fx-background-radius: 5; -fx-text-fill: white; -fx-font-weight: bold; -fx-font-size: 16px;" text="Enregistrer" />
                     <Button fx:id="btnReturnToList" mnemonicParsing="false" prefHeight="35.0" prefWidth="200.0" style="-fx-background-color: #757575; -fx-background-radius: 5; -fx-text-fill: white; -fx-font-weight: bold;" text="Retour à la liste" />
                 </VBox>
