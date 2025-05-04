@@ -4,6 +4,7 @@ import entities.Flight;
 import services.ServiceFlight;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
+import javafx.stage.Stage;
 import java.sql.SQLException;
 import java.sql.Date;
 import java.sql.Timestamp;
@@ -11,12 +12,8 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
-import java.util.List;
 
 public class ModifierVolController {
-
-    @FXML
-    private TextField searchFlightId;
 
     @FXML
     private TextField editFlightNumber;
@@ -51,42 +48,18 @@ public class ModifierVolController {
     @FXML
     private Label statusLabel;
 
-    private ServiceFlight serviceFlight = new ServiceFlight();
-    private Flight currentFlight;
-    private DateTimeFormatter timeFormatter = DateTimeFormatter.ofPattern("HH:mm");
-    @FXML
-    private Button btnSearch;
     @FXML
     private Button btnModify;
 
-    @FXML
-    void searchFlight() {
-        try {
-            int flightId = Integer.parseInt(searchFlightId.getText().trim());
-            List<Flight> flights = serviceFlight.recuperer();
+    private ServiceFlight serviceFlight = new ServiceFlight();
+    private Flight currentFlight;
+    private DateTimeFormatter timeFormatter = DateTimeFormatter.ofPattern("HH:mm");
 
-            boolean found = false;
-
-            for (Flight flight : flights) {
-                if (flight.getFlight_id() == flightId) {
-                    currentFlight = flight;
-                    populateFields(flight);
-                    statusLabel.setText("Vol trouvé! Vous pouvez maintenant modifier les détails.");
-                    found = true;
-                    break;
-                }
-            }
-
-            if (!found) {
-                showAlert(Alert.AlertType.ERROR, "Erreur", "Aucun vol trouvé avec cet ID.");
-                clearFields();
-            }
-
-        } catch (NumberFormatException e) {
-            showAlert(Alert.AlertType.ERROR, "Erreur de format", "Veuillez entrer un ID valide (nombre entier).");
-        } catch (SQLException e) {
-            showAlert(Alert.AlertType.ERROR, "Erreur SQL", "Erreur lors de la récupération des vols: " + e.getMessage());
-        }
+    // Méthode pour initialiser les données du vol à modifier
+    public void initData(Flight flight) {
+        this.currentFlight = flight;
+        populateFields(flight);
+        statusLabel.setText("Modification du vol " + flight.getFlight_number());
     }
 
     private void populateFields(Flight flight) {
@@ -94,14 +67,11 @@ public class ModifierVolController {
         editDeparture.setText(flight.getDeparture());
         editDestination.setText(flight.getDestination());
 
-
         LocalDateTime departureDateTime = flight.getDeparture_Time().toLocalDateTime();
         editDepartureTime.setText(departureDateTime.toLocalTime().format(timeFormatter));
 
-
         LocalDateTime arrivalDateTime = flight.getArrival_Time().toLocalDateTime();
         editArrivalTime.setText(arrivalDateTime.toLocalTime().format(timeFormatter));
-
 
         editFlightDate.setValue(flight.getFlight_date().toLocalDate());
 
@@ -119,7 +89,6 @@ public class ModifierVolController {
         }
 
         try {
-
             if (editFlightNumber.getText().isEmpty() || editDeparture.getText().isEmpty() ||
                     editDestination.getText().isEmpty() || editAirline.getText().isEmpty() ||
                     editFlightDuration.getText().isEmpty() || editAvailableSeats.getText().isEmpty() ||
@@ -146,7 +115,6 @@ public class ModifierVolController {
             Timestamp departureTimestamp = Timestamp.valueOf(departureDateTime);
             Timestamp arrivalTimestamp = Timestamp.valueOf(arrivalDateTime);
 
-
             currentFlight.setFlight_number(editFlightNumber.getText());
             currentFlight.setDeparture(editDeparture.getText());
             currentFlight.setDestination(editDestination.getText());
@@ -158,10 +126,15 @@ public class ModifierVolController {
             currentFlight.setArrival_Time(arrivalTimestamp);
             currentFlight.setFlight_date(flightDate);
 
-
             serviceFlight.modifier(currentFlight);
 
             statusLabel.setText("Vol modifié avec succès !");
+
+            // Afficher une alerte de succès
+            showAlert(Alert.AlertType.INFORMATION, "Succès", "Vol modifié avec succès !");
+
+            // Fermer la fenêtre après modification réussie (décommentez pour activer)
+            closeWindow();
 
         } catch (NumberFormatException e) {
             showAlert(Alert.AlertType.ERROR, "Erreur de format", "Veuillez saisir des nombres valides pour la durée, les places disponibles et le prix.");
@@ -174,18 +147,10 @@ public class ModifierVolController {
         }
     }
 
-    private void clearFields() {
-        editFlightNumber.clear();
-        editDeparture.clear();
-        editDestination.clear();
-        editDepartureTime.clear();
-        editArrivalTime.clear();
-        editFlightDate.setValue(null);
-        editFlightDuration.clear();
-        editAvailableSeats.clear();
-        editAirline.clear();
-        editPrice.clear();
-        currentFlight = null;
+    // Méthode pour fermer la fenêtre
+    private void closeWindow() {
+        Stage stage = (Stage) btnModify.getScene().getWindow();
+        stage.close();
     }
 
     private void showAlert(Alert.AlertType alertType, String title, String message) {
@@ -194,4 +159,5 @@ public class ModifierVolController {
         alert.setHeaderText(null);
         alert.setContentText(message);
         alert.showAndWait();
-    }}
+    }
+}

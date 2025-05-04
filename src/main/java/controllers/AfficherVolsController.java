@@ -3,7 +3,10 @@ package controllers;
 import entities.Flight;
 import services.ServiceFlight;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
@@ -13,10 +16,12 @@ import javafx.scene.layout.FlowPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.animation.ScaleTransition;
+import javafx.stage.Stage;
 import javafx.util.Duration;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
 import java.io.File;
+import java.io.IOException;
 import java.net.URL;
 import java.sql.SQLException;
 import java.time.format.DateTimeFormatter;
@@ -62,7 +67,7 @@ public class AfficherVolsController implements Initializable {
     private VBox createFlightCard(Flight flight) {
         VBox card = new VBox();
         card.setPrefWidth(320);
-        card.setPrefHeight(330);  // Augmenté pour accommoder le bouton
+        card.setPrefHeight(380);  // Augmenté pour accommoder les deux boutons
         card.setStyle("-fx-background-color: white; -fx-border-color: #039BE5; -fx-border-radius: 8; " +
                 "-fx-padding: 12; -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.1), 5, 0, 0, 5);");
         card.setSpacing(10);
@@ -151,23 +156,53 @@ public class AfficherVolsController implements Initializable {
         Label priceLabel = new Label("Prix: " + flight.getPrice() + " €");
         priceLabel.setStyle("-fx-text-fill: #2E7D32; -fx-font-weight: bold; -fx-font-size: 14px;");
 
+        // Boutons d'action - Conteneur
+        VBox buttonsContainer = new VBox(10);
+
+        // Bouton de modification
+        Button modifyButton = new Button("Modifier");
+        modifyButton.setStyle("-fx-background-color: #039BE5; -fx-text-fill: white; " +
+                "-fx-font-weight: bold; -fx-padding: 8 15; -fx-background-radius: 5;");
+        modifyButton.setPrefWidth(280);
+
+        // Animation pour le bouton modifier
+        ScaleTransition modifyScaleIn = new ScaleTransition(Duration.millis(150), modifyButton);
+        modifyScaleIn.setToX(1.1);
+        modifyScaleIn.setToY(1.1);
+
+        ScaleTransition modifyScaleOut = new ScaleTransition(Duration.millis(150), modifyButton);
+        modifyScaleOut.setToX(1.0);
+        modifyScaleOut.setToY(1.0);
+
+        modifyButton.setOnMouseEntered(e -> modifyScaleIn.play());
+        modifyButton.setOnMouseExited(e -> modifyScaleOut.play());
+
+        // Action pour modifier un vol
+        modifyButton.setOnAction(event -> {
+            try {
+                openModifyFlightWindow(flight);
+            } catch (IOException e) {
+                showAlert(Alert.AlertType.ERROR, "Erreur", "Erreur lors de l'ouverture de la fenêtre de modification: " + e.getMessage());
+            }
+        });
+
         // Bouton de suppression
         Button deleteButton = new Button("Supprimer");
         deleteButton.setStyle("-fx-background-color: #FF5252; -fx-text-fill: white; " +
                 "-fx-font-weight: bold; -fx-padding: 8 15; -fx-background-radius: 5;");
         deleteButton.setPrefWidth(280);
 
-        // Animation pour le bouton
-        ScaleTransition buttonScaleIn = new ScaleTransition(Duration.millis(150), deleteButton);
-        buttonScaleIn.setToX(1.1);
-        buttonScaleIn.setToY(1.1);
+        // Animation pour le bouton supprimer
+        ScaleTransition deleteScaleIn = new ScaleTransition(Duration.millis(150), deleteButton);
+        deleteScaleIn.setToX(1.1);
+        deleteScaleIn.setToY(1.1);
 
-        ScaleTransition buttonScaleOut = new ScaleTransition(Duration.millis(150), deleteButton);
-        buttonScaleOut.setToX(1.0);
-        buttonScaleOut.setToY(1.0);
+        ScaleTransition deleteScaleOut = new ScaleTransition(Duration.millis(150), deleteButton);
+        deleteScaleOut.setToX(1.0);
+        deleteScaleOut.setToY(1.0);
 
-        deleteButton.setOnMouseEntered(e -> buttonScaleIn.play());
-        deleteButton.setOnMouseExited(e -> buttonScaleOut.play());
+        deleteButton.setOnMouseEntered(e -> deleteScaleIn.play());
+        deleteButton.setOnMouseExited(e -> deleteScaleOut.play());
 
         // Action de suppression
         deleteButton.setOnAction(event -> {
@@ -180,6 +215,9 @@ public class AfficherVolsController implements Initializable {
             }
         });
 
+        // Ajouter les boutons au conteneur
+        buttonsContainer.getChildren().addAll(modifyButton, deleteButton);
+
         // Add all components to the card
         card.getChildren().addAll(
                 flightImage,
@@ -188,10 +226,25 @@ public class AfficherVolsController implements Initializable {
                 timeLabel,
                 dateLabel,
                 priceLabel,
-                deleteButton
+                buttonsContainer
         );
 
         return card;
+    }
+
+    // Méthode pour ouvrir la fenêtre de modification avec les informations du vol
+    private void openModifyFlightWindow(Flight flight) throws IOException {
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("/ModifierVol.fxml"));
+        Parent root = loader.load();
+
+        // Récupérer le contrôleur et passer les informations du vol
+        ModifierVolController controller = loader.getController();
+        controller.initData(flight);
+
+        Stage stage = new Stage();
+        stage.setTitle("Modifier Vol");
+        stage.setScene(new Scene(root));
+        stage.show();
     }
 
     private void showAlert(Alert.AlertType alertType, String title, String message) {

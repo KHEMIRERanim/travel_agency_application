@@ -1,14 +1,21 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.DatePicker?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.ScrollPane?>
+<?import javafx.scene.control.TextField?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.FlowPane?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.shape.Rectangle?>
 <?import javafx.scene.text.Font?>
+<?import javafx.scene.text.Text?>
 
 <AnchorPane prefHeight="800.0" prefWidth="1200.0" style="-fx-background-color: transparent;" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controllers.AfficherVolsController">
     <children>
-        <AnchorPane prefHeight="800.0" prefWidth="1200.0" style="-fx-background-color: #ffebfb; -fx-background-radius: 10;">
+        <!-- Main Flights List View -->
+        <AnchorPane fx:id="mainPane" prefHeight="800.0" prefWidth="1200.0" style="-fx-background-color: #ffebfb; -fx-background-radius: 10;">
             <children>
                 <Label layoutX="477.0" layoutY="14.0" text="Liste des Vols" textAlignment="CENTER">
                     <font>
@@ -24,6 +31,60 @@
                     </content>
                 </ScrollPane>
                 <Label fx:id="statusLabel" alignment="CENTER" layoutX="400.0" layoutY="768.0" prefHeight="20.0" prefWidth="400.0" textAlignment="CENTER" textFill="#039BE5">
+                    <font>
+                        <Font size="14.0" />
+                    </font>
+                </Label>
+            </children>
+        </AnchorPane>
+
+        <!-- Edit Flight View - Hidden by default -->
+        <AnchorPane fx:id="editPane" prefHeight="800.0" prefWidth="1200.0" style="-fx-background-color: #ffebfb; -fx-background-radius: 10;" visible="false" managed="false">
+            <children>
+                <Rectangle arcHeight="20.0" arcWidth="20.0" fill="#ffebfb" height="800.0" stroke="WHITE" strokeType="INSIDE" width="1200.0" />
+                <Text layoutX="450.0" layoutY="60.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Modifier Vol" textAlignment="CENTER">
+                    <font>
+                        <Font name="System Bold" size="24.0" />
+                    </font>
+                </Text>
+
+                <!-- Flight details fields -->
+                <Label layoutX="140.0" layoutY="111.0" text="N° de vol:" />
+                <TextField fx:id="editFlightNumber" layoutX="220.0" layoutY="111.0" prefHeight="26.0" prefWidth="226.0" promptText="Flight number" style="-fx-border-color: #39909D; -fx-border-radius: 5;" />
+
+                <Label layoutX="542.0" layoutY="111.0" text="Départ:" />
+                <TextField fx:id="editDeparture" layoutX="600.0" layoutY="111.0" prefHeight="26.0" prefWidth="226.0" promptText="Departure" style="-fx-border-color: #39909D; -fx-border-radius: 5;" />
+
+                <Label layoutX="140.0" layoutY="160.0" text="Destination:" />
+                <TextField fx:id="editDestination" layoutX="220.0" layoutY="160.0" prefHeight="26.0" prefWidth="226.0" promptText="Destination" style="-fx-border-color: #39909D; -fx-border-radius: 5;" />
+
+                <Label layoutX="482.0" layoutY="160.0" text="Heure de départ:" />
+                <TextField fx:id="editDepartureTime" layoutX="600.0" layoutY="160.0" prefHeight="26.0" prefWidth="226.0" promptText="Departure Time (HH:mm)" style="-fx-border-color: #39909D; -fx-border-radius: 5;" />
+
+                <Label layoutX="140.0" layoutY="209.0" text="Heure d'arrivée:" />
+                <TextField fx:id="editArrivalTime" layoutX="220.0" layoutY="209.0" prefHeight="26.0" prefWidth="226.0" promptText="Arrival Time (HH:mm)" style="-fx-border-color: #39909D; -fx-border-radius: 5;" />
+
+                <Label layoutX="542.0" layoutY="209.0" text="Date:" />
+                <DatePicker fx:id="editFlightDate" layoutX="600.0" layoutY="209.0" prefHeight="26.0" prefWidth="226.0" promptText="Flight Date" style="-fx-border-color: #39909D; -fx-border-radius: 5;" />
+
+                <Label layoutX="140.0" layoutY="257.0" text="Durée:" />
+                <TextField fx:id="editFlightDuration" layoutX="220.0" layoutY="257.0" prefHeight="26.0" prefWidth="226.0" promptText="Flight Duration" style="-fx-border-color: #39909D; -fx-border-radius: 5;" />
+
+                <Label layoutX="490.0" layoutY="257.0" text="Places disponibles:" />
+                <TextField fx:id="editAvailableSeats" layoutX="600.0" layoutY="257.0" prefHeight="26.0" prefWidth="226.0" promptText="Available Seats" style="-fx-border-color: #39909D; -fx-border-radius: 5;" />
+
+                <Label layoutX="140.0" layoutY="306.0" text="Compagnie:" />
+                <TextField fx:id="editAirline" layoutX="220.0" layoutY="306.0" prefHeight="26.0" prefWidth="226.0" promptText="Airline" style="-fx-border-color: #39909D; -fx-border-radius: 5;" />
+
+                <Label layoutX="542.0" layoutY="306.0" text="Prix:" />
+                <TextField fx:id="editPrice" layoutX="600.0" layoutY="306.0" prefHeight="26.0" prefWidth="226.0" promptText="Price" style="-fx-border-color: #39909D; -fx-border-radius: 5;" />
+
+                <VBox spacing="15" alignment="CENTER" layoutX="400.0" layoutY="374.0" prefHeight="100.0" prefWidth="400.0">
+                    <Button fx:id="btnSaveChanges" mnemonicParsing="false" prefHeight="50.0" prefWidth="200.0" style="-fx-background-color: #039BE5; -fx-background-radius: 5; -fx-text-fill: white; -fx-font-weight: bold; -fx-font-size: 16px;" text="Enregistrer" />
+                    <Button fx:id="btnReturnToList" mnemonicParsing="false" prefHeight="35.0" prefWidth="200.0" style="-fx-background-color: #757575; -fx-background-radius: 5; -fx-text-fill: white; -fx-font-weight: bold;" text="Retour à la liste" />
+                </VBox>
+
+                <Label fx:id="editStatusLabel" alignment="CENTER" layoutX="400.0" layoutY="500.0" prefHeight="30.0" prefWidth="400.0" textAlignment="CENTER" textFill="#0d6efd">
                     <font>
                         <Font size="14.0" />
                     </font>
