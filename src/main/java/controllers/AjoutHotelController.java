@@ -5,6 +5,13 @@ import javafx.scene.control.*;
 import javafx.stage.Stage;
 import entities.Hotels;
 import services.ServiceHotel;
+import javafx.scene.image.ImageView;
+import javafx.scene.image.Image;
+import javafx.stage.FileChooser;
+import java.io.ByteArrayOutputStream;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.IOException;
 
 import java.sql.SQLException;
 
@@ -16,6 +23,8 @@ public class AjoutHotelController {
     @FXML private TextField prixField;
     @FXML private ChoiceBox<String> typeChoice;
     @FXML private Label errorLabel;
+    @FXML private ImageView imageView;
+    private byte[] imageBytes;
 
     private ServiceHotel service = new ServiceHotel();
     private Hotels hotelToEdit = null;
@@ -62,12 +71,12 @@ public class AjoutHotelController {
             hotelToEdit.setType_chambre(typeChoice.getValue());
             hotelToEdit.setWifi(wifiCheck.isSelected());
             hotelToEdit.setPiscine(piscineCheck.isSelected());
+            hotelToEdit.setImage(imageBytes);  // Set the image for editing
 
             service.modifier(hotelToEdit);
             Stage stage = (Stage) nomField.getScene().getWindow();
             stage.close();
         } else {
-
             try {
                 Hotels hotel = new Hotels(
                         nomField.getText(),
@@ -76,7 +85,8 @@ public class AjoutHotelController {
                         typeChoice.getValue(),
                         "Disponible",
                         wifiCheck.isSelected(),
-                        piscineCheck.isSelected()
+                        piscineCheck.isSelected(),
+                        imageBytes  // Include the image while adding
                 );
                 service.ajouter(hotel);
                 Stage stage = (Stage) nomField.getScene().getWindow();
@@ -85,12 +95,45 @@ public class AjoutHotelController {
                 errorLabel.setText("Erreur lors de l'ajout : " + ex.getMessage());
             }
         }
-
     }
+
 
     @FXML
     private void onCancel() {
         Stage stage = (Stage) nomField.getScene().getWindow();
         stage.close();
     }
+
+    @FXML
+    private void onChooseImage() {
+        FileChooser fileChooser = new FileChooser();
+        fileChooser.getExtensionFilters().add(new FileChooser.ExtensionFilter("Image Files", "*.png", "*.jpg", "*.jpeg"));
+        File selectedFile = fileChooser.showOpenDialog(null);
+
+        if (selectedFile != null) {
+            try {
+                // Load the image and display it
+                Image image = new Image(new FileInputStream(selectedFile));
+                imageView.setImage(image);
+
+                // Convert the image to byte[] for database storage
+                imageBytes = convertImageToByteArray(selectedFile);
+
+            } catch (IOException e) {
+                errorLabel.setText("Erreur lors du chargement de l'image.");
+            }
+        }
+    }
+
+    private byte[] convertImageToByteArray(File file) throws IOException {
+        FileInputStream fis = new FileInputStream(file);
+        ByteArrayOutputStream bos = new ByteArrayOutputStream();
+        byte[] buffer = new byte[1024];
+        int bytesRead;
+        while ((bytesRead = fis.read(buffer)) != -1) {
+            bos.write(buffer, 0, bytesRead);
+        }
+        return bos.toByteArray();
+    }
+
 }

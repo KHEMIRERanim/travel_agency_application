@@ -9,8 +9,8 @@ public class Hotels {
     private String status;
     private boolean wifi;
     private boolean piscine;
+    private byte[] image;
 
-    // Constructor with ID
     public Hotels(int hotel_id, String nom_hotel, String destination, double prix, String type_chambre, String status, boolean wifi, boolean piscine) {
         this.hotel_id = hotel_id;
         this.nom_hotel = nom_hotel;
@@ -30,6 +30,25 @@ public class Hotels {
         this.status = status;
         this.wifi = wifi;
         this.piscine = piscine;
+    }
+
+
+    public Hotels(int hotel_id, String nom_hotel, String destination, double prix, String type_chambre, String status, boolean wifi, boolean piscine, byte[] image) {
+        this(hotel_id, nom_hotel, destination, prix, type_chambre, status, wifi, piscine);
+        this.image = image;
+    }
+
+    public Hotels(String nom_hotel, String destination, double prix, String type_chambre, String status, boolean wifi, boolean piscine, byte[] image) {
+        this(nom_hotel, destination, prix, type_chambre, status, wifi, piscine);
+        this.image = image;
+    }
+
+    public byte[] getImage() {
+        return image;
+    }
+
+    public void setImage(byte[] image) {
+        this.image = image;
     }
 
     public int getHotel_id() { return hotel_id; }

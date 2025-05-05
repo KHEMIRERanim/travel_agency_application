@@ -18,6 +18,7 @@ import javafx.stage.Stage;
 import javafx.stage.StageStyle;
 import services.ServiceHotel;
 
+import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.net.URL;
 import java.util.List;
@@ -39,14 +40,26 @@ public class homeController implements Initializable {
         try {
             List<Hotels> hotels = service.recuperer();
             for (Hotels h : hotels) {
-                ImageView thumb = new ImageView(new Image(getClass().getResource("/images/doubleroom.jpg").toExternalForm()));
+                ImageView thumb = new ImageView();
+
+                // Check if hotel has a valid image byte array
+                byte[] hotelImage = h.getImage();
+                if (hotelImage != null && hotelImage.length > 0) {
+                    // Set thumbnail image from hotel image byte array
+                    Image image = new Image(new ByteArrayInputStream(hotelImage));
+                    thumb.setImage(image);
+                } else {
+                    // Use the default image for the carousel if no valid image exists
+                    thumb.setImage(new Image(getClass().getResource("/images/doubleroom.jpg").toExternalForm()));
+                }
+
                 thumb.setFitWidth(150);
                 thumb.setFitHeight(100);
-                thumb.setPreserveRatio(true);
                 thumb.setOnMouseClicked(e -> selectHotel(h));
                 carousel.getChildren().add(thumb);
             }
 
+            // Select the first hotel if available
             if (!hotels.isEmpty()) {
                 selectHotel(hotels.get(0));
             }
@@ -55,6 +68,7 @@ public class homeController implements Initializable {
             e.printStackTrace();
         }
     }
+
 
     private void selectHotel(Hotels h) {
         selectedHotel = h;
@@ -67,8 +81,19 @@ public class homeController implements Initializable {
                         "Piscine: " + h.isPiscine() + "\n" +
                         "Status: " + h.getStatus()
         );
-        selectedImage.setImage(new Image(getClass().getResource("/images/doubleroom.jpg").toExternalForm()));
+
+        // Check if hotel has a valid image byte array
+        byte[] hotelImage = h.getImage();
+        if (hotelImage != null && hotelImage.length > 0) {
+            // Create an Image object from the byte array
+            Image image = new Image(new ByteArrayInputStream(hotelImage));
+            selectedImage.setImage(image);
+        } else {
+            // Use the default image if no valid image exists
+            selectedImage.setImage(new Image(getClass().getResource("/images/doubleroom.jpg").toExternalForm()));
+        }
     }
+
 
     public void cancelButtonOnAction(ActionEvent event) {
         Stage stage = (Stage) cancelButton.getScene().getWindow();
