@@ -33,24 +33,19 @@ public class homeController implements Initializable {
     //Initializing a controller after the root has been processed
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle){
-        File TwinRoomFile = new File(getClass().getResource("/images/twinroom.jpg").toExternalForm());
-        Image TwinRoomImage = new Image(TwinRoomFile.toURI().toString());
+        Image TwinRoomImage = new Image(getClass().getResource("/images/twinroom.jpg").toExternalForm());
         TwinRoom.setImage(TwinRoomImage);
 
-        File SingleRoomFile = new File(getClass().getResource("/images/singleroom.jpg").toExternalForm());
-        Image SingleRoomImage = new Image(SingleRoomFile.toURI().toString());
+        Image SingleRoomImage = new Image(getClass().getResource("/images/singleroom.jpg").toExternalForm());
         SingleRoom.setImage(SingleRoomImage);
 
-        File DoubleRoomFile = new File(getClass().getResource("/images/doubleroom.jpg").toExternalForm());
-        Image DoubleRoomImage = new Image(DoubleRoomFile.toURI().toString());
+        Image DoubleRoomImage = new Image(getClass().getResource("/images/doubleroom.jpg").toExternalForm());
         DoubleRoom.setImage(DoubleRoomImage);
 
-        File logoHotelFile = new File(getClass().getResource("/images/logo1.png").toExternalForm());
-        Image logoHotelImage = new Image(logoHotelFile.toURI().toString());
+        Image logoHotelImage = new Image(getClass().getResource("/images/logo1.png").toExternalForm());
         logoHotel.setImage(logoHotelImage);
 
-        File lobbyHotelFile = new File(getClass().getResource("/images/lobbyHotel.jpg").toExternalForm());
-        Image lobbyHotelImage = new Image(lobbyHotelFile.toURI().toString());
+        Image lobbyHotelImage = new Image(getClass().getResource("/images/lobbyHotel.jpg").toExternalForm());
         lobbyHotel.setImage(lobbyHotelImage);
 
     }
