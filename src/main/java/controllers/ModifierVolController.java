@@ -57,11 +57,27 @@ public class ModifierVolController {
     @FXML
     private Label lblCurrentImage;
 
+    // Interface fonctionnelle pour gérer le retour à la liste
+    private Runnable onCloseCallback;
+
+    public void setOnCloseCallback(Runnable callback) {
+        this.onCloseCallback = callback;
+    }
+
     // Méthode pour initialiser les données du vol à modifier
     public void initData(Flight flight) {
         this.currentFlight = flight;
         populateFields(flight);
         statusLabel.setText("Modification du vol " + flight.getFlight_number());
+
+        // Ajouter un bouton de retour si nécessaire
+        Button btnRetour = new Button("Retour à la liste");
+        btnRetour.setStyle("-fx-background-color: #757575; -fx-text-fill: white;");
+        btnRetour.setOnAction(e -> {
+            if (onCloseCallback != null) {
+                onCloseCallback.run();
+            }
+        });
     }
 
     private void populateFields(Flight flight) {
@@ -135,8 +151,10 @@ public class ModifierVolController {
             // Afficher une alerte de succès
             showAlert(Alert.AlertType.INFORMATION, "Succès", "Vol modifié avec succès !");
 
-            // Fermer la fenêtre après modification réussie (décommentez pour activer)
-            closeWindow();
+            // Retourner à la liste des vols
+            if (onCloseCallback != null) {
+                onCloseCallback.run();
+            }
 
         } catch (NumberFormatException e) {
             showAlert(Alert.AlertType.ERROR, "Erreur de format", "Veuillez saisir des nombres valides pour la durée, les places disponibles et le prix.");
@@ -147,12 +165,6 @@ public class ModifierVolController {
         } catch (Exception e) {
             showAlert(Alert.AlertType.ERROR, "Erreur", "Une erreur est survenue : " + e.getMessage());
         }
-    }
-
-    // Méthode pour fermer la fenêtre
-    private void closeWindow() {
-        Stage stage = (Stage) btnModify.getScene().getWindow();
-        stage.close();
     }
 
     private void showAlert(Alert.AlertType alertType, String title, String message) {
