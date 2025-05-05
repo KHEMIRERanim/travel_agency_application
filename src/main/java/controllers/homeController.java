@@ -125,4 +125,23 @@ public class homeController implements Initializable {
         Alert alert = new Alert(Alert.AlertType.ERROR, "Please login or register first in order to make a booking.");
         alert.show();
     }
+
+    @FXML
+    private void goToEditHotel() {
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/AjoutHotel.fxml"));
+            Parent root = loader.load();
+
+            AjoutHotelController controller = loader.getController();
+            controller.setHotelForEdit(selectedHotel); // You must store selectedHotel when showing its details
+
+            Stage stage = new Stage();
+            stage.setScene(new Scene(root));
+            stage.setTitle("Modifier Hôtel");
+            stage.show();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
 }

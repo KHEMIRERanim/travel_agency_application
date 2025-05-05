@@ -16,9 +16,20 @@
     <ImageView fx:id="selectedImage" fitWidth="357.0" fitHeight="227.0" layoutX="27.0" layoutY="-11.0" preserveRatio="true" pickOnBounds="true" style="-fx-effect: dropshadow(gaussian, rgba(0,0,0,0.2), 10, 0, 0, 4); -fx-clip: rect(0, 357, 227, 0);" />
 
     <!-- VBox containing title and details with modern fonts -->
-    <VBox layoutX="393.0" layoutY="64.0" spacing="5">
+    <VBox layoutX="393.0" layoutY="44.0" spacing="5">
         <Label fx:id="selectedTitle" text="Hotel Name" style="-fx-font-size: 20px; -fx-font-weight: bold; -fx-text-fill: #2c3e50;" />
         <Label fx:id="selectedDetails" text="Destination: ..." wrapText="true" prefWidth="187.0" style="-fx-font-size: 12px; -fx-text-fill: #34495e;" />
+        <Button fx:id="editHotelButton"
+                layoutX="424.0" layoutY="356.0"
+                prefWidth="145.0" prefHeight="30.0"
+                text="Modifier Hôtel"
+                onAction="#goToEditHotel"
+                style="-fx-background-color: linear-gradient(to right, #f7971e, #ffd200);
+                       -fx-text-fill: white;
+                       -fx-background-radius: 15;
+                       -fx-font-weight: bold;
+                       -fx-cursor: hand;" />
+
     </VBox>
 
     <!-- Login Button with gradient and hover effect -->
