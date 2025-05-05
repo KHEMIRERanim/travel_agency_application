@@ -19,6 +19,7 @@
     </ImageView>
     <Button fx:id="loginButton" layoutX="424.0" layoutY="233.0" mnemonicParsing="false" onAction="#loginButtonOnAction" prefHeight="26.0" prefWidth="145.0" style="-fx-background-color: #D1CFBE#D1CFBE;" text="Login" textFill="WHITE" />
     <Button fx:id="registerButton" layoutX="424.0" layoutY="276.0" mnemonicParsing="false" onAction="#registerButtonOnAction" prefHeight="26.0" prefWidth="145.0" style="-fx-background-color: #456F8A#456F8A;" text="Register" textFill="#f7f4f4" />
+    <Button text="Ajouter Hôtel" onAction="#goToAddHotel" layoutX="424.0" layoutY="316.0" style="-fx-background-color: #1976D2; -fx-text-fill: white;" />
     <ImageView fx:id="logoHotel" fitHeight="134.0" fitWidth="201.0" layoutX="407.0" pickOnBounds="true" preserveRatio="true">
         <Image url="@../../main/images/logo1.png" />
     </ImageView>

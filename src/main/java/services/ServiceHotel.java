@@ -20,7 +20,7 @@ public class ServiceHotel implements IService<Hotels> {
                 "', '" + hotel.getCheck_out() + "', " + hotel.getPrix() + ", '" + hotel.getType_chambre() + "', '" + hotel.getStatus() +   "')";
         Statement st = con.createStatement();
         st.executeUpdate(req);
-        System.out.println("Hôtel ajouté avec Succes !");
+        System.out.println("Hotel ajoute avec Succes !");
     }
 
     @Override

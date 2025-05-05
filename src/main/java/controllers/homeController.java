@@ -1,4 +1,4 @@
-package controllers;// Importing essential packages
+package controllers;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
@@ -12,10 +12,10 @@ import javafx.stage.Stage;
 import javafx.event.ActionEvent;
 import javafx.stage.StageStyle;
 import java.io.File;
+import java.io.IOException;
 import java.util.ResourceBundle;
 import java.net.URL;
 
-//FXML Loader call all the methods and classes defined in the controller
 public class homeController implements Initializable {
     @FXML
     private Button cancelButton;
@@ -30,7 +30,7 @@ public class homeController implements Initializable {
     @FXML
     private ImageView lobbyHotel;
 
-    //Initializing a controller after the root has been processed
+
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle){
         Image TwinRoomImage = new Image(getClass().getResource("/images/twinroom.jpg").toExternalForm());
@@ -49,12 +49,12 @@ public class homeController implements Initializable {
         lobbyHotel.setImage(lobbyHotelImage);
 
     }
-    //Creating a function for user to stop the process of the program with cancelButton via GUI
+
     public void cancelButtonOnAction(ActionEvent event) {
         Stage stage = (Stage) cancelButton.getScene().getWindow();
         stage.close();
     }
-    //Taking the user to login FXML file
+
     public void loginButtonOnAction(ActionEvent event) {
 
         goToLoginForm();
@@ -74,7 +74,7 @@ public class homeController implements Initializable {
             e.getCause();
         }
     }
-    //Taking the user to register FXML file
+
     public void registerButtonOnAction(ActionEvent event){
         goToRegisterForm();
         Stage stage = (Stage) cancelButton.getScene().getWindow();
@@ -94,7 +94,7 @@ public class homeController implements Initializable {
             e.getCause();
         }
     }
-    //Taking the user to contact FXML file
+
     public void contactusButtonOnAction(ActionEvent event) {
         goToContactUs();
         Stage stage = (Stage) cancelButton.getScene().getWindow();
@@ -114,10 +114,21 @@ public class homeController implements Initializable {
         }
     }
 
-    //Displaying the banner if the user is trying to book the room without being logged in to the system
     public void loginToBook(ActionEvent e){
         Alert alert = new Alert(Alert.AlertType.ERROR, "Please login or register first in order to make a booking.");
         alert.show();
+    }
+
+    public void goToAddHotel() {
+        try {
+            Parent root = FXMLLoader.load(getClass().getResource("/AjoutHotel.fxml"));
+            Stage stage = new Stage();
+            stage.initStyle(StageStyle.UNDECORATED);
+            stage.setScene(new Scene(root));
+            stage.show();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
 
