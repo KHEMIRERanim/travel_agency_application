@@ -1,65 +1,31 @@
 <?xml version="1.0" encoding="UTF-8"?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.image.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
+<AnchorPane prefWidth="600.0" prefHeight="400.0" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controllers.homeController" style="-fx-background-color: #F5F7F9;">
+    <ScrollPane fx:id="carouselScroll" layoutX="27.0" layoutY="230.0" prefWidth="360.0" prefHeight="120.0" hbarPolicy="ALWAYS" vbarPolicy="NEVER" style="-fx-background: transparent; -fx-border-color: transparent;">
+        <content>
+            <HBox fx:id="carousel" spacing="10" />
+        </content>
+    </ScrollPane>
+    <ImageView fx:id="selectedImage" fitWidth="357.0" fitHeight="227.0" layoutX="27.0" layoutY="-11.0" preserveRatio="true" pickOnBounds="true" />
+    <VBox layoutX="393.0" layoutY="64.0" spacing="5">
+        <Label fx:id="selectedTitle" text="Hotel Name" styleClass="title-label">
+            <font><Font size="18.0" /></font>
+        </Label>
+        <Label fx:id="selectedDetails" text="Destination: ..." wrapText="true" prefWidth="187.0" styleClass="details-label">
+            <font><Font size="11.0" /></font>
+        </Label>
+    </VBox>
+    <Button fx:id="loginButton" layoutX="424.0" layoutY="233.0" prefWidth="145.0" prefHeight="26.0" text="Login" onAction="#loginButtonOnAction" style="-fx-background-color: #456F8A; -fx-text-fill: white; -fx-background-radius: 8;" />
+    <Button fx:id="registerButton" layoutX="424.0" layoutY="276.0" prefWidth="145.0" prefHeight="26.0" text="Register" onAction="#registerButtonOnAction" style="-fx-background-color: #1976D2; -fx-text-fill: white; -fx-background-radius: 8;" />
+     <Button fx:id="ajoutHotel" layoutX="424.0" layoutY="316.0" prefWidth="145.0" prefHeight="26.0" text="Ajouter Hôtel" onAction="#goToAddHotel" style="-fx-background-color: #1976D2; -fx-text-fill: white; -fx-background-radius: 8;" />
 
-<?import javafx.scene.control.Button?>
-<?import javafx.scene.control.Label?>
-<?import javafx.scene.image.Image?>
-<?import javafx.scene.image.ImageView?>
-<?import javafx.scene.layout.AnchorPane?>
-<?import javafx.scene.text.Font?>
+    <ImageView fx:id="logoHotel" layoutX="407.0" layoutY="40.0" fitWidth="201.0" fitHeight="134.0" preserveRatio="true" pickOnBounds="true">
+        <image><Image url="@../../main/images/logo1.png" /></image>
+    </ImageView>
+    <Button fx:id="cancelButton" layoutX="544.0" layoutY="373.0" text="Cancel" onAction="#cancelButtonOnAction" style="-fx-background-color: #D1CFBE; -fx-text-fill: white; -fx-background-radius: 8;" />
 
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" style="-fx-background-color: #F5F7F9#F5F7F9;" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controllers.homeController">
-    <ImageView fx:id="TwinRoom" fitHeight="69.0" fitWidth="102.0" layoutX="27.0" layoutY="230.0" pickOnBounds="true" preserveRatio="true">
-        <Image url="@../../main/images/twinroom.jpg" />
-    </ImageView>
-    <ImageView fx:id="SingleRoom" fitHeight="78.0" fitWidth="104.0" layoutX="147.0" layoutY="230.0" pickOnBounds="true" preserveRatio="true">
-        <Image url="@../../main/images/singleroom.jpg" />
-    </ImageView>
-    <ImageView fx:id="DoubleRoom" fitHeight="69.0" fitWidth="104.0" layoutX="283.0" layoutY="233.0" pickOnBounds="true" preserveRatio="true">
-        <Image url="@../images/doubleroom.jpg" />
-    </ImageView>
-    <Button fx:id="loginButton" layoutX="424.0" layoutY="233.0" mnemonicParsing="false" onAction="#loginButtonOnAction" prefHeight="26.0" prefWidth="145.0" style="-fx-background-color: #D1CFBE#D1CFBE;" text="Login" textFill="WHITE" />
-    <Button fx:id="registerButton" layoutX="424.0" layoutY="276.0" mnemonicParsing="false" onAction="#registerButtonOnAction" prefHeight="26.0" prefWidth="145.0" style="-fx-background-color: #456F8A#456F8A;" text="Register" textFill="#f7f4f4" />
-    <Button text="Ajouter Hôtel" onAction="#goToAddHotel" layoutX="424.0" layoutY="316.0" style="-fx-background-color: #1976D2; -fx-text-fill: white;" />
-    <ImageView fx:id="logoHotel" fitHeight="134.0" fitWidth="201.0" layoutX="407.0" pickOnBounds="true" preserveRatio="true">
-        <Image url="@../../main/images/logo1.png" />
-    </ImageView>
-    <Button fx:id="cancelButton" layoutX="544.0" layoutY="373.0" mnemonicParsing="false" onAction="#cancelButtonOnAction" style="-fx-background-color: #D1CFBE#D1CFBE #D1CFBE#D1CFBE;" text="Cancel" textFill="#fffdfd" />
-    <ImageView fx:id="lobbyHotel" fitHeight="227.0" fitWidth="357.0" layoutX="27.0" layoutY="-11.0" pickOnBounds="true" preserveRatio="true">
-        <image>
-            <Image url="@../images/lobbyHotel.jpg" />
-        </image>
-    </ImageView>
-    <Label layoutX="393.0" layoutY="144.0" text="Welcome to Luton Hotel!">
-        <font>
-            <Font size="18.0" />
-        </font>
-    </Label>
-    <Label layoutX="393.0" layoutY="167.0" prefHeight="60.0" prefWidth="187.0" text="We offer a variety of rooms to ensure our customers have a peaceful stay." wrapText="true">
-        <font>
-            <Font size="11.0" />
-        </font>
-    </Label>
-    <Label layoutX="27.0" layoutY="302.0" text="Twin room" />
-    <Label layoutX="147.0" layoutY="302.0" text="Single room" />
-    <Label layoutX="283.0" layoutY="302.0" text="Double room" />
-    <Label layoutX="27.0" layoutY="319.0" text="Price starts at 35£/night.">
-        <font>
-            <Font size="10.0" />
-        </font>
-    </Label>
-    <Label layoutX="148.0" layoutY="319.0" text="Price starts at 20£/night.">
-        <font>
-            <Font size="10.0" />
-        </font>
-    </Label>
-    <Label layoutX="283.0" layoutY="319.0" text="Price starts at 45£/night.">
-        <font>
-            <Font size="10.0" />
-        </font>
-    </Label>
-    <Button fx:id="bookDouble" layoutX="283.0" layoutY="341.0" mnemonicParsing="false" onAction="#loginToBook" style="-fx-background-color: #456F8A#456F8A #456F8A#456F8A;" text="BOOK" textFill="WHITE" />
-    <Button fx:id="bookTwin" layoutX="30.0" layoutY="341.0" mnemonicParsing="false" onAction="#loginToBook" style="-fx-background-color: #456F8A#456F8A #456F8A#456F8A;" text="BOOK" textFill="WHITE" />
-    <Button fx:id="bookSingle" layoutX="147.0" layoutY="341.0" mnemonicParsing="false" onAction="#loginToBook" style="-fx-background-color: #456F8A#456F8A #456F8A#456F8A;" text="BOOK" textFill="WHITE" />
-    <Label fx:id="loginMessage" alignment="CENTER" layoutX="377.0" layoutY="337.0" prefHeight="34.0" prefWidth="195.0" textFill="#ff0101" wrapText="true" />
-    <Button fx:id="contactus" layoutX="523.0" layoutY="1.0" mnemonicParsing="false" onAction="#contactusButtonOnAction" style="-fx-background-color: #456F8A#456F8A #456F8A#456F8A;" text="Contact us" textFill="WHITE" />
+    <Button fx:id="contactus" layoutX="523.0" layoutY="1.0" text="Contact us" style="-fx-background-color: #456F8A; -fx-text-fill: white; -fx-background-radius: 8;" />
 </AnchorPane>
