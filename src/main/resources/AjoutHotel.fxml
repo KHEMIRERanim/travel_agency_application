@@ -20,19 +20,18 @@
     <Label text="Destination:" GridPane.rowIndex="2" GridPane.columnIndex="0" />
     <TextField fx:id="destinationField" promptText="Ville ou région" GridPane.rowIndex="2" GridPane.columnIndex="1" />
 
-    <Label text="Check-in:" GridPane.rowIndex="3" GridPane.columnIndex="0" />
-    <DatePicker fx:id="checkInPicker" GridPane.rowIndex="3" GridPane.columnIndex="1" />
-    <Label text="Check-out:" GridPane.rowIndex="4" GridPane.columnIndex="0" />
-    <DatePicker fx:id="checkOutPicker" GridPane.rowIndex="4" GridPane.columnIndex="1" />
+    <Label text="Wi-Fi:" GridPane.rowIndex="3" GridPane.columnIndex="0" />
+    <CheckBox fx:id="wifiCheck" GridPane.rowIndex="3" GridPane.columnIndex="1" />
 
-    <Label text="Prix (€/nuit):" GridPane.rowIndex="5" GridPane.columnIndex="0" />
+    <!-- Add Piscine -->
+    <Label text="Piscine:" GridPane.rowIndex="4" GridPane.columnIndex="0" />
+    <CheckBox fx:id="piscineCheck" GridPane.rowIndex="4" GridPane.columnIndex="1" />
+
+    <Label text="Prix (DT/nuit):" GridPane.rowIndex="5" GridPane.columnIndex="0" />
     <TextField fx:id="prixField" promptText="Ex: 45.00" GridPane.rowIndex="5" GridPane.columnIndex="1" />
 
     <Label text="Type de chambre:" GridPane.rowIndex="6" GridPane.columnIndex="0" />
     <ChoiceBox fx:id="typeChoice" GridPane.rowIndex="6" GridPane.columnIndex="1" />
-
-    <Label text="Statut:" GridPane.rowIndex="7" GridPane.columnIndex="0" />
-    <ChoiceBox fx:id="statusChoice" GridPane.rowIndex="7" GridPane.columnIndex="1" />
 
     <Label fx:id="errorLabel" textFill="#D32F2F" wrapText="true" GridPane.rowIndex="8" GridPane.columnIndex="0" GridPane.columnSpan="2" />
 

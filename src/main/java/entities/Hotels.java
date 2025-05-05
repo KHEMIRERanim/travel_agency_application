@@ -1,118 +1,71 @@
 package entities;
 
-import java.time.LocalDate;
-
 public class Hotels {
     private int hotel_id;
     private String nom_hotel;
     private String destination;
-    private String check_in;
-    private String check_out;
     private double prix;
     private String type_chambre;
     private String status;
+    private boolean wifi;
+    private boolean piscine;
 
-    // Constructeur avec id
-    public Hotels(int hotel_id, String nom_hotel, String destination, String check_in, String check_out, double prix, String type_chambre, String status) {
+    // Constructor with ID
+    public Hotels(int hotel_id, String nom_hotel, String destination, double prix, String type_chambre, String status, boolean wifi, boolean piscine) {
         this.hotel_id = hotel_id;
         this.nom_hotel = nom_hotel;
         this.destination = destination;
-        this.check_in = check_in;
-        this.check_out = check_out;
         this.prix = prix;
         this.type_chambre = type_chambre;
         this.status = status;
-
+        this.wifi = wifi;
+        this.piscine = piscine;
     }
-    // Constructeur sans id
-    public Hotels(String nom_hotel, String destination, String check_in, String check_out, double prix, String type_chambre, String status){
+
+    public Hotels(String nom_hotel, String destination, double prix, String type_chambre, String status, boolean wifi, boolean piscine) {
         this.nom_hotel = nom_hotel;
         this.destination = destination;
-        this.check_in = check_in;
-        this.check_out = check_out;
         this.prix = prix;
         this.type_chambre = type_chambre;
         this.status = status;
-
+        this.wifi = wifi;
+        this.piscine = piscine;
     }
 
-    public Hotels(String hotelName, String destination, LocalDate value, LocalDate value1, double price, String roomType, String status) {
-    }
+    public int getHotel_id() { return hotel_id; }
+    public void setHotel_id(int hotel_id) { this.hotel_id = hotel_id; }
 
-    public int getHotel_id() {
-        return hotel_id;
-    }
+    public String getNom_hotel() { return nom_hotel; }
+    public void setNom_hotel(String nom_hotel) { this.nom_hotel = nom_hotel; }
 
-    public void setHotel_id(int hotel_id) {
-        this.hotel_id = hotel_id;
-    }
+    public String getDestination() { return destination; }
+    public void setDestination(String destination) { this.destination = destination; }
 
-    public String getNom_hotel() {
-        return nom_hotel;
-    }
+    public double getPrix() { return prix; }
+    public void setPrix(double prix) { this.prix = prix; }
 
-    public void setNom_hotel(String nom_hotel) {
-        this.nom_hotel = nom_hotel;
-    }
+    public String getType_chambre() { return type_chambre; }
+    public void setType_chambre(String type_chambre) { this.type_chambre = type_chambre; }
 
-    public String getDestination() {
-        return destination;
-    }
+    public String getStatus() { return status; }
+    public void setStatus(String status) { this.status = status; }
 
-    public void setDestination(String destination) {
-        this.destination = destination;
-    }
+    public boolean isWifi() { return wifi; }
+    public void setWifi(boolean wifi) { this.wifi = wifi; }
 
-    public String getCheck_in() {
-        return check_in;
-    }
-
-    public void setCheck_in(String check_in) {
-        this.check_in = check_in;
-    }
-
-    public String getCheck_out() {
-        return check_out;
-    }
-
-    public void setCheck_out(String check_out) {
-        this.check_out = check_out;
-    }
-
-    public double getPrix() {
-        return prix;
-    }
-
-    public void setPrix(double prix) {
-        this.prix = prix;
-    }
-
-    public String getType_chambre() {
-        return type_chambre;
-    }
-
-    public void setType_chambre(String type_chambre) {
-        this.type_chambre = type_chambre;
-    }
-
-    public String getStatus() {
-        return status;
-    }
-
-    public void setStatus(String status) {
-        this.status = status;
-    }
+    public boolean isPiscine() { return piscine; }
+    public void setPiscine(boolean piscine) { this.piscine = piscine; }
 
     @Override
     public String toString() {
         return "Hotel{" +
-                ", nom_hotel='" + nom_hotel + '\'' +
+                "nom_hotel='" + nom_hotel + '\'' +
                 ", destination='" + destination + '\'' +
-                ", check_in='" + check_in + '\'' +
-                ", check_out='" + check_out + '\'' +
                 ", prix=" + prix +
                 ", type_chambre='" + type_chambre + '\'' +
                 ", status='" + status + '\'' +
+                ", wifi=" + wifi +
+                ", piscine=" + piscine +
                 '}';
     }
 }
