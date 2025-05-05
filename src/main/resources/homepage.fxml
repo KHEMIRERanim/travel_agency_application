@@ -3,29 +3,42 @@
 <?import javafx.scene.image.*?>
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.text.*?>
-<AnchorPane prefWidth="600.0" prefHeight="400.0" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controllers.homeController" style="-fx-background-color: #F5F7F9;">
-    <ScrollPane fx:id="carouselScroll" layoutX="27.0" layoutY="230.0" prefWidth="360.0" prefHeight="120.0" hbarPolicy="ALWAYS" vbarPolicy="NEVER" style="-fx-background: transparent; -fx-border-color: transparent;">
+<AnchorPane prefWidth="600.0" prefHeight="400.0" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controllers.homeController" style="-fx-background-color: linear-gradient(to bottom right, #f0f4f8, #d9e2ec); -fx-padding: 20;">
+
+    <!-- ScrollPane with modern styling -->
+    <ScrollPane fx:id="carouselScroll" layoutX="27.0" layoutY="230.0" prefWidth="360.0" prefHeight="120.0" hbarPolicy="ALWAYS" vbarPolicy="NEVER" style="-fx-background-color: transparent; -fx-border-color: transparent;">
         <content>
             <HBox fx:id="carousel" spacing="10" />
         </content>
     </ScrollPane>
-    <ImageView fx:id="selectedImage" fitWidth="357.0" fitHeight="227.0" layoutX="27.0" layoutY="-11.0" preserveRatio="true" pickOnBounds="true" />
-    <VBox layoutX="393.0" layoutY="64.0" spacing="5">
-        <Label fx:id="selectedTitle" text="Hotel Name" styleClass="title-label">
-            <font><Font size="18.0" /></font>
-        </Label>
-        <Label fx:id="selectedDetails" text="Destination: ..." wrapText="true" prefWidth="187.0" styleClass="details-label">
-            <font><Font size="11.0" /></font>
-        </Label>
-    </VBox>
-    <Button fx:id="loginButton" layoutX="424.0" layoutY="233.0" prefWidth="145.0" prefHeight="26.0" text="Login" onAction="#loginButtonOnAction" style="-fx-background-color: #456F8A; -fx-text-fill: white; -fx-background-radius: 8;" />
-    <Button fx:id="registerButton" layoutX="424.0" layoutY="276.0" prefWidth="145.0" prefHeight="26.0" text="Register" onAction="#registerButtonOnAction" style="-fx-background-color: #1976D2; -fx-text-fill: white; -fx-background-radius: 8;" />
-     <Button fx:id="ajoutHotel" layoutX="424.0" layoutY="316.0" prefWidth="145.0" prefHeight="26.0" text="Ajouter Hôtel" onAction="#goToAddHotel" style="-fx-background-color: #1976D2; -fx-text-fill: white; -fx-background-radius: 8;" />
 
-    <ImageView fx:id="logoHotel" layoutX="407.0" layoutY="40.0" fitWidth="201.0" fitHeight="134.0" preserveRatio="true" pickOnBounds="true">
+    <!-- Selected Image with rounded corners and shadow -->
+    <ImageView fx:id="selectedImage" fitWidth="357.0" fitHeight="227.0" layoutX="27.0" layoutY="-11.0" preserveRatio="true" pickOnBounds="true" style="-fx-effect: dropshadow(gaussian, rgba(0,0,0,0.2), 10, 0, 0, 4); -fx-clip: rect(0, 357, 227, 0);" />
+
+    <!-- VBox containing title and details with modern fonts -->
+    <VBox layoutX="393.0" layoutY="64.0" spacing="5">
+        <Label fx:id="selectedTitle" text="Hotel Name" style="-fx-font-size: 20px; -fx-font-weight: bold; -fx-text-fill: #2c3e50;" />
+        <Label fx:id="selectedDetails" text="Destination: ..." wrapText="true" prefWidth="187.0" style="-fx-font-size: 12px; -fx-text-fill: #34495e;" />
+    </VBox>
+
+    <!-- Login Button with gradient and hover effect -->
+    <Button fx:id="loginButton" layoutX="424.0" layoutY="233.0" prefWidth="145.0" prefHeight="30.0" text="Login" onAction="#loginButtonOnAction" style="-fx-background-color: linear-gradient(to right, #6a11cb, #2575fc); -fx-text-fill: white; -fx-background-radius: 15; -fx-font-weight: bold; -fx-cursor: hand;" />
+
+    <!-- Register Button with gradient and hover effect -->
+    <Button fx:id="registerButton" layoutX="424.0" layoutY="276.0" prefWidth="145.0" prefHeight="30.0" text="Register" onAction="#registerButtonOnAction" style="-fx-background-color: linear-gradient(to right, #11998e, #38ef7d); -fx-text-fill: white; -fx-background-radius: 15; -fx-font-weight: bold; -fx-cursor: hand;" />
+
+    <!-- Ajouter Hôtel Button with gradient and hover effect -->
+    <Button fx:id="ajoutHotel" layoutX="424.0" layoutY="316.0" prefWidth="145.0" prefHeight="30.0" text="Ajouter Hôtel" onAction="#goToAddHotel" style="-fx-background-color: linear-gradient(to right, #ff416c, #ff4b2b); -fx-text-fill: white; -fx-background-radius: 15; -fx-font-weight: bold; -fx-cursor: hand;" />
+
+    <!-- Logo Image with shadow -->
+    <ImageView fx:id="logoHotel" layoutX="407.0" layoutY="40.0" fitWidth="201.0" fitHeight="134.0" preserveRatio="true" pickOnBounds="true" style="-fx-effect: dropshadow(gaussian, rgba(0,0,0,0.15), 10, 0, 0, 4);">
         <image><Image url="@../../main/images/logo1.png" /></image>
     </ImageView>
-    <Button fx:id="cancelButton" layoutX="544.0" layoutY="373.0" text="Cancel" onAction="#cancelButtonOnAction" style="-fx-background-color: #D1CFBE; -fx-text-fill: white; -fx-background-radius: 8;" />
 
-    <Button fx:id="contactus" layoutX="523.0" layoutY="1.0" text="Contact us" style="-fx-background-color: #456F8A; -fx-text-fill: white; -fx-background-radius: 8;" />
+    <!-- Cancel Button with subtle styling -->
+    <Button fx:id="cancelButton" layoutX="544.0" layoutY="373.0" text="Quitter" onAction="#cancelButtonOnAction" style="-fx-background-color: #bdc3c7; -fx-text-fill: white; -fx-background-radius: 15; -fx-font-weight: bold; -fx-cursor: hand;" />
+
+    <!-- Contact Us Button with gradient and hover effect -->
+    <Button fx:id="contactus" layoutX="523.0" layoutY="1.0" text="Contact us" style="-fx-background-color: linear-gradient(to right, #00c6ff, #0072ff); -fx-text-fill: white; -fx-background-radius: 15; -fx-font-weight: bold; -fx-cursor: hand;" />
+
 </AnchorPane>
