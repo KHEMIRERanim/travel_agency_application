@@ -1,6 +1,7 @@
 package controllers;
 
 import javafx.fxml.FXML;
+import javafx.scene.Cursor;
 import javafx.scene.control.*;
 import javafx.scene.layout.HBox;
 import javafx.stage.Stage;
@@ -60,6 +61,7 @@ public class AjoutHotelController {
     @FXML
     public void initialize() {
         typeChoice.getItems().addAll("Single", "Double", "Twin");
+        drawStars();
     }
 
     @FXML
@@ -164,6 +166,7 @@ public class AjoutHotelController {
             star.setFitWidth(20);
             star.setFitHeight(20);
             final int rating = i;
+            star.setCursor(Cursor.HAND);
             star.setOnMouseClicked(e -> {
                 currentNote = rating;
                 drawStars();

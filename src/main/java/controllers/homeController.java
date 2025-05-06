@@ -5,6 +5,7 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
+import javafx.scene.Cursor;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
@@ -61,6 +62,8 @@ public class homeController implements Initializable {
                 thumb.setFitWidth(150);
                 thumb.setFitHeight(100);
                 thumb.setOnMouseClicked(e -> selectHotel(h));
+                thumb.setCursor(Cursor.HAND);
+
 
                 carousel.getChildren().add(thumb);
             }
