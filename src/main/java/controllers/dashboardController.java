@@ -1,4 +1,4 @@
-package controllers;// Importing essential packages
+package controllers;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
@@ -15,7 +15,7 @@ import java.io.File;
 import java.util.ResourceBundle;
 import java.net.URL;
 
-//FXML Loader call all the methods and classes defined in the controller
+
 public class dashboardController implements Initializable {
     @FXML
     private ImageView logoHotel;
@@ -29,7 +29,7 @@ public class dashboardController implements Initializable {
     private Integer id_utilisateur;
     private String firstname;
 
-    //Initializing a controller after the root has been processed
+
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         File logoFile = new File("Hotels/images/logo.jpg");
@@ -45,7 +45,7 @@ public class dashboardController implements Initializable {
         welcomeLabel.setText("Welcome " + firstname + "!");
 
     }
-    //Function to go back to the previous fxml file of the program
+
     public void logoutButtonOnAction(ActionEvent event){
         logout();
         Stage stage = (Stage) cancelButton.getScene().getWindow();
@@ -64,13 +64,13 @@ public class dashboardController implements Initializable {
         }
 
     }
-    //Creating a function to stop the process of the program with cancelButton
+
     public void cancelButtonOnAction(ActionEvent event) {
         Stage stage = (Stage) cancelButton.getScene().getWindow();
         stage.close();
     }
 
-    //    Taking the user to Rooms FXML file
+
     public void ViewRoomsOnAction(ActionEvent event) {
         try{
             Parent root = FXMLLoader.load(getClass().getResource("rooms.fxml"));
@@ -86,7 +86,7 @@ public class dashboardController implements Initializable {
         }
     }
 
-    //    Taking the user to makeBooking FXML file
+
     public void makeBookingOnAction(ActionEvent event) {
         try{
             Parent root = FXMLLoader.load(getClass().getResource("makeBooking.fxml"));
@@ -101,7 +101,7 @@ public class dashboardController implements Initializable {
             e.getCause();
         }
     }
-    // Taking the user to myBookings FXML file
+
     public void myBookings(ActionEvent event) {
         try{
             Parent root = FXMLLoader.load(getClass().getResource("myBookings.fxml"));

@@ -32,7 +32,10 @@ public class homeController implements Initializable {
     @FXML private Label selectedDetails;
     @FXML private HBox carousel;
     @FXML private Button cancelButton;
+    @FXML private HBox ratingBox;
 
+    private final Image STAR_FULL = new Image(getClass().getResource("/images/star.png").toExternalForm());
+    private final Image STAR_EMPTY = new Image(getClass().getResource("/images/star_empty.png").toExternalForm());
     private Hotels selectedHotel;
     private final ServiceHotel service = new ServiceHotel();
     private void refreshHotels() {
@@ -81,7 +84,7 @@ public class homeController implements Initializable {
         clip.setArcHeight(30);
         selectedImage.setClip(clip);
 
-        refreshHotels(); // Call your new method
+        refreshHotels();
     }
 
 
@@ -97,6 +100,15 @@ public class homeController implements Initializable {
                         "Piscine: " + (h.isPiscine() ? "Oui" : "Non") + "\n" +
                         "Status: " + h.getStatus()
         );
+
+        ratingBox.getChildren().clear();
+        int note = h.getNote();
+        for (int i = 1; i <= 5; i++) {
+            ImageView star = new ImageView(i <= note ? STAR_FULL : STAR_EMPTY);
+            star.setFitWidth(16);
+            star.setFitHeight(16);
+            ratingBox.getChildren().add(star);
+        }
 
         byte[] hotelImage = h.getImage();
         if (hotelImage != null && hotelImage.length > 0) {
@@ -153,7 +165,7 @@ public class homeController implements Initializable {
             Parent root = loader.load();
 
             AjoutHotelController controller = loader.getController();
-            controller.setOnHotelChanged(this::refreshHotels); // <-- callback to refresh
+            controller.setOnHotelChanged(this::refreshHotels);
 
             Stage stage = new Stage();
             stage.initStyle(StageStyle.UNDECORATED);
@@ -178,7 +190,7 @@ public class homeController implements Initializable {
 
             AjoutHotelController controller = loader.getController();
             controller.setHotelForEdit(selectedHotel);
-            controller.setOnHotelChanged(this::refreshHotels); // <-- callback to refresh
+            controller.setOnHotelChanged(this::refreshHotels);
 
             Stage stage = new Stage();
             stage.setScene(new Scene(root));

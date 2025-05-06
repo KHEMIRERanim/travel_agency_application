@@ -2,6 +2,7 @@ package controllers;
 
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
+import javafx.scene.layout.HBox;
 import javafx.stage.Stage;
 import entities.Hotels;
 import services.ServiceHotel;
@@ -22,7 +23,12 @@ public class AjoutHotelController {
     @FXML private ChoiceBox<String> typeChoice;
     @FXML private Label errorLabel;
     @FXML private ImageView imageView;
+    @FXML private HBox noteBox;
+    private final Image STAR_FULL = new Image(getClass().getResource("/images/star.png").toExternalForm());
+    private final Image STAR_EMPTY = new Image(getClass().getResource("/images/star_empty.png").toExternalForm());
+    private int currentNote = 1;
     private byte[] imageBytes;
+
 
     private ServiceHotel service = new ServiceHotel();
     private Hotels hotelToEdit = null;
@@ -41,6 +47,8 @@ public class AjoutHotelController {
         typeChoice.setValue(hotel.getType_chambre());
         wifiCheck.setSelected(hotel.isWifi());
         piscineCheck.setSelected(hotel.isPiscine());
+        this.currentNote = hotel.getNote();
+        drawStars();
         byte[] hotelImage = hotel.getImage();
         if (hotelImage != null && hotelImage.length > 0) {
             imageBytes = hotelImage;
@@ -80,7 +88,8 @@ public class AjoutHotelController {
             hotelToEdit.setType_chambre(typeChoice.getValue());
             hotelToEdit.setWifi(wifiCheck.isSelected());
             hotelToEdit.setPiscine(piscineCheck.isSelected());
-            hotelToEdit.setImage(imageBytes);  // Set the image for editing
+            hotelToEdit.setImage(imageBytes);
+            hotelToEdit.setNote(currentNote);
 
             service.modifier(hotelToEdit);
             if (onHotelChanged != null) onHotelChanged.run();
@@ -96,7 +105,8 @@ public class AjoutHotelController {
                         "Disponible",
                         wifiCheck.isSelected(),
                         piscineCheck.isSelected(),
-                        imageBytes  // Include the image while adding
+                        imageBytes,
+                        currentNote
                 );
                 service.ajouter(hotel);
                 if (onHotelChanged != null) onHotelChanged.run();
@@ -123,11 +133,11 @@ public class AjoutHotelController {
 
         if (selectedFile != null) {
             try {
-                // Load the image and display it
+
                 Image image = new Image(new FileInputStream(selectedFile));
                 imageView.setImage(image);
 
-                // Convert the image to byte[] for database storage
+
                 imageBytes = convertImageToByteArray(selectedFile);
 
             } catch (IOException e) {
@@ -145,6 +155,21 @@ public class AjoutHotelController {
             bos.write(buffer, 0, bytesRead);
         }
         return bos.toByteArray();
+    }
+
+    private void drawStars() {
+        noteBox.getChildren().clear();
+        for (int i = 1; i <= 5; i++) {
+            ImageView star = new ImageView(i <= currentNote ? STAR_FULL : STAR_EMPTY);
+            star.setFitWidth(20);
+            star.setFitHeight(20);
+            final int rating = i;
+            star.setOnMouseClicked(e -> {
+                currentNote = rating;
+                drawStars();
+            });
+            noteBox.getChildren().add(star);
+        }
     }
 
 }

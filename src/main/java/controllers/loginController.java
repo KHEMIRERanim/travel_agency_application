@@ -69,17 +69,17 @@ public class loginController implements Initializable {
 
             if (rs.next()) {
                 loginController.username = rs.getString("username");
-                loginController.firstname = rs.getString("firstname"); // adjust column name if needed
-                loginController.user_id = rs.getInt("id"); // adjust column name if needed
+                loginController.firstname = rs.getString("firstname");
+                loginController.user_id = rs.getInt("id");
 
-                // Load dashboard scene
+
                 Parent root = FXMLLoader.load(getClass().getResource("dashboard.fxml"));
                 Stage loginStage = new Stage();
                 loginStage.initStyle(StageStyle.UNDECORATED);
                 loginStage.setScene(new Scene(root, 600, 400));
                 loginStage.show();
 
-                // Close current window
+
                 Stage stage = (Stage) backButton.getScene().getWindow();
                 stage.close();
             } else {

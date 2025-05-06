@@ -16,7 +16,8 @@ public class ServiceHotel implements IService<Hotels> {
 
     @Override
     public void ajouter(Hotels hotel) throws SQLException {
-        String req = "INSERT INTO hotels(nom_hotel, destination, prix, type_chambre, status, wifi, piscine, image) VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
+        String req = "INSERT INTO hotels(nom_hotel, destination, prix, type_chambre, status, wifi, piscine, image, note) " +
+                "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)";
         PreparedStatement ps = con.prepareStatement(req);
         ps.setString(1, hotel.getNom_hotel());
         ps.setString(2, hotel.getDestination());
@@ -26,13 +27,14 @@ public class ServiceHotel implements IService<Hotels> {
         ps.setBoolean(6, hotel.isWifi());
         ps.setBoolean(7, hotel.isPiscine());
         ps.setBytes(8, hotel.getImage());
+        ps.setInt(9, hotel.getNote());
         ps.executeUpdate();
         System.out.println("Hôtel ajouté avec succès !");
     }
 
     @Override
     public void modifier(Hotels hotel) throws SQLException {
-        String req = "UPDATE hotels SET nom_hotel=?, destination=?, prix=?, type_chambre=?, status=?, wifi=?, piscine=?, image=? WHERE hotel_id=?";
+        String req = "UPDATE hotels SET nom_hotel=?, destination=?, prix=?, type_chambre=?, status=?, wifi=?, piscine=?, image=?, note=? WHERE hotel_id=?";
         PreparedStatement ps = con.prepareStatement(req);
         ps.setString(1, hotel.getNom_hotel());
         ps.setString(2, hotel.getDestination());
@@ -42,7 +44,8 @@ public class ServiceHotel implements IService<Hotels> {
         ps.setBoolean(6, hotel.isWifi());
         ps.setBoolean(7, hotel.isPiscine());
         ps.setBytes(8, hotel.getImage());
-        ps.setInt(9, hotel.getHotel_id());
+        ps.setInt(9, hotel.getNote());
+        ps.setInt(10, hotel.getHotel_id());
         ps.executeUpdate();
         System.out.println("Hôtel modifié !");
     }
@@ -72,7 +75,8 @@ public class ServiceHotel implements IService<Hotels> {
             boolean wifi = rs.getBoolean("wifi");
             boolean piscine = rs.getBoolean("piscine");
             byte[] image = rs.getBytes("image");
-            Hotels h = new Hotels(id, nom, dest, prix, type, status, wifi, piscine, image);
+            int note = rs.getInt("note");
+            Hotels h = new Hotels(id, nom, dest, prix, type, status, wifi, piscine, image, note);
             hotels.add(h);
         }
         return hotels;

@@ -11,7 +11,7 @@ public class ServiceReservationHotel implements IService<ReservationHotel> {
     private Connection con;
 
     public ServiceReservationHotel() {
-        con = MyDatabase.getInstance().getConnection();//connextion a mydatabase
+        con = MyDatabase.getInstance().getConnection();
 
     }
 
@@ -64,14 +64,14 @@ public class ServiceReservationHotel implements IService<ReservationHotel> {
             String date_in = rs.getString("checkin_date");
             String date_out = rs.getString("checkout_date");
 
-            // Create the ReservationHotel object with the fetched data
+
             ReservationHotel r = new ReservationHotel(id_reserv, id_h, id_u, date_in, date_out);
 
-            // Add it to the list
+
             reservationHotels.add(r);
         }
 
-        // Return the list of reservations
+
         return reservationHotels;
     }
 }

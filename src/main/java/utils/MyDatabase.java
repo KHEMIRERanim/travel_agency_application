@@ -6,12 +6,12 @@ public class MyDatabase {
     private static MyDatabase instance;
     private Connection cnx;
 
-    // Database connection details
+
     private static final String URL = "jdbc:mysql://localhost:3306/travillian";
     private static final String USERNAME = "root";
     private static final String PASSWORD = "";
 
-    // Private constructor (Singleton pattern)
+
     private MyDatabase() {
         try {
             cnx = DriverManager.getConnection(URL, USERNAME, PASSWORD);
@@ -21,7 +21,7 @@ public class MyDatabase {
         }
     }
 
-    // Singleton access method
+
     public static MyDatabase getInstance() {
         if (instance == null) {
             instance = new MyDatabase();
@@ -29,12 +29,12 @@ public class MyDatabase {
         return instance;
     }
 
-    // Public method to access the connection
+
     public Connection getConnection() {
         return cnx;
     }
 
-    // Execute SELECT queries
+
     public ResultSet executeQuery(String query) {
         try (Statement stmt = cnx.createStatement()) {
             return stmt.executeQuery(query);
@@ -44,7 +44,7 @@ public class MyDatabase {
         }
     }
 
-    // Execute INSERT, UPDATE, DELETE
+
     public int executeUpdate(String query) {
         try (Statement stmt = cnx.createStatement()) {
             return stmt.executeUpdate(query);
@@ -54,7 +54,7 @@ public class MyDatabase {
         }
     }
 
-    // Create a prepared statement for executing parameterized queries
+
     public PreparedStatement prepareStatement(String sql) {
         try {
             return cnx.prepareStatement(sql);
@@ -64,7 +64,7 @@ public class MyDatabase {
         }
     }
 
-    // Close the connection gracefully
+
     public void closeConnection() {
         try {
             if (cnx != null && !cnx.isClosed()) {
