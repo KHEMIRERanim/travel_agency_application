@@ -8,10 +8,8 @@ import services.ServiceHotel;
 import javafx.scene.image.ImageView;
 import javafx.scene.image.Image;
 import javafx.stage.FileChooser;
-import java.io.ByteArrayOutputStream;
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.IOException;
+
+import java.io.*;
 
 import java.sql.SQLException;
 
@@ -34,7 +32,6 @@ public class AjoutHotelController {
         this.onHotelChanged = onHotelChanged;
     }
 
-
     public void setHotelForEdit(Hotels hotel) {
         this.hotelToEdit = hotel;
 
@@ -44,6 +41,12 @@ public class AjoutHotelController {
         typeChoice.setValue(hotel.getType_chambre());
         wifiCheck.setSelected(hotel.isWifi());
         piscineCheck.setSelected(hotel.isPiscine());
+        byte[] hotelImage = hotel.getImage();
+        if (hotelImage != null && hotelImage.length > 0) {
+            imageBytes = hotelImage;
+            Image image = new Image(new ByteArrayInputStream(hotelImage));
+            imageView.setImage(image);
+        }
     }
 
     @FXML
