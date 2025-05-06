@@ -19,6 +19,7 @@
     <VBox layoutX="393.0" layoutY="44.0" spacing="5">
         <Label fx:id="selectedTitle" text="Hotel Name" style="-fx-font-size: 20px; -fx-font-weight: bold; -fx-text-fill: #2c3e50;" />
         <Label fx:id="selectedDetails" text="Destination: ..." wrapText="true" prefWidth="187.0" style="-fx-font-size: 12px; -fx-text-fill: #34495e;" />
+        <HBox spacing="10">
         <Button fx:id="editHotelButton"
                 layoutX="424.0" layoutY="356.0"
                 prefWidth="145.0" prefHeight="30.0"
@@ -29,6 +30,21 @@
                        -fx-background-radius: 15;
                        -fx-font-weight: bold;
                        -fx-cursor: hand;" />
+
+        <Button fx:id="deleteButton"
+                onAction="#onDeleteHotel"
+                style="-fx-background-color: #e74c3c; -fx-background-radius: 8; -fx-cursor: hand;"
+                prefHeight="30" prefWidth="30">
+            <graphic>
+                <ImageView fitHeight="16" fitWidth="16">
+                    <image>
+                        <Image url="@/images/trash.png"/>
+                    </image>
+                </ImageView>
+            </graphic>
+        </Button>
+
+    </HBox>
 
     </VBox>
 
@@ -42,14 +58,10 @@
     <Button fx:id="ajoutHotel" layoutX="424.0" layoutY="316.0" prefWidth="145.0" prefHeight="30.0" text="Ajouter Hôtel" onAction="#goToAddHotel" style="-fx-background-color: linear-gradient(to right, #ff416c, #ff4b2b); -fx-text-fill: white; -fx-background-radius: 15; -fx-font-weight: bold; -fx-cursor: hand;" />
 
     <!-- Logo Image with shadow -->
-    <ImageView fx:id="logoHotel" layoutX="407.0" layoutY="40.0" fitWidth="201.0" fitHeight="134.0" preserveRatio="true" pickOnBounds="true" style="-fx-effect: dropshadow(gaussian, rgba(0,0,0,0.15), 10, 0, 0, 4);">
-        <image><Image url="@../../main/images/logo1.png" /></image>
+    <ImageView fx:id="logoHotel" layoutX="547.0" layoutY="3.0" fitWidth="50.0" fitHeight="80.0" preserveRatio="true" pickOnBounds="true" style="-fx-effect: dropshadow(gaussian, rgba(0,0,0,0.15), 10, 0, 0, 4);">
+        <image><Image url="@/images/logo2.png" /></image>
     </ImageView>
 
-    <!-- Cancel Button with subtle styling -->
     <Button fx:id="cancelButton" layoutX="544.0" layoutY="373.0" text="Quitter" onAction="#cancelButtonOnAction" style="-fx-background-color: #bdc3c7; -fx-text-fill: white; -fx-background-radius: 15; -fx-font-weight: bold; -fx-cursor: hand;" />
-
-    <!-- Contact Us Button with gradient and hover effect -->
-    <Button fx:id="contactus" layoutX="523.0" layoutY="1.0" text="Contact us" style="-fx-background-color: linear-gradient(to right, #00c6ff, #0072ff); -fx-text-fill: white; -fx-background-radius: 15; -fx-font-weight: bold; -fx-cursor: hand;" />
 
 </AnchorPane>

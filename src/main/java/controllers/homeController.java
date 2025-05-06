@@ -189,5 +189,28 @@ public class homeController implements Initializable {
         }
     }
 
+    @FXML
+    private void onDeleteHotel() {
+        if (selectedHotel == null) {
+            Alert alert = new Alert(Alert.AlertType.WARNING, "Aucun hôtel sélectionné.");
+            alert.show();
+            return;
+        }
+
+        Alert confirm = new Alert(Alert.AlertType.CONFIRMATION, "Êtes-vous sûr de vouloir supprimer cet hôtel ?");
+        confirm.showAndWait().ifPresent(response -> {
+            if (response.getText().equals("OK")) {
+                try {
+                    service.supprimer(selectedHotel);
+                    refreshHotels();
+                } catch (Exception e) {
+                    Alert error = new Alert(Alert.AlertType.ERROR, "Erreur lors de la suppression : " + e.getMessage());
+                    error.show();
+                }
+            }
+        });
+    }
+
+
 
 }
