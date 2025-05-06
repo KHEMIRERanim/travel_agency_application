@@ -1,5 +1,8 @@
-
-public class ServiceHotel implements IService<Hotels> {
+packages services;
+public class ServiceHotel  {
+    public ServiceHotel{
+        
+    }
     
     }
    
