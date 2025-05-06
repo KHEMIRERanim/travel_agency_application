@@ -14,6 +14,7 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
+import javafx.scene.shape.Rectangle;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
 import services.ServiceHotel;
@@ -38,26 +39,41 @@ public class homeController implements Initializable {
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         try {
+            Rectangle clip = new Rectangle(
+                    selectedImage.getFitWidth(),
+                    selectedImage.getFitHeight()
+            );
+            clip.setArcWidth(30); // adjust for roundness
+            clip.setArcHeight(30);
+
+            selectedImage.setClip(clip);
+
             List<Hotels> hotels = service.recuperer();
             for (Hotels h : hotels) {
                 ImageView thumb = new ImageView();
 
-                // Check if hotel has a valid image byte array
+                // Create a new rounded clip for each ImageView
+                Rectangle clip2 = new Rectangle(150, 100); // Match fitWidth and fitHeight
+                clip2.setArcWidth(40);  // Adjust for desired roundness
+                clip2.setArcHeight(40);
+                thumb.setClip(clip2);
+
+                // Load image from hotel or fallback
                 byte[] hotelImage = h.getImage();
                 if (hotelImage != null && hotelImage.length > 0) {
-                    // Set thumbnail image from hotel image byte array
                     Image image = new Image(new ByteArrayInputStream(hotelImage));
                     thumb.setImage(image);
                 } else {
-                    // Use the default image for the carousel if no valid image exists
                     thumb.setImage(new Image(getClass().getResource("/images/doubleroom.jpg").toExternalForm()));
                 }
 
                 thumb.setFitWidth(150);
                 thumb.setFitHeight(100);
                 thumb.setOnMouseClicked(e -> selectHotel(h));
+
                 carousel.getChildren().add(thumb);
             }
+
 
             // Select the first hotel if available
             if (!hotels.isEmpty()) {
@@ -77,19 +93,16 @@ public class homeController implements Initializable {
                 "Destination: " + h.getDestination() + "\n" +
                         "Prix: " + h.getPrix() + " €/nuit\n" +
                         "Type de chambre: " + h.getType_chambre() + "\n" +
-                        "Wifi: " + h.isWifi() + "\n" +
-                        "Piscine: " + h.isPiscine() + "\n" +
+                        "Wifi: " + (h.isWifi() ? "Oui" : "Non") + "\n" +
+                        "Piscine: " + (h.isPiscine() ? "Oui" : "Non") + "\n" +
                         "Status: " + h.getStatus()
         );
 
-        // Check if hotel has a valid image byte array
         byte[] hotelImage = h.getImage();
         if (hotelImage != null && hotelImage.length > 0) {
-            // Create an Image object from the byte array
             Image image = new Image(new ByteArrayInputStream(hotelImage));
             selectedImage.setImage(image);
         } else {
-            // Use the default image if no valid image exists
             selectedImage.setImage(new Image(getClass().getResource("/images/doubleroom.jpg").toExternalForm()));
         }
     }

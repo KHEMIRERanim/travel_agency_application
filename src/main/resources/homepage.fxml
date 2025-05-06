@@ -13,7 +13,7 @@
     </ScrollPane>
 
     <!-- Selected Image with rounded corners and shadow -->
-    <ImageView fx:id="selectedImage" fitWidth="320.0" fitHeight="200.0" layoutX="27.0" layoutY="11.0" preserveRatio="true" pickOnBounds="true" style="-fx-effect: dropshadow(gaussian, rgba(0,0,0,0.2), 10, 0, 0, 4); -fx-clip: rect(0, 357, 227, 0);" />
+    <ImageView fx:id="selectedImage" fitWidth="320.0" fitHeight="200.0" layoutX="27.0" layoutY="11.0" pickOnBounds="true" style="-fx-effect: dropshadow(gaussian, rgba(0,0,0,0.2), 10, 0, 0, 4);" />
 
     <!-- VBox containing title and details with modern fonts -->
     <VBox layoutX="393.0" layoutY="44.0" spacing="5">
