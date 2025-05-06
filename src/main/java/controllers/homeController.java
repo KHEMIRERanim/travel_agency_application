@@ -35,30 +35,18 @@ public class homeController implements Initializable {
 
     private Hotels selectedHotel;
     private final ServiceHotel service = new ServiceHotel();
+    private void refreshHotels() {
+        carousel.getChildren().clear();
 
-    @Override
-    public void initialize(URL url, ResourceBundle rb) {
         try {
-            Rectangle clip = new Rectangle(
-                    selectedImage.getFitWidth(),
-                    selectedImage.getFitHeight()
-            );
-            clip.setArcWidth(30); // adjust for roundness
-            clip.setArcHeight(30);
-
-            selectedImage.setClip(clip);
-
             List<Hotels> hotels = service.recuperer();
             for (Hotels h : hotels) {
                 ImageView thumb = new ImageView();
-
-                // Create a new rounded clip for each ImageView
-                Rectangle clip2 = new Rectangle(150, 100); // Match fitWidth and fitHeight
-                clip2.setArcWidth(40);  // Adjust for desired roundness
+                Rectangle clip2 = new Rectangle(150, 100);
+                clip2.setArcWidth(40);
                 clip2.setArcHeight(40);
                 thumb.setClip(clip2);
 
-                // Load image from hotel or fallback
                 byte[] hotelImage = h.getImage();
                 if (hotelImage != null && hotelImage.length > 0) {
                     Image image = new Image(new ByteArrayInputStream(hotelImage));
@@ -74,8 +62,6 @@ public class homeController implements Initializable {
                 carousel.getChildren().add(thumb);
             }
 
-
-            // Select the first hotel if available
             if (!hotels.isEmpty()) {
                 selectHotel(hotels.get(0));
             }
@@ -84,6 +70,20 @@ public class homeController implements Initializable {
             e.printStackTrace();
         }
     }
+
+    @Override
+    public void initialize(URL url, ResourceBundle rb) {
+        Rectangle clip = new Rectangle(
+                selectedImage.getFitWidth(),
+                selectedImage.getFitHeight()
+        );
+        clip.setArcWidth(30);
+        clip.setArcHeight(30);
+        selectedImage.setClip(clip);
+
+        refreshHotels(); // Call your new method
+    }
+
 
 
     private void selectHotel(Hotels h) {
@@ -149,7 +149,12 @@ public class homeController implements Initializable {
 
     public void goToAddHotel() {
         try {
-            Parent root = FXMLLoader.load(getClass().getResource("/AjoutHotel.fxml"));
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/AjoutHotel.fxml"));
+            Parent root = loader.load();
+
+            AjoutHotelController controller = loader.getController();
+            controller.setOnHotelChanged(this::refreshHotels); // <-- callback to refresh
+
             Stage stage = new Stage();
             stage.initStyle(StageStyle.UNDECORATED);
             stage.setScene(new Scene(root));
@@ -158,6 +163,7 @@ public class homeController implements Initializable {
             e.printStackTrace();
         }
     }
+
 
     public void loginToBook(ActionEvent e){
         Alert alert = new Alert(Alert.AlertType.ERROR, "Please login or register first in order to make a booking.");
@@ -171,7 +177,8 @@ public class homeController implements Initializable {
             Parent root = loader.load();
 
             AjoutHotelController controller = loader.getController();
-            controller.setHotelForEdit(selectedHotel); // You must store selectedHotel when showing its details
+            controller.setHotelForEdit(selectedHotel);
+            controller.setOnHotelChanged(this::refreshHotels); // <-- callback to refresh
 
             Stage stage = new Stage();
             stage.setScene(new Scene(root));
@@ -181,5 +188,6 @@ public class homeController implements Initializable {
             e.printStackTrace();
         }
     }
+
 
 }

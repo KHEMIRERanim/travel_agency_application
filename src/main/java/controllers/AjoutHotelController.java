@@ -28,6 +28,12 @@ public class AjoutHotelController {
 
     private ServiceHotel service = new ServiceHotel();
     private Hotels hotelToEdit = null;
+    private Runnable onHotelChanged;
+
+    public void setOnHotelChanged(Runnable onHotelChanged) {
+        this.onHotelChanged = onHotelChanged;
+    }
+
 
     public void setHotelForEdit(Hotels hotel) {
         this.hotelToEdit = hotel;
@@ -74,6 +80,7 @@ public class AjoutHotelController {
             hotelToEdit.setImage(imageBytes);  // Set the image for editing
 
             service.modifier(hotelToEdit);
+            if (onHotelChanged != null) onHotelChanged.run();
             Stage stage = (Stage) nomField.getScene().getWindow();
             stage.close();
         } else {
@@ -89,6 +96,7 @@ public class AjoutHotelController {
                         imageBytes  // Include the image while adding
                 );
                 service.ajouter(hotel);
+                if (onHotelChanged != null) onHotelChanged.run();
                 Stage stage = (Stage) nomField.getScene().getWindow();
                 stage.close();
             } catch (Exception ex) {
