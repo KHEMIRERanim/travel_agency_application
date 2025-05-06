@@ -32,6 +32,11 @@ import java.util.ResourceBundle;
 import java.util.stream.Collectors;
 import javafx.scene.control.Button;
 import javafx.scene.control.ButtonType;
+import java.util.ResourceBundle;
+import java.util.stream.Collectors;
+import javafx.scene.control.Button;
+import javafx.scene.control.ButtonType;
+import javafx.scene.Node;
 
 public class AdminDashboardController implements Initializable {
     private ServiceClient serviceClient = new ServiceClient();
@@ -157,6 +162,7 @@ public class AdminDashboardController implements Initializable {
             clientListView.setItems(filteredList);
         }
     }
+
     @FXML
     void removeSelectedClient(ActionEvent event) {
         Client selectedClient = clientListView.getSelectionModel().getSelectedItem();
@@ -277,7 +283,26 @@ public class AdminDashboardController implements Initializable {
 
     @FXML
     void showVols(ActionEvent event) {
-        showEmptyModuleAlert("Gestion des vols", "Le module de gestion des vols n'est pas encore disponible.");
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/MenuPrincipale.fxml"));
+            Parent volsView = loader.load();
+
+            // If using contentArea (which is the case in the current UI)
+            if (contentArea != null) {
+                contentArea.getChildren().clear();
+                contentArea.getChildren().add(volsView);
+            } else {
+                // Fallback to opening in a new window
+                Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
+                stage.setScene(new Scene(volsView));
+                stage.setTitle("Gestion des vols");
+                stage.show();
+            }
+        } catch (IOException e) {
+            showAlert(Alert.AlertType.ERROR, "Erreur", "Erreur de chargement",
+                    "Impossible de charger la gestion des vols: " + e.getMessage());
+            e.printStackTrace();
+        }
     }
 
     @FXML
