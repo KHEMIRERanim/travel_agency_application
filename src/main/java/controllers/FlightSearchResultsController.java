@@ -38,26 +38,29 @@ public class FlightSearchResultsController {
 
     private int requiredSeats;
     private ChercherVolController sourceController;
+    private boolean isEmbeddedInDashboard = false;
+    private UserDashboardController dashboardController;
 
     public void setSourceController(ChercherVolController controller) {
         this.sourceController = controller;
     }
 
+    public void setDashboardController(UserDashboardController controller) {
+        this.dashboardController = controller;
+        this.isEmbeddedInDashboard = (controller != null);
+    }
+
     public void setFlights(List<Flight> flights, int requiredPassengers) {
         this.requiredSeats = requiredPassengers;
 
-
         resultCountLabel.setText(flights.size() + " flights found");
 
-
         flightsContainer.getChildren().clear();
-
 
         if (flights.isEmpty()) {
             displayNoFlightsMessage();
             return;
         }
-
 
         for (Flight flight : flights) {
             VBox flightBox = createFlightBox(flight);
@@ -106,11 +109,9 @@ public class FlightSearchResultsController {
         flightBox.setSpacing(10);
         flightBox.setPadding(new Insets(15));
 
-
         HBox topSection = new HBox();
         topSection.setAlignment(Pos.CENTER_LEFT);
         topSection.setSpacing(10);
-
 
         ImageView airlineImageView = new ImageView();
         airlineImageView.setFitHeight(40);
@@ -157,29 +158,24 @@ public class FlightSearchResultsController {
             }
         }
 
-
         Label airlineLabel = new Label(flight.getAirline());
         airlineLabel.setFont(Font.font("System", FontWeight.BOLD, 16));
 
         Label flightNumberLabel = new Label("Flight " + flight.getFlight_number());
         flightNumberLabel.setStyle("-fx-text-fill: #757575;");
 
-
         Region spacer = new Region();
         HBox.setHgrow(spacer, Priority.ALWAYS);
 
         topSection.getChildren().addAll(airlineImageView, airlineLabel, spacer, flightNumberLabel);
 
-
         HBox routeSection = new HBox();
         routeSection.setAlignment(Pos.CENTER);
         routeSection.setSpacing(10);
 
-
         SimpleDateFormat timeFormat = new SimpleDateFormat("HH:mm");
         String departureTime = timeFormat.format(flight.getDeparture_Time());
         String arrivalTime = timeFormat.format(flight.getArrival_Time());
-
 
         Label departureLabel = new Label(flight.getDeparture() + "\n" + departureTime);
         departureLabel.setStyle("-fx-font-size: 14; -fx-text-alignment: center;");
@@ -190,11 +186,9 @@ public class FlightSearchResultsController {
         Label destinationLabel = new Label(flight.getDestination() + "\n" + arrivalTime);
         destinationLabel.setStyle("-fx-font-size: 14; -fx-text-alignment: center;");
 
-
         Region flightLine = new Region();
         flightLine.setStyle("-fx-background-color: #BDBDBD; -fx-min-height: 1; -fx-pref-height: 1; -fx-max-height: 1;");
         HBox.setHgrow(flightLine, Priority.ALWAYS);
-
 
         VBox durationBox = new VBox(flightDurationLabel);
         durationBox.setAlignment(Pos.CENTER);
@@ -202,19 +196,15 @@ public class FlightSearchResultsController {
         routeSection.getChildren().addAll(departureLabel, flightLine, destinationLabel);
         routeSection.getChildren().add(1, durationBox);
 
-
         HBox bottomSection = new HBox();
         bottomSection.setAlignment(Pos.CENTER_LEFT);
         bottomSection.setSpacing(15);
-
 
         Label priceLabel = new Label(String.format("$%.2f", flight.getPrice()));
         priceLabel.setFont(Font.font("System", FontWeight.BOLD, 18));
         priceLabel.setStyle("-fx-text-fill: #FF6F00;");
 
-
         Label seatsLabel = new Label(flight.getAvailable_seats() + " seats available");
-
 
         if (requiredSeats > 0 && flight.getAvailable_seats() < requiredSeats) {
             seatsLabel.setStyle("-fx-text-fill: #F44336; -fx-font-weight: bold;");
@@ -222,17 +212,14 @@ public class FlightSearchResultsController {
             seatsLabel.setStyle("-fx-text-fill: #4CAF50;");
         }
 
-
         SimpleDateFormat dateFormat = new SimpleDateFormat("dd MMM yyyy");
         Label dateLabel = new Label(dateFormat.format(flight.getFlight_date()));
         dateLabel.setStyle("-fx-text-fill: #616161;");
-
 
         Button confirmButton = new Button("Confirm");
         confirmButton.setStyle("-fx-background-color: #FF9E0C; -fx-text-fill: white; -fx-font-weight: bold; -fx-background-radius: 5;");
         confirmButton.setPrefWidth(120);
         confirmButton.setPrefHeight(30);
-
 
         if (requiredSeats > 0 && flight.getAvailable_seats() < requiredSeats) {
             confirmButton.setDisable(true);
@@ -241,15 +228,12 @@ public class FlightSearchResultsController {
 
         confirmButton.setOnAction(e -> handleFlightConfirmation(flight));
 
-
         Region spacerBottom = new Region();
         HBox.setHgrow(spacerBottom, Priority.ALWAYS);
 
         bottomSection.getChildren().addAll(priceLabel, seatsLabel, dateLabel, spacerBottom, confirmButton);
 
-
         flightBox.getChildren().addAll(topSection, routeSection, bottomSection);
-
 
         if (requiredSeats > 0 && flight.getAvailable_seats() < requiredSeats) {
             Label warningLabel = new Label("Not enough seats available for your party of " + requiredSeats);
@@ -269,14 +253,18 @@ public class FlightSearchResultsController {
     @FXML
     void goBack(ActionEvent event) {
         try {
+            if (isEmbeddedInDashboard && dashboardController != null) {
+                // If we're embedded in dashboard, go back to flight search within dashboard
+                dashboardController.reserveFlight(event);
+            } else {
+                // Standalone mode, load ChercherVol.fxml as a separate scene
+                FXMLLoader loader = new FXMLLoader(getClass().getResource("/ChercherVol.fxml"));
+                Parent root = loader.load();
 
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("/ChercherVol.fxml"));
-            Parent root = loader.load();
-
-
-            Stage stage = (Stage) backButton.getScene().getWindow();
-            stage.setScene(new Scene(root));
-            stage.setTitle("Flight Search");
+                Stage stage = (Stage) backButton.getScene().getWindow();
+                stage.setScene(new Scene(root));
+                stage.setTitle("Flight Search");
+            }
         } catch (IOException e) {
             System.out.println("Error returning to search screen: " + e.getMessage());
             e.printStackTrace();
@@ -286,7 +274,6 @@ public class FlightSearchResultsController {
     private void handleFlightConfirmation(Flight flight) {
 
         System.out.println("Flight confirmed: " + flight.getFlight_number());
-
 
         javafx.scene.control.Alert alert = new javafx.scene.control.Alert(javafx.scene.control.Alert.AlertType.INFORMATION);
         alert.setTitle("Flight Confirmation");

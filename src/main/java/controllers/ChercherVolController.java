@@ -9,6 +9,7 @@ import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.DatePicker;
 import javafx.scene.control.TextField;
+import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
 import services.ServiceFlight;
 
@@ -37,6 +38,17 @@ public class ChercherVolController {
 
     @FXML
     private Button btnRechercherVol;
+
+    // Reference to the UserDashboardController if this controller is embedded in the dashboard
+    private UserDashboardController dashboardController;
+
+    // Flag to determine if this controller is embedded within the dashboard
+    private boolean isEmbeddedInDashboard = false;
+
+    public void setDashboardController(UserDashboardController controller) {
+        this.dashboardController = controller;
+        this.isEmbeddedInDashboard = (controller != null);
+    }
 
     @FXML
     void recherchervol(ActionEvent event) {
@@ -67,10 +79,8 @@ public class ChercherVolController {
 
             int totalPassengers = adultCount + childCount;
 
-
             ServiceFlight serviceFlight = new ServiceFlight();
             List<Flight> allFlights = serviceFlight.recuperer();
-
 
             final String finalDeparture = departure;
             final String finalDestination = destination;
@@ -84,19 +94,25 @@ public class ChercherVolController {
                     .filter(flight -> (finalTotalPassengers == 0 || flight.getAvailable_seats() >= finalTotalPassengers))
                     .collect(Collectors.toList());
 
-
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/FlightSearchResults.fxml"));
             Parent root = loader.load();
-
 
             FlightSearchResultsController resultsController = loader.getController();
             resultsController.setFlights(filteredFlights, finalTotalPassengers);
             resultsController.setSourceController(this);
 
+            // Pass the dashboard controller to the results controller if this is embedded in dashboard
+            if (isEmbeddedInDashboard && dashboardController != null) {
+                resultsController.setDashboardController(dashboardController);
 
-            Stage stage = (Stage) btnRechercherVol.getScene().getWindow();
-            stage.setScene(new Scene(root));
-            stage.setTitle("Flight Search Results");
+                // Load the results into the dashboard's content area
+                dashboardController.loadContentToArea(root);
+            } else {
+                // Standalone mode - replace the current scene
+                Stage stage = (Stage) btnRechercherVol.getScene().getWindow();
+                stage.setScene(new Scene(root));
+                stage.setTitle("Flight Search Results");
+            }
 
         } catch (SQLException e) {
             System.out.println("Database error: " + e.getMessage());
@@ -106,7 +122,6 @@ public class ChercherVolController {
             e.printStackTrace();
         }
     }
-
 
     public void reloadSearchScene() {
         try {

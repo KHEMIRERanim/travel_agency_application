@@ -68,7 +68,7 @@
                     </font>
                 </Button>
 
-                <Button fx:id="reservationsBtn" alignment="BASELINE_LEFT" graphicTextGap="15.0" mnemonicParsing="false" onAction="#showReservations" prefHeight="50.0" prefWidth="240.0" style="-fx-background-color: transparent; -fx-text-fill: white;" text="Mes Réservations">
+                <Button fx:id="reservationsBtn" alignment="BASELINE_LEFT" graphicTextGap="15.0" mnemonicParsing="false" onAction="#toggleReservationsMenu" prefHeight="50.0" prefWidth="240.0" style="-fx-background-color: transparent; -fx-text-fill: white;" text="Mes Réservations">
                     <graphic>
                         <ImageView fitHeight="20.0" fitWidth="20.0" pickOnBounds="true" preserveRatio="true">
                             <image>
@@ -83,6 +83,57 @@
                         <Font size="14.0" />
                     </font>
                 </Button>
+
+                <!-- Submenu for Reservations - Hidden by default -->
+                <VBox fx:id="reservationsSubMenu" prefHeight="150.0" prefWidth="240.0" style="-fx-background-color: #17316f;" visible="false" managed="false">
+                    <Button fx:id="flightBtn" alignment="BASELINE_LEFT" graphicTextGap="15.0" mnemonicParsing="false" onAction="#reserveFlight" prefHeight="50.0" prefWidth="240.0" style="-fx-background-color: transparent; -fx-text-fill: white;" text="Réserver un vol">
+                        <graphic>
+                            <ImageView fitHeight="20.0" fitWidth="20.0" pickOnBounds="true" preserveRatio="true">
+                                <image>
+                                    <Image url="@/images/flights_icon.png" />
+                                </image>
+                            </ImageView>
+                        </graphic>
+                        <padding>
+                            <Insets left="40.0" />
+                        </padding>
+                        <font>
+                            <Font size="14.0" />
+                        </font>
+                    </Button>
+
+                    <Button fx:id="hotelBtn" alignment="BASELINE_LEFT" graphicTextGap="15.0" mnemonicParsing="false" onAction="#reserveHotel" prefHeight="50.0" prefWidth="240.0" style="-fx-background-color: transparent; -fx-text-fill: white;" text="Réserver un hôtel">
+                        <graphic>
+                            <ImageView fitHeight="20.0" fitWidth="20.0" pickOnBounds="true" preserveRatio="true">
+                                <image>
+                                    <Image url="@/images/hotels_icon.png" />
+                                </image>
+                            </ImageView>
+                        </graphic>
+                        <padding>
+                            <Insets left="40.0" />
+                        </padding>
+                        <font>
+                            <Font size="14.0" />
+                        </font>
+                    </Button>
+
+                    <Button fx:id="transportBtn" alignment="BASELINE_LEFT" graphicTextGap="15.0" mnemonicParsing="false" onAction="#reserveTransport" prefHeight="50.0" prefWidth="240.0" style="-fx-background-color: transparent; -fx-text-fill: white;" text="Réserver un transport">
+                        <graphic>
+                            <ImageView fitHeight="20.0" fitWidth="20.0" pickOnBounds="true" preserveRatio="true">
+                                <image>
+                                    <Image url="@/images/transport_icon.png" />
+                                </image>
+                            </ImageView>
+                        </graphic>
+                        <padding>
+                            <Insets left="40.0" />
+                        </padding>
+                        <font>
+                            <Font size="14.0" />
+                        </font>
+                    </Button>
+                </VBox>
 
                 <Button fx:id="complaintsBtn" alignment="BASELINE_LEFT" graphicTextGap="15.0" mnemonicParsing="false" onAction="#showComplaints" prefHeight="50.0" prefWidth="240.0" style="-fx-background-color: transparent; -fx-text-fill: white;" text="Mes Réclamations">
                     <graphic>
