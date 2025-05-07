@@ -28,7 +28,6 @@
                 </StackPane>
                 <VBox spacing="10">
                     <Label fx:id="selectedTitle"
-                           styleClass="hotel-title"
                            wrapText="true"/>
                     <Label fx:id="selectedDetails"
                            wrapText="true"
@@ -45,17 +44,16 @@
                                             </image>
                                         </ImageView>
                                     </graphic>
-                                    </Button>
-
+                        </Button>
                     </HBox>
                 </VBox>
             </HBox>
+
             <ScrollPane fx:id="carouselScroll"
                         fitToWidth="false"
                         fitToHeight="true"
                         prefViewportWidth="200"
                         vbarPolicy="NEVER">
-
                 <content>
                     <HBox fx:id="carousel" spacing="10">
                         <padding>
@@ -64,6 +62,14 @@
                     </HBox>
                 </content>
             </ScrollPane>
+
+<Button fx:id="ajoutHotel"
+        prefWidth="250" prefHeight="50"
+        text="Ajouter Hôtel"
+        onAction="#goToAddHotel"
+        style="-fx-background-color: linear-gradient(to right, #ff416c, #ff4b2b); -fx-text-fill: white; -fx-background-radius: 15; -fx-font-weight: bold; -fx-cursor: hand; -fx-font-size: 16px; -fx-alignment: center;"
+        />
+
         </VBox>
     </children>
 </AnchorPane>
