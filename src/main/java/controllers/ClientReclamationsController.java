@@ -43,9 +43,6 @@ public class ClientReclamationsController implements Initializable {
     private Button updateButton;
 
     @FXML
-    private Button clearButton;
-
-    @FXML
     private Button newReclamationButton;
 
     @FXML
@@ -61,6 +58,8 @@ public class ClientReclamationsController implements Initializable {
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
+        // Hide submit button initially - only show when "Nouvelle" is clicked
+        submitButton.setVisible(false);
         // Configure ListView cell factory
         reclamationsListView.setCellFactory(new Callback<ListView<Reclamation>, ListCell<Reclamation>>() {
             @Override
@@ -203,6 +202,9 @@ public class ClientReclamationsController implements Initializable {
             loadReclamations();
             clearForm(event);
 
+            // Hide submit button after submission
+            submitButton.setVisible(false);
+
         } catch (SQLException e) {
             statusLabel.setText("Erreur lors de la soumission: " + e.getMessage());
             System.out.println(e.getMessage());
@@ -307,6 +309,9 @@ public class ClientReclamationsController implements Initializable {
         typeComboBox.setDisable(false);
         dateIncidentField.setDisable(false);
         descriptionTextArea.setDisable(false);
+
+        // Hide the submit button unless "Nouvelle" was explicitly clicked
+        submitButton.setVisible(false);
         submitButton.setDisable(false);
 
         statusLabel.setText("Prêt à saisir une nouvelle réclamation");
@@ -318,5 +323,7 @@ public class ClientReclamationsController implements Initializable {
     @FXML
     void newReclamation(ActionEvent event) {
         clearForm(event);
+        // Make submit button visible when "Nouvelle" is clicked
+        submitButton.setVisible(true);
     }
 }
