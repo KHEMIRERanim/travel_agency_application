@@ -1,15 +1,20 @@
 package controllers;
 
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.scene.Cursor;
+import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.layout.HBox;
+import javafx.stage.Modality;
 import javafx.stage.Stage;
 import entities.Hotels;
 import services.ServiceHotel;
 import javafx.scene.image.ImageView;
 import javafx.scene.image.Image;
 import javafx.stage.FileChooser;
+import javafx.scene.web.WebView;
+import javafx.scene.layout.VBox;
 
 import java.io.*;
 
@@ -29,7 +34,6 @@ public class AjoutHotelController {
     private final Image STAR_EMPTY = new Image(getClass().getResource("/images/star_empty.png").toExternalForm());
     private int currentNote = 1;
     private byte[] imageBytes;
-
 
     private ServiceHotel service = new ServiceHotel();
     private Hotels hotelToEdit = null;
@@ -120,7 +124,6 @@ public class AjoutHotelController {
         }
     }
 
-
     @FXML
     private void onCancel() {
         Stage stage = (Stage) nomField.getScene().getWindow();
@@ -135,16 +138,121 @@ public class AjoutHotelController {
 
         if (selectedFile != null) {
             try {
-
                 Image image = new Image(new FileInputStream(selectedFile));
                 imageView.setImage(image);
-
-
                 imageBytes = convertImageToByteArray(selectedFile);
-
             } catch (IOException e) {
                 errorLabel.setText("Erreur lors du chargement de l'image.");
             }
+        }
+    }
+
+    @FXML
+    private void onOpenMap() {
+        try {
+            Stage mapStage = new Stage();
+            mapStage.initModality(Modality.APPLICATION_MODAL);
+            mapStage.setTitle("Sélectionner une destination");
+
+            WebView webView = new WebView();
+            webView.setPrefSize(800, 600);
+
+            String htmlContent =
+                    """
+                    <!DOCTYPE html>
+                    <html>
+                    <head>
+                        <meta charset="utf-8" />
+                        <title>Carte interactive</title>
+                        <style>
+                            html, body, #map {
+                                height: 100%;
+                                margin: 0;
+                                padding: 0;
+                            }
+                            #info {
+                                position: absolute;
+                                bottom: 10px;
+                                left: 10px;
+                                background: rgba(255, 255, 255, 0.8);
+                                padding: 10px;
+                                border-radius: 6px;
+                                font-family: Arial, sans-serif;
+                            }
+                        </style>
+                        <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.3/dist/leaflet.css" />
+                        <script src="https://unpkg.com/leaflet@1.9.3/dist/leaflet.js"></script>
+                    </head>
+                    <body>
+                        <div id="map"></div>
+                        <div id="info">Cliquez sur une position pour choisir une destination</div>
+                        <script>
+                            var selectedCountry = "";
+                            var map = L.map('map').setView([34.0, 9.0], 5); // Center on Tunisia
+
+                            L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+                                maxZoom: 19,
+                                attribution: '&copy; OpenStreetMap contributors'
+                            }).addTo(map);
+
+                            var marker = null;
+
+                            map.on('click', function(e) {
+                                var latlng = e.latlng;
+
+                                fetch(`https://nominatim.openstreetmap.org/reverse?format=json&lat=${latlng.lat}&lon=${latlng.lng}`)
+                                    .then(response => response.json())
+                                    .then(data => {
+                                        if (data && data.address) {
+                                            selectedCountry = data.address.city || data.address.town || data.address.village || data.address.country || "";
+                                            document.getElementById("info").innerHTML = "Destination sélectionnée : <strong>" + selectedCountry + "</strong>";
+                                            if (marker) {
+                                                marker.setLatLng(latlng);
+                                            } else {
+                                                marker = L.marker(latlng).addTo(map);
+                                            }
+                                        }
+                                    })
+                                    .catch(() => {
+                                        selectedCountry = "";
+                                        document.getElementById("info").innerHTML = "<span style='color:red'>Erreur lors de la récupération du nom de l'endroit.</span>";
+                                    });
+                            });
+                        </script>
+                    </body>
+                    </html>
+                    """;
+
+
+            webView.getEngine().loadContent(htmlContent);
+
+            Button selectButton = new Button("Sélectionner cette destination");
+            selectButton.setStyle("-fx-background-color: #3498db; -fx-text-fill: white; -fx-font-weight: bold; -fx-padding: 8px 16px;");
+            selectButton.setPrefWidth(200);
+
+            VBox root = new VBox();
+            root.getChildren().add(webView);
+            root.getChildren().add(selectButton);
+            VBox.setMargin(selectButton, new javafx.geometry.Insets(10, 0, 10, 10));
+
+            selectButton.setOnAction(e -> {
+                Object result = webView.getEngine().executeScript("selectedCountry");
+                if (result != null && !result.toString().isEmpty()) {
+                    destinationField.setText(result.toString());
+                    mapStage.close();
+                } else {
+                    webView.getEngine().executeScript(
+                            "document.getElementById('info').innerHTML = '<span style=\"color:red\">Veuillez d\\'abord sélectionner un pays!</span>';"
+                    );
+                }
+            });
+
+            Scene scene = new Scene(root, 800, 650);
+            mapStage.setScene(scene);
+            mapStage.show();
+        } catch (Exception e) {
+            errorLabel.setText("Erreur lors de l'ouverture de la carte: " + e.getMessage());
+            e.printStackTrace();
         }
     }
 
@@ -174,5 +282,4 @@ public class AjoutHotelController {
             noteBox.getChildren().add(star);
         }
     }
-
 }
