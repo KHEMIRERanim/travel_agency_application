@@ -62,13 +62,12 @@
                     </HBox>
                 </content>
             </ScrollPane>
-
-<Button fx:id="ajoutHotel"
-        prefWidth="250" prefHeight="50"
-        text="Ajouter Hôtel"
-        onAction="#goToAddHotel"
-        style="-fx-background-color: linear-gradient(to right, #ff416c, #ff4b2b); -fx-text-fill: white; -fx-background-radius: 15; -fx-font-weight: bold; -fx-cursor: hand; -fx-font-size: 16px; -fx-alignment: center;"
-        />
+            <Button fx:id="ajoutHotel"
+                    prefWidth="250" prefHeight="50"
+                    text="Ajouter Hôtel"
+                    onAction="#goToAddHotel"
+                    style="-fx-background-color: linear-gradient(to right, #ff416c, #ff4b2b); -fx-text-fill: white; -fx-background-radius: 15; -fx-font-weight: bold; -fx-cursor: hand; -fx-font-size: 16px; -fx-alignment: center; -fx-margin-left: 200px;"
+                    HBox.hgrow="ALWAYS"/>
 
         </VBox>
     </children>
