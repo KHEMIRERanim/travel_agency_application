@@ -68,11 +68,11 @@
                     </font>
                 </Button>
 
-                <Button fx:id="reservationsBtn" alignment="BASELINE_LEFT" graphicTextGap="15.0" mnemonicParsing="false" onAction="#toggleReservationsMenu" prefHeight="50.0" prefWidth="240.0" style="-fx-background-color: transparent; -fx-text-fill: white;" text="Mes Réservations">
+                <Button fx:id="reservationsBtn" alignment="BASELINE_LEFT" graphicTextGap="15.0" mnemonicParsing="false" onAction="#toggleReservationsMenu" prefHeight="50.0" prefWidth="240.0" style="-fx-background-color: transparent; -fx-text-fill: white;" text="Planifier un voyage">
                     <graphic>
                         <ImageView fitHeight="20.0" fitWidth="20.0" pickOnBounds="true" preserveRatio="true">
                             <image>
-                                <Image url="@/images/flights_icon.png" />
+                                <Image url="@/images/planifiervoy.png" />
                             </image>
                         </ImageView>
                     </graphic>
@@ -90,7 +90,7 @@
                         <graphic>
                             <ImageView fitHeight="20.0" fitWidth="20.0" pickOnBounds="true" preserveRatio="true">
                                 <image>
-                                    <Image url="@/images/flights_icon.png" />
+                                    <Image url="@/images/Reservervol.png" />
                                 </image>
                             </ImageView>
                         </graphic>
@@ -151,11 +151,11 @@
                     </font>
                 </Button>
 
-                <Button fx:id="tripBtn" alignment="BASELINE_LEFT" graphicTextGap="15.0" mnemonicParsing="false" onAction="#planTrip" prefHeight="50.0" prefWidth="240.0" style="-fx-background-color: transparent; -fx-text-fill: white;" text="Planifier un voyage">
+                <Button fx:id="tripBtn" alignment="BASELINE_LEFT" graphicTextGap="15.0" mnemonicParsing="false" onAction="#planTrip" prefHeight="50.0" prefWidth="240.0" style="-fx-background-color: transparent; -fx-text-fill: white;" text="Mes Réservations">
                     <graphic>
                         <ImageView fitHeight="20.0" fitWidth="20.0" pickOnBounds="true" preserveRatio="true">
                             <image>
-                                <Image url="@/images/hotels_icon.png" />
+                                <Image url="@/images/flights_icon.png" />
                             </image>
                         </ImageView>
                     </graphic>
