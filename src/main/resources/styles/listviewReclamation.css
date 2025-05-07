@@ -1,95 +1,175 @@
-/* ListView Styling */
-.list-view {
+/* ListView Styling - Improved based on listview.css */
+.list-view, .reclamations-list {
     -fx-background-color: white;
-    -fx-background-radius: 5px;
+    -fx-background-radius: 10px;
     -fx-padding: 5px;
     -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.1), 10, 0, 0, 5);
+    -fx-border-width: 0;
 }
 
-.list-view .list-cell {
-    -fx-padding: 15px 10px;
+.list-view .list-cell, .reclamations-list .list-cell {
+    -fx-padding: 15px 20px;
     -fx-background-color: white;
-    -fx-border-color: transparent transparent #eeeeee transparent;
+    -fx-border-color: #f4f6f9;
+    -fx-border-width: 0 0 1px 0;
     -fx-font-size: 13px;
+    -fx-font-family: "Segoe UI", Arial, sans-serif;
 }
 
-.list-view .list-cell:hover {
-    -fx-background-color: #f5f8ff;
+.list-view .list-cell:odd, .reclamations-list .list-cell:odd {
+    -fx-background-color: #f9fafc;
 }
 
-.list-view .list-cell:selected {
-    -fx-background-color: #edf2ff;
+.list-view .list-cell:hover, .reclamations-list .list-cell:hover {
+    -fx-background-color: #edf2fa;
+}
+
+.list-view .list-cell:selected, .reclamations-list .list-cell:selected {
+    -fx-background-color: #e3e9f5;
     -fx-text-fill: #1e3a8a;
-    -fx-border-color: transparent transparent #d1d9ee transparent;
 }
 
 /* Custom styles for reclamation cells */
 .reclamation-cell {
     -fx-font-family: "Segoe UI", Arial, sans-serif;
     -fx-border-width: 0 0 1px 0;
-    -fx-border-color: #eeeeee;
+    -fx-border-color: #f4f6f9;
 }
 
-/* Status styles - More visible status indicators */
+/* Status styling with custom cell appearance */
 .status-pending {
     -fx-border-width: 0 0 0 4px;
-    -fx-border-color: transparent transparent transparent #ffb020;
-    -fx-padding: 10px 10px 10px 15px;
-    -fx-background-color: linear-gradient(to right, #fff9e6 0%, #fff9e6 10%, white 30%, white 100%);
+    -fx-border-color: transparent transparent transparent #fbbf24;
+    -fx-padding: 15px 20px 15px 16px;
+    -fx-background-color: linear-gradient(to right, rgba(251, 191, 36, 0.1) 0%, rgba(251, 191, 36, 0.05) 20%, transparent 40%);
 }
 
-.status-progress {
+.status-progress, .status-inprogress {
     -fx-border-width: 0 0 0 4px;
-    -fx-border-color: transparent transparent transparent #2196f3;
-    -fx-padding: 10px 10px 10px 15px;
-    -fx-background-color: linear-gradient(to right, #e6f4ff 0%, #e6f4ff 10%, white 30%, white 100%);
+    -fx-border-color: transparent transparent transparent #3b82f6;
+    -fx-padding: 15px 20px 15px 16px;
+    -fx-background-color: linear-gradient(to right, rgba(59, 130, 246, 0.1) 0%, rgba(59, 130, 246, 0.05) 20%, transparent 40%);
 }
 
 .status-resolved {
     -fx-border-width: 0 0 0 4px;
-    -fx-border-color: transparent transparent transparent #4caf50;
-    -fx-padding: 10px 10px 10px 15px;
-    -fx-background-color: linear-gradient(to right, #e6f7e6 0%, #e6f7e6 10%, white 30%, white 100%);
+    -fx-border-color: transparent transparent transparent #10b981;
+    -fx-padding: 15px 20px 15px 16px;
+    -fx-background-color: linear-gradient(to right, rgba(16, 185, 129, 0.1) 0%, rgba(16, 185, 129, 0.05) 20%, transparent 40%);
 }
 
-/* ListView scroll bar styling */
-.list-view .scroll-bar:vertical {
-    -fx-background-color: white;
-    -fx-pref-width: 12px;
+/* Status indicator for the AdminReclamationsController custom cell */
+.status-indicator {
+    -fx-min-width: 90;
+    -fx-min-height: 25;
+    -fx-max-height: 25;
+    -fx-background-radius: 12.5;
+    -fx-alignment: center;
+    -fx-text-fill: white;
+    -fx-font-size: 11px;
+    -fx-font-weight: bold;
 }
 
-.list-view .scroll-bar:vertical .thumb {
-    -fx-background-color: #d1d5db;
-    -fx-background-radius: 6px;
+.status-indicator.status-pending {
+    -fx-background-color: #fbbf24;
+    -fx-padding: 0;
 }
 
-.list-view .scroll-bar:vertical .track {
-    -fx-background-color: white;
+.status-indicator.status-inprogress {
+    -fx-background-color: #3b82f6;
+    -fx-padding: 0;
+}
+
+.status-indicator.status-resolved {
+    -fx-background-color: #10b981;
+    -fx-padding: 0;
+}
+
+/* Custom cell styling from listview.css */
+.cell-container {
+    -fx-spacing: 10;
+}
+
+.cell-main {
+    -fx-spacing: 5;
+}
+
+.cell-header {
+    -fx-spacing: 15;
+}
+
+.cell-title {
+    -fx-font-size: 14px;
+    -fx-font-weight: bold;
+    -fx-text-fill: #1e3a8a;
+}
+
+.cell-subtitle {
+    -fx-font-size: 12px;
+    -fx-text-fill: #6b7280;
+}
+
+.cell-date {
+    -fx-font-size: 12px;
+    -fx-text-fill: #6b7280;
+}
+
+.cell-description {
+    -fx-font-size: 13px;
+    -fx-text-fill: #374151;
+    -fx-wrap-text: true;
+}
+
+/* ListView scroll bar styling - improved version */
+.list-view .scroll-bar:vertical, .reclamations-list .scroll-bar:vertical {
+    -fx-background-color: transparent;
+    -fx-pref-width: 10px;
+}
+
+.list-view .scroll-bar:vertical .thumb, .reclamations-list .scroll-bar:vertical .thumb {
+    -fx-background-color: #d1d9e6;
+    -fx-background-radius: 5px;
+}
+
+.list-view .scroll-bar:vertical .track, .reclamations-list .scroll-bar:vertical .track {
+    -fx-background-color: transparent;
 }
 
 .list-view .scroll-bar:vertical .increment-button,
-.list-view .scroll-bar:vertical .decrement-button {
-    -fx-background-color: white;
-    -fx-padding: 0 5px;
+.list-view .scroll-bar:vertical .decrement-button,
+.reclamations-list .scroll-bar:vertical .increment-button,
+.reclamations-list .scroll-bar:vertical .decrement-button {
+    -fx-background-color: transparent;
+    -fx-padding: 0;
 }
 
 .list-view .scroll-bar:vertical .increment-arrow,
-.list-view .scroll-bar:vertical .decrement-arrow {
+.list-view .scroll-bar:vertical .decrement-arrow,
+.reclamations-list .scroll-bar:vertical .increment-arrow,
+.reclamations-list .scroll-bar:vertical .decrement-arrow {
     -fx-background-color: #9ca3af;
     -fx-padding: 2px;
 }
 
 /* Empty list style */
-.list-view .placeholder {
+.list-view .placeholder, .reclamations-list .placeholder {
     -fx-text-fill: #6b7280;
     -fx-font-style: italic;
 }
 
+/* Card styling */
+.card {
+    -fx-background-color: white;
+    -fx-background-radius: 10;
+    -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.1), 10, 0, 0, 3);
+}
+
 /* Form elements styling enhancements */
 .combo-box, .text-field, .text-area {
-    -fx-background-color: white;
-    -fx-border-color: #d1d5db;
-    -fx-border-radius: 4px;
+    -fx-background-color: #f9fafc;
+    -fx-background-radius: 5;
+    -fx-border-color: #e5e7eb;
+    -fx-border-radius: 5;
     -fx-padding: 8px;
 }
 
@@ -98,38 +178,39 @@
     -fx-effect: dropshadow(three-pass-box, rgba(59, 130, 246, 0.2), 5, 0, 0, 0);
 }
 
-/* Make list items more distinguishable */
-.list-view .list-cell:odd {
-    -fx-background-color: #fcfcfc;
+.combo-box .arrow-button {
+    -fx-background-color: transparent;
 }
 
-.list-view .list-cell:even {
-    -fx-background-color: white;
+.combo-box .arrow {
+    -fx-background-color: #6b7280;
 }
 
 /* Button styling */
 .button {
-    -fx-background-radius: 4px;
-    -fx-font-weight: bold;
+    -fx-background-radius: 5;
     -fx-cursor: hand;
+    -fx-font-weight: bold;
 }
 
 .button-primary {
-    -fx-background-color: #3b82f6;
+    -fx-background-color: #1e3a8a;
     -fx-text-fill: white;
 }
 
 .button-primary:hover {
-    -fx-background-color: #2563eb;
+    -fx-background-color: #1e40af;
 }
 
 .button-secondary {
-    -fx-background-color: #e5e7eb;
+    -fx-background-color: #f3f4f6;
+    -fx-border-color: #d1d5db;
+    -fx-border-radius: 5;
     -fx-text-fill: #4b5563;
 }
 
 .button-secondary:hover {
-    -fx-background-color: #d1d5db;
+    -fx-background-color: #e5e7eb;
 }
 
 .button-success {
@@ -141,18 +222,61 @@
     -fx-background-color: #059669;
 }
 
-/* Status label styling */
+.button-danger {
+    -fx-background-color: #ef4444;
+    -fx-text-fill: white;
+}
+
+.button-danger:hover {
+    -fx-background-color: #dc2626;
+}
+
+/* Labels */
+.label-info {
+    -fx-font-size: 12px;
+    -fx-text-fill: #6b7280;
+}
+
 .label-value {
+    -fx-font-size: 14px;
+    -fx-text-fill: #111827;
     -fx-font-weight: bold;
-    -fx-text-fill: #1e3a8a;
 }
 
-/* Explicitly setting the status styles for disabled cells when state is not editable */
-.list-view .list-cell:disabled {
-    -fx-opacity: 0.8;
+.label-header {
+    -fx-font-size: 24px;
+    -fx-font-weight: bold;
+    -fx-text-fill: #111827;
 }
 
-/* More visible left border */
-.status-pending, .status-progress, .status-resolved {
-    -fx-border-insets: 0;
+.label-subheader {
+    -fx-font-size: 18px;
+    -fx-font-weight: bold;
+    -fx-text-fill: #374151;
+}
+
+/* Text area */
+.text-area {
+    -fx-background-color: #f9fafc;
+    -fx-background-radius: 5;
+    -fx-border-color: #e5e7eb;
+    -fx-border-radius: 5;
+}
+
+.text-area .content {
+    -fx-background-color: #f9fafc;
+}
+
+/* State-specific styles for cell selection */
+.list-view .list-cell:selected.status-pending {
+    -fx-background-color: rgba(251, 191, 36, 0.15);
+}
+
+.list-view .list-cell:selected.status-progress,
+.list-view .list-cell:selected.status-inprogress {
+    -fx-background-color: rgba(59, 130, 246, 0.15);
+}
+
+.list-view .list-cell:selected.status-resolved {
+    -fx-background-color: rgba(16, 185, 129, 0.15);
 }

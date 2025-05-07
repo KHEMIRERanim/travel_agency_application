@@ -71,12 +71,11 @@ public class ClientReclamationsController implements Initializable {
                         super.updateItem(reclamation, empty);
 
                         // Clear all previous style classes to prevent style inheritance
-                        getStyleClass().removeAll("status-pending", "status-progress", "status-resolved");
+                        getStyleClass().removeAll("status-pending", "status-progress", "status-resolved", "reclamation-cell");
 
                         if (empty || reclamation == null) {
                             setText(null);
                             setGraphic(null);
-                            getStyleClass().remove("reclamation-cell");
                         } else {
                             String status = reclamation.getEtat();
 
