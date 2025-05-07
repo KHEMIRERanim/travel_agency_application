@@ -11,7 +11,7 @@ public class ServiceReservationHotel implements IService<ReservationHotel> {
     private Connection con;
 
     public ServiceReservationHotel() {
-        con = MyDatabase.getInstance().getConnection();
+        con = MyDatabase.getInstance().getCnx();
 
     }
 

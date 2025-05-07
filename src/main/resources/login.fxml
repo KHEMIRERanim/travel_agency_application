@@ -1,37 +1,134 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.PasswordField?>
 <?import javafx.scene.control.TextField?>
+<?import javafx.scene.effect.DropShadow?>
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.paint.Color?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane prefHeight="400.0" prefWidth="600.0" style="-fx-background-color: #FEF5E7#FEF5E7;" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controllers.loginController">
+<AnchorPane prefHeight="600.0" prefWidth="900.0" style="-fx-background-color: #f5f7fa;" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controllers.LoginController">
     <children>
-        <ImageView fx:id="lobbyImageView" fitHeight="417.0" fitWidth="649.0" opacity="0.5" pickOnBounds="true" preserveRatio="true">
-            <image>
-                <Image url="@../resources/images/lobbyHotel.jpg" />
-            </image>
-        </ImageView>
-        <AnchorPane layoutX="159.0" layoutY="74.0" prefHeight="270.0" prefWidth="298.0" style="-fx-background-color: #FEF5E7#FEF5E7;">
+        <AnchorPane layoutX="450.0" prefHeight="600.0" prefWidth="450.0" style="-fx-background-color: #ffffff;">
+            <effect>
+                <DropShadow>
+                    <color>
+                        <Color opacity="0.15" />
+                    </color>
+                </DropShadow>
+            </effect>
             <children>
-                <Label alignment="CENTER" layoutX="119.0" layoutY="14.0" prefHeight="26.0" prefWidth="72.0" text="LOGIN">
-                    <font>
-                        <Font name="System Font" size="18.0" />
-                    </font>
-                </Label>
-                <PasswordField fx:id="passwordField" layoutX="73.0" layoutY="156.0" promptText="Password" />
-                <TextField fx:id="usernameField" layoutX="73.0" layoutY="93.0" promptText="Username" />
-                <Label layoutX="124.0" layoutY="76.0" text="Username" />
-                <Label layoutX="125.0" layoutY="135.0" text="Password" />
-                <Label fx:id="loginMessageLabel" alignment="CENTER" layoutX="-6.0" layoutY="193.0" onDragDetected="#validateLogin" prefHeight="17.0" prefWidth="316.0" textFill="RED" />
-                <Button fx:id="loginButton" alignment="CENTER" layoutX="119.0" layoutY="210.0" mnemonicParsing="false" onAction="#loginButtonOnAction" prefHeight="26.0" prefWidth="72.0" style="-fx-background-color: #90aac4#90aac4 #90aac4#90aac4;" text="Login" />
+                <VBox alignment="CENTER" layoutX="75.0" layoutY="60.0" prefHeight="480.0" prefWidth="300.0" spacing="20.0">
+                    <children>
+                        <ImageView fitHeight="80.0" fitWidth="200.0" pickOnBounds="true" preserveRatio="true">
+                            <image>
+                                <Image url="/images/travellian_logo.png" />
+                            </image>
+                        </ImageView>
+                        <Label text="Connectez-vous à votre compte" textAlignment="CENTER">
+                            <font>
+                                <Font name="System Bold" size="16.0" />
+                            </font>
+                        </Label>
+                        <VBox spacing="5.0">
+                            <children>
+                                <Label text="Email">
+                                    <font>
+                                        <Font size="12.0" />
+                                    </font>
+                                </Label>
+                                <TextField fx:id="tf_email" prefHeight="40.0" prefWidth="300.0" promptText="Entrez votre email" style="-fx-background-radius: 5;">
+                                    <font>
+                                        <Font size="14.0" />
+                                    </font>
+                                </TextField>
+                            </children>
+                        </VBox>
+                        <VBox spacing="5.0">
+                            <children>
+                                <Label text="Mot de passe">
+                                    <font>
+                                        <Font size="12.0" />
+                                    </font>
+                                </Label>
+                                <PasswordField fx:id="tf_password" prefHeight="40.0" prefWidth="300.0" promptText="Entrez votre mot de passe" style="-fx-background-radius: 5;">
+                                    <font>
+                                        <Font size="14.0" />
+                                    </font>
+                                </PasswordField>
+                            </children>
+                        </VBox>
+                        <Button mnemonicParsing="false" onAction="#login" prefHeight="45.0" prefWidth="300.0" style="-fx-background-color: #2a6ec1; -fx-background-radius: 5;" text="CONNEXION" textFill="WHITE">
+                            <font>
+                                <Font name="System Bold" size="14.0" />
+                            </font>
+                            <effect>
+                                <DropShadow height="10.0" radius="4.5" width="10.0">
+                                    <color>
+                                        <Color opacity="0.25" />
+                                    </color>
+                                </DropShadow>
+                            </effect>
+                        </Button>
+                        <Button mnemonicParsing="false" onAction="#forgotPassword" style="-fx-background-color: transparent;" text="Mot de passe oublié?" textFill="#2a6ec1">
+                            <font>
+                                <Font size="12.0" />
+                            </font>
+                        </Button>
+                        <HBox alignment="CENTER" spacing="10.0">
+                            <children>
+                                <Label text="Pas encore de compte?">
+                                    <font>
+                                        <Font size="12.0" />
+                                    </font>
+                                </Label>
+                                <Button mnemonicParsing="false" onAction="#goToSignUp" style="-fx-background-color: transparent;" text="S'inscrire" textFill="#2a6ec1">
+                                    <font>
+                                        <Font name="System Bold" size="12.0" />
+                                    </font>
+                                </Button>
+                            </children>
+                        </HBox>
+                        <Label fx:id="errorLabel" alignment="CENTER" prefHeight="20.0" prefWidth="300.0" textFill="#e74c3c">
+                            <font>
+                                <Font size="12.0" />
+                            </font>
+                        </Label>
+                    </children>
+                </VBox>
             </children>
         </AnchorPane>
-        <Button fx:id="backButton" layoutY="374.0" mnemonicParsing="false" onAction="#backButtonOnAction" prefHeight="26.0" prefWidth="57.0" style="-fx-background-color: #D2E2F4#D2E2F4;" text="Back" />
-        <Button fx:id="cancelButton" layoutX="545.0" layoutY="374.0" mnemonicParsing="false" onAction="#cancelButtonOnAction" style="-fx-background-color: #D1CFBE#D1CFBE #D1CFBE#D1CFBE #D1CFBE#D1CFBE #D1CFBE#D1CFBE;" text="Cancel" />
+        <AnchorPane prefHeight="600.0" prefWidth="450.0">
+            <children>
+                <!-- Full-sized image with no overlay -->
+                <ImageView fitHeight="600.0" fitWidth="450.0" pickOnBounds="true" preserveRatio="false">
+                    <image>
+                        <Image url="/images/atravel_illustration.png" />
+                    </image>
+                </ImageView>
+
+                <VBox alignment="CENTER" layoutX="50.0" prefHeight="600.0" prefWidth="350.0" spacing="20.0">
+                    <children>
+                        <Label text="Content de te revoir!" textFill="WHITE">
+                            <font>
+                                <Font name="System Bold" size="32.0" />
+                            </font>
+                        </Label>
+                        <Label text="Connectez-vous pour gérer votre compte, vos réservations, vos réclamations et bien plus encore" textAlignment="CENTER" textFill="YELLOW" wrapText="true">
+                            <font>
+                                <Font size="28.0" />
+                            </font>
+                        </Label>
+                    </children>
+                </VBox>
+            </children>
+        </AnchorPane>
     </children>
 </AnchorPane>

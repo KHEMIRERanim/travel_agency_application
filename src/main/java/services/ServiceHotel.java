@@ -11,7 +11,7 @@ public class ServiceHotel implements IService<Hotels> {
     private Connection con;
 
     public ServiceHotel() {
-        con = MyDatabase.getInstance().getConnection();
+        con = MyDatabase.getInstance().getCnx();
     }
 
     @Override

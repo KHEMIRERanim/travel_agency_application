@@ -1,116 +1,122 @@
 package controllers;
 
-
+import entities.Client;
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
-import javafx.fxml.Initializable;
+import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
-import javafx.scene.image.Image;
-import javafx.scene.image.ImageView;
 import javafx.stage.Stage;
-import javafx.stage.StageStyle;
-import utils.MyDatabase;
+import services.ServiceClient;
 
-import java.io.File;
-import java.net.URL;
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.util.ResourceBundle;
+import java.io.IOException;
+import java.sql.SQLException;
 
-public class loginController implements Initializable {
-
-    public static String firstname;
-    public static String username;
-    public static Integer user_id;
+public class LoginController {
+    private ServiceClient serviceClient = new ServiceClient();
 
     @FXML
-    private Label loginMessageLabel;
-    @FXML
-    private ImageView lobbyImageView;
-    @FXML
-    private TextField usernameField;
-    @FXML
-    private PasswordField passwordField;
-    @FXML
-    private Button backButton;
-    @FXML
-    private Button cancelButton;
+    private TextField tf_email;
 
-    @Override
-    public void initialize(URL url, ResourceBundle resourceBundle) {
-        File lobbyFile = new File(getClass().getResource("/images/lobbyHotel.jpg").toExternalForm());
-        Image lobbyImage = new Image(lobbyFile.toURI().toString());
-        lobbyImageView.setImage(lobbyImage);
-        loginMessageLabel.setText("");
-    }
+    @FXML
+    private PasswordField tf_password;
 
-    public void loginButtonOnAction(javafx.event.ActionEvent event) {
-        if (!usernameField.getText().isEmpty() && !passwordField.getText().isEmpty()) {
-            validateLogin();
-        } else {
-            loginMessageLabel.setText("Please enter username and password.");
+    @FXML
+    private Label errorLabel;
+
+    @FXML
+    void login(ActionEvent event) {
+        String email = tf_email.getText();
+        String password = tf_password.getText();
+
+        // Check if fields are empty
+        if (email.isEmpty() || password.isEmpty()) {
+            errorLabel.setText("Veuillez remplir tous les champs");
+            return;
         }
-    }
 
-    public void validateLogin() {
-        String sql = "SELECT * FROM user WHERE username = ? AND password = ?";
+        // Check for admin login
+        if (email.equals("admin@gmail.com") && password.equals("admin")) {
+            // Open admin dashboard
+            try {
+                FXMLLoader loader = new FXMLLoader(getClass().getResource("/AdminDashboard.fxml"));
+                Parent root = loader.load();
+                Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
+                stage.setScene(new Scene(root));
+                stage.setTitle("Dashboard Admin");
+                stage.show();
+            } catch (IOException e) {
+                errorLabel.setText("Erreur système: " + e.getMessage());
+                System.out.println(e.getMessage());
+            }
+            return;
+        }
+
+        // Check user login
         try {
-            Connection conn = MyDatabase.getInstance().getConnection();
-            PreparedStatement stmt = conn.prepareStatement(sql);
-            stmt.setString(1, usernameField.getText());
-            stmt.setString(2, passwordField.getText());
-            ResultSet rs = stmt.executeQuery();
+            boolean found = false;
+            for (Client client : serviceClient.recuperer()) {
+                if (client.getEmail().equals(email) && client.getMot_de_passe().equals(password)) {
+                    found = true;
 
-            if (rs.next()) {
-                loginController.username = rs.getString("username");
-                loginController.firstname = rs.getString("firstname");
-                loginController.user_id = rs.getInt("id");
+                    // Open user dashboard with client information
+                    try {
+                        FXMLLoader loader = new FXMLLoader(getClass().getResource("/UserDashboard.fxml"));
+                        Parent root = loader.load();
 
+                        UserDashboardController controller = loader.getController();
+                        controller.setClient(client);
 
-                Parent root = FXMLLoader.load(getClass().getResource("dashboard.fxml"));
-                Stage loginStage = new Stage();
-                loginStage.initStyle(StageStyle.UNDECORATED);
-                loginStage.setScene(new Scene(root, 600, 400));
-                loginStage.show();
-
-
-                Stage stage = (Stage) backButton.getScene().getWindow();
-                stage.close();
-            } else {
-                loginMessageLabel.setText("Invalid login. Try again.");
+                        Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
+                        stage.setScene(new Scene(root));
+                        stage.setTitle("Dashboard Utilisateur");
+                        stage.show();
+                    } catch (IOException e) {
+                        errorLabel.setText("Erreur système: " + e.getMessage());
+                        System.out.println(e.getMessage());
+                    }
+                    break;
+                }
             }
 
-            rs.close();
-            stmt.close();
-        } catch (Exception e) {
-            e.printStackTrace();
-            loginMessageLabel.setText("Database error.");
+            if (!found) {
+                errorLabel.setText("Email ou mot de passe incorrect");
+            }
+        } catch (SQLException e) {
+            errorLabel.setText("Erreur de connexion à la base de données");
+            System.out.println(e.getMessage());
         }
     }
 
-    public void backButtonOnAction(javafx.event.ActionEvent event) {
+    @FXML
+    void goToSignUp(ActionEvent event) {
         try {
-            Parent root = FXMLLoader.load(getClass().getResource("homepage.fxml"));
-            Stage loginStage = new Stage();
-            loginStage.initStyle(StageStyle.UNDECORATED);
-            loginStage.setScene(new Scene(root, 600, 400));
-            loginStage.show();
-
-            Stage stage = (Stage) backButton.getScene().getWindow();
-            stage.close();
-        } catch (Exception e) {
-            e.printStackTrace();
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/AjouterPersonne.fxml"));
+            Parent root = loader.load();
+            Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
+            stage.setScene(new Scene(root));
+            stage.setTitle("Inscription");
+            stage.show();
+        } catch (IOException e) {
+            System.out.println(e.getMessage());
         }
     }
 
-    public void cancelButtonOnAction(javafx.event.ActionEvent event) {
-        Stage stage = (Stage) cancelButton.getScene().getWindow();
-        stage.close();
+    @FXML
+    void forgotPassword(ActionEvent event) {
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/ForgotPassword.fxml"));
+            Parent root = loader.load();
+            Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
+            stage.setScene(new Scene(root));
+            stage.setTitle("Mot de passe oublié");
+            stage.show();
+        } catch (IOException e) {
+            System.out.println(e.getMessage());
+        }
     }
 }

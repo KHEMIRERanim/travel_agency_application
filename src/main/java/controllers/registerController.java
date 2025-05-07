@@ -105,7 +105,7 @@ public class registerController {
 
         String query = "INSERT INTO user (firstname, lastname, address, telephone, username, password, email) VALUES (?, ?, ?, ?, ?, ?, ?)";
 
-        try (PreparedStatement stmt = database.getConnection().prepareStatement(query)) {
+        try (PreparedStatement stmt = database.getCnx().prepareStatement(query)) {
 
             stmt.setString(1, firstname);
             stmt.setString(2, lastname);

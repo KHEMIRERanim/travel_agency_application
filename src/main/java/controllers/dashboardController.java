@@ -39,9 +39,14 @@ public class dashboardController implements Initializable {
         File lobbyHotelFile = new File("Hotels/images/lobbyHotel.jpg");
         Image lobbyHotelImage = new Image(lobbyHotelFile.toURI().toString());
         lobbyBackground.setImage(lobbyHotelImage);
-
+        /*
         id_utilisateur= loginController.user_id;
         firstname= loginController.firstname;
+        welcomeLabel.setText("Welcome " + firstname + "!");
+*/
+
+        id_utilisateur= 5;
+        firstname= "test";
         welcomeLabel.setText("Welcome " + firstname + "!");
 
     }
