@@ -8,6 +8,7 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.*;
+import javafx.scene.control.Alert.AlertType;
 import javafx.util.Callback;
 import services.ServiceReclamation;
 
@@ -15,6 +16,7 @@ import java.net.URL;
 import java.sql.SQLException;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
+import java.util.Optional;
 import java.util.ResourceBundle;
 
 public class ClientReclamationsController implements Initializable {
@@ -45,6 +47,9 @@ public class ClientReclamationsController implements Initializable {
 
     @FXML
     private Button newReclamationButton;
+
+    @FXML
+    private Button deleteButton;
 
     @FXML
     private Label statusLabel;
@@ -125,7 +130,10 @@ public class ClientReclamationsController implements Initializable {
                 typeComboBox.setValue(selectedReclamation.getType());
                 dateIncidentField.setText(selectedReclamation.getDateIncident());
                 descriptionTextArea.setText(selectedReclamation.getDescription());
+
+                // Enable update and delete buttons
                 updateButton.setDisable(false);
+                deleteButton.setDisable(false);
 
                 // Disable editing if the state is not "pas encore vu"
                 boolean isEditable = "pas encore vu".equals(selectedReclamation.getEtat());
@@ -133,6 +141,9 @@ public class ClientReclamationsController implements Initializable {
                 dateIncidentField.setDisable(!isEditable);
                 descriptionTextArea.setDisable(!isEditable);
                 updateButton.setDisable(!isEditable);
+
+                // Delete button should be enabled for any state
+                deleteButton.setDisable(false);
 
                 if (!isEditable) {
                     statusLabel.setText("Cette réclamation est déjà en traitement et ne peut plus être modifiée.");
@@ -245,6 +256,40 @@ public class ClientReclamationsController implements Initializable {
     }
 
     @FXML
+    void deleteReclamation(ActionEvent event) {
+        try {
+            if (selectedReclamation == null) {
+                statusLabel.setText("Veuillez sélectionner une réclamation à supprimer");
+                return;
+            }
+
+            // Ask for confirmation
+            Alert confirmDialog = new Alert(AlertType.CONFIRMATION);
+            confirmDialog.setTitle("Confirmation de suppression");
+            confirmDialog.setHeaderText("Supprimer la réclamation");
+            confirmDialog.setContentText("Êtes-vous sûr de vouloir supprimer cette réclamation ?");
+
+            Optional<ButtonType> result = confirmDialog.showAndWait();
+
+            if (result.isPresent() && result.get() == ButtonType.OK) {
+                // Proceed with deletion
+                serviceReclamation.supprimer(selectedReclamation);
+                statusLabel.setText("Réclamation supprimée avec succès");
+
+                // Refresh list and clear form
+                loadReclamations();
+                clearForm(event);
+            } else {
+                statusLabel.setText("Suppression annulée");
+            }
+
+        } catch (SQLException e) {
+            statusLabel.setText("Erreur lors de la suppression: " + e.getMessage());
+            System.out.println(e.getMessage());
+        }
+    }
+
+    @FXML
     void clearForm(ActionEvent event) {
         typeComboBox.setValue(null);
 
@@ -256,6 +301,7 @@ public class ClientReclamationsController implements Initializable {
         descriptionTextArea.setText("");
         selectedReclamation = null;
         updateButton.setDisable(true);
+        deleteButton.setDisable(true);
 
         // Re-enable all fields
         typeComboBox.setDisable(false);
