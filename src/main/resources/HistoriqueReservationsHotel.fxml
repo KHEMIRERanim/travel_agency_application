@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.control.Label?>
+
+
+<AnchorPane xmlns:fx="http://javafx.com/fxml/1"
+            fx:controller="controllers.HistoriqueReservationsHotelController"
+            style="-fx-padding: 20;">
+    <!-- Title -->
+    <Label text="Historique de vos réservations"
+           layoutX="20" layoutY="10"
+           style="-fx-font-size: 24px;
+                   -fx-font-weight: bold;
+                   -fx-text-fill: #4e342e;" />
+
+    <!-- Table -->
+    <TableView fx:id="table"
+               layoutX="20" layoutY="60"
+               prefWidth="760" prefHeight="400"
+               style="-fx-background-color: rgba(255,255,255,0.85);
+                      -fx-border-radius: 16;
+                      -fx-background-radius: 16;
+                      -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.25), 10, 0, 0, 4);">
+
+        <columns>
+            <TableColumn fx:id="hotelNameCol" text="Nom de l'hôtel" prefWidth="200"
+                         style="-fx-font-weight: bold; -fx-alignment: CENTER_LEFT;"/>
+            <TableColumn fx:id="colPrixTotal" text="Prix Total" prefWidth="200"
+                         style="-fx-font-weight: bold; -fx-alignment: LEFT;"/>
+            <TableColumn fx:id="checkinCol"    text="Arrivée"       prefWidth="120"
+                         style="-fx-font-weight: bold; -fx-alignment: LEFT;"/>
+            <TableColumn fx:id="checkoutCol"   text="Départ"        prefWidth="120"
+                         style="-fx-font-weight: bold; -fx-alignment: LEFT;"/>
+            <TableColumn fx:id="hotelPriceCol" text="Prix par nuit" prefWidth="200"
+                         style="-fx-font-weight: bold; -fx-alignment: LEFT;"/>
+        </columns>
+    </TableView>
+</AnchorPane>

@@ -1,5 +1,6 @@
 package controllers;
 
+import entities.Client;
 import entities.Hotels;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -18,6 +19,7 @@ import javafx.scene.shape.Rectangle;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
 import services.ServiceHotel;
+import services.ServiceReservationHotel;
 
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
@@ -25,19 +27,25 @@ import java.net.URL;
 import java.util.List;
 import java.util.ResourceBundle;
 
-public class ListeHotelsController implements Initializable {
+public class ListeHotelsReservationController implements Initializable {
 
     @FXML private ImageView selectedImage;
     @FXML private Label selectedTitle;
     @FXML private Label selectedDetails;
     @FXML private HBox carousel;
-    @FXML private Button cancelButton;
     @FXML private HBox ratingBox;
 
     private final Image STAR_FULL = new Image(getClass().getResource("/images/star.png").toExternalForm());
     private final Image STAR_EMPTY = new Image(getClass().getResource("/images/star_empty.png").toExternalForm());
     private Hotels selectedHotel;
     private final ServiceHotel service = new ServiceHotel();
+    private Client currentClient;
+    private final ServiceReservationHotel serviceReservationHotel = new ServiceReservationHotel();
+
+    public void setClient(Client client) {
+        this.currentClient = client;
+    }
+
     private void refreshHotels() {
         carousel.getChildren().clear();
 
@@ -121,14 +129,14 @@ public class ListeHotelsController implements Initializable {
         }
     }
 
-    public void goToAddHotel() {
+    public void goToReservationHotel() {
         try {
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("/AjoutHotel.fxml"));
+
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/AjoutReservationHotel.fxml"));
             Parent root = loader.load();
 
-            AjoutHotelController controller = loader.getController();
-            controller.setOnHotelChanged(this::refreshHotels);
-
+            AjoutReservationHotelController ctrl = loader.getController();
+            ctrl.setContext(selectedHotel.getHotel_id(), currentClient.getId_client());
             Stage stage = new Stage();
             stage.initStyle(StageStyle.UNDECORATED);
             stage.setScene(new Scene(root));
@@ -137,48 +145,6 @@ public class ListeHotelsController implements Initializable {
             e.printStackTrace();
         }
     }
-
-    @FXML
-    private void goToEditHotel() {
-        try {
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("/AjoutHotel.fxml"));
-            Parent root = loader.load();
-
-            AjoutHotelController controller = loader.getController();
-            controller.setHotelForEdit(selectedHotel);
-            controller.setOnHotelChanged(this::refreshHotels);
-
-            Stage stage = new Stage();
-            stage.setScene(new Scene(root));
-            stage.setTitle("Modifier Hôtel");
-            stage.show();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-    }
-
-    @FXML
-    private void onDeleteHotel() {
-        if (selectedHotel == null) {
-            Alert alert = new Alert(Alert.AlertType.WARNING, "Aucun hôtel sélectionné.");
-            alert.show();
-            return;
-        }
-
-        Alert confirm = new Alert(Alert.AlertType.CONFIRMATION, "Êtes-vous sûr de vouloir supprimer cet hôtel ?");
-        confirm.showAndWait().ifPresent(response -> {
-            if (response.getText().equals("OK")) {
-                try {
-                    service.supprimer(selectedHotel);
-                    refreshHotels();
-                } catch (Exception e) {
-                    Alert error = new Alert(Alert.AlertType.ERROR, "Erreur lors de la suppression : " + e.getMessage());
-                    error.show();
-                }
-            }
-        });
-    }
-
 
 
 }

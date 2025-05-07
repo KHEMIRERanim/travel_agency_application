@@ -151,7 +151,7 @@
                     </font>
                 </Button>
 
-                <Button fx:id="tripBtn" alignment="BASELINE_LEFT" graphicTextGap="15.0" mnemonicParsing="false" onAction="#planTrip" prefHeight="50.0" prefWidth="240.0" style="-fx-background-color: transparent; -fx-text-fill: white;" text="Mes Réservations">
+                <Button fx:id="tripBtn" alignment="BASELINE_LEFT" graphicTextGap="15.0" mnemonicParsing="false" onAction="#historiqueReservartionsHotel" prefHeight="50.0" prefWidth="240.0" style="-fx-background-color: transparent; -fx-text-fill: white;" text="Mes Réservations">
                     <graphic>
                         <ImageView fitHeight="20.0" fitWidth="20.0" pickOnBounds="true" preserveRatio="true">
                             <image>
