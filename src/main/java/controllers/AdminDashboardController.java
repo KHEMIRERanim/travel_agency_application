@@ -162,6 +162,46 @@ public class AdminDashboardController implements Initializable {
             clientListView.setItems(filteredList);
         }
     }
+    @FXML
+    void editSelectedClient(ActionEvent event) {
+        Client selectedClient = clientListView.getSelectionModel().getSelectedItem();
+
+        if (selectedClient == null) {
+            showAlert(Alert.AlertType.WARNING, "Aucune sélection", "Aucun client sélectionné",
+                    "Veuillez sélectionner un client à modifier.");
+            return;
+        }
+
+        try {
+            // Load the UserProfile FXML
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/UserProfile.fxml"));
+            Parent root = loader.load();
+
+            // Get the controller and set the client
+            UserProfileController controller = loader.getController();
+            controller.setClient(selectedClient);
+
+            // Create a new stage for the popup
+            Stage popupStage = new Stage();
+            popupStage.initModality(Modality.APPLICATION_MODAL);
+            popupStage.initOwner(((Node)event.getSource()).getScene().getWindow());
+            popupStage.setTitle("Modifier le client");
+
+            // Apply stylesheets
+            Scene scene = new Scene(root);
+            scene.getStylesheets().add(getClass().getResource("/styles/admin-common.css").toExternalForm());
+
+            popupStage.setScene(scene);
+            popupStage.showAndWait();
+
+            // Refresh the list after closing the edit window
+            loadClients();
+        } catch (IOException e) {
+            showAlert(Alert.AlertType.ERROR, "Erreur", "Erreur de chargement",
+                    "Impossible de charger le formulaire de modification: " + e.getMessage());
+            e.printStackTrace();
+        }
+    }
 
     @FXML
     void removeSelectedClient(ActionEvent event) {

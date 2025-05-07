@@ -193,6 +193,18 @@
                                         <Insets right="15.0" />
                                     </HBox.margin>
                                 </Button>
+                                <Button mnemonicParsing="false" onAction="#editSelectedClient" prefHeight="40.0" prefWidth="120.0" styleClass="button, button-primary" text="Modifier">
+                                    <graphic>
+                                        <ImageView fitHeight="16.0" fitWidth="16.0" pickOnBounds="true" preserveRatio="true">
+                                            <image>
+                                                <Image url="@/images/edit_icon.png" />
+                                            </image>
+                                        </ImageView>
+                                    </graphic>
+                                    <HBox.margin>
+                                        <Insets right="15.0" />
+                                    </HBox.margin>
+                                </Button>
                                 <Button mnemonicParsing="false" onAction="#removeSelectedClient" prefHeight="40.0" prefWidth="120.0" styleClass="button, button-danger" text="Supprimer">
                                     <graphic>
                                         <ImageView fitHeight="16.0" fitWidth="16.0" pickOnBounds="true" preserveRatio="true">
