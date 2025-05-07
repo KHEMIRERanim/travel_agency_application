@@ -58,8 +58,9 @@ public class ClientReclamationsController implements Initializable {
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
-        // Hide submit button initially - only show when "Nouvelle" is clicked
-        submitButton.setVisible(false);
+        // Make submit button initially disabled instead of hidden
+        submitButton.setDisable(true);
+
         // Configure ListView cell factory
         reclamationsListView.setCellFactory(new Callback<ListView<Reclamation>, ListCell<Reclamation>>() {
             @Override
@@ -134,6 +135,9 @@ public class ClientReclamationsController implements Initializable {
                 updateButton.setDisable(false);
                 deleteButton.setDisable(false);
 
+                // Disable submit button when a reclamation is selected
+                submitButton.setDisable(true);
+
                 // Disable editing if the state is not "pas encore vu"
                 boolean isEditable = "pas encore vu".equals(selectedReclamation.getEtat());
                 typeComboBox.setDisable(!isEditable);
@@ -202,8 +206,8 @@ public class ClientReclamationsController implements Initializable {
             loadReclamations();
             clearForm(event);
 
-            // Hide submit button after submission
-            submitButton.setVisible(false);
+            // Disable submit button after submission
+            submitButton.setDisable(true);
 
         } catch (SQLException e) {
             statusLabel.setText("Erreur lors de la soumission: " + e.getMessage());
@@ -305,14 +309,13 @@ public class ClientReclamationsController implements Initializable {
         updateButton.setDisable(true);
         deleteButton.setDisable(true);
 
+        // Disable submit button by default
+        submitButton.setDisable(true);
+
         // Re-enable all fields
         typeComboBox.setDisable(false);
         dateIncidentField.setDisable(false);
         descriptionTextArea.setDisable(false);
-
-        // Hide the submit button unless "Nouvelle" was explicitly clicked
-        submitButton.setVisible(false);
-        submitButton.setDisable(false);
 
         statusLabel.setText("Prêt à saisir une nouvelle réclamation");
 
@@ -323,7 +326,7 @@ public class ClientReclamationsController implements Initializable {
     @FXML
     void newReclamation(ActionEvent event) {
         clearForm(event);
-        // Make submit button visible when "Nouvelle" is clicked
-        submitButton.setVisible(true);
+        // Enable submit button when "Nouvelle" is clicked
+        submitButton.setDisable(false);
     }
 }

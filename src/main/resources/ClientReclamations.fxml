@@ -121,7 +121,7 @@
                                 <Insets right="10.0" />
                             </HBox.margin>
                         </Button>
-                        <Button fx:id="submitButton" mnemonicParsing="false" onAction="#submitReclamation" prefHeight="40.0" prefWidth="150.0" styleClass="button button-primary" text="Soumettre" visible="false" />
+                        <Button fx:id="submitButton" mnemonicParsing="false" onAction="#submitReclamation" prefHeight="40.0" prefWidth="150.0" styleClass="button button-primary" text="Soumettre" disable="true" />
                         <Button fx:id="updateButton" mnemonicParsing="false" onAction="#updateReclamation" prefHeight="40.0" prefWidth="150.0" styleClass="button button-primary" text="Modifier" disable="true">
                             <HBox.margin>
                                 <Insets left="10.0" />
