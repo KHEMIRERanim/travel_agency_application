@@ -162,6 +162,7 @@ public class AdminDashboardController implements Initializable {
             clientListView.setItems(filteredList);
         }
     }
+
     @FXML
     void editSelectedClient(ActionEvent event) {
         Client selectedClient = clientListView.getSelectionModel().getSelectedItem();
@@ -173,12 +174,12 @@ public class AdminDashboardController implements Initializable {
         }
 
         try {
-            // Load the UserProfile FXML
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("/UserProfile.fxml"));
+            // Load the EditClientPopup FXML instead of UserProfile
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/EditClientPopup.fxml"));
             Parent root = loader.load();
 
             // Get the controller and set the client
-            UserProfileController controller = loader.getController();
+            EditClientPopupController controller = loader.getController();
             controller.setClient(selectedClient);
 
             // Create a new stage for the popup
