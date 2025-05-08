@@ -9,8 +9,9 @@ import java.util.List;
 
 public class ServiceReservationHotel implements IService<ReservationHotel> {
     private Connection con;
+
     public ServiceReservationHotel() {
-        con= MyDatabase.getInstance().getCnx();//connextion a mydatabase
+        con = MyDatabase.getInstance().getCnx();
 
     }
 
@@ -28,7 +29,7 @@ public class ServiceReservationHotel implements IService<ReservationHotel> {
 
     @Override
     public void modifier(ReservationHotel reservationHotel) throws SQLException {
-        String req="UPDATE reservation SET hotel_id=?,id_utilisateur=?,checkin_date=?,checkout_date=? WHERE id_reservation=? ";
+        String req = "UPDATE reservation SET hotel_id=?,id_utilisateur=?,checkin_date=?,checkout_date=? WHERE id_reservation=? ";
         PreparedStatement ps = con.prepareStatement(req);
         ps.setInt(1, reservationHotel.getHotel_id());
         ps.setInt(2, reservationHotel.getId_utilisateur());
@@ -41,7 +42,7 @@ public class ServiceReservationHotel implements IService<ReservationHotel> {
 
     @Override
     public void supprimer(ReservationHotel reservationHotel) throws SQLException {
-        String req="DELETE FROM Reservation WHERE id_reservation=?";
+        String req = "DELETE FROM Reservation WHERE id_reservation=?";
         PreparedStatement ps = con.prepareStatement(req);
         ps.setInt(1, reservationHotel.getId_reservation());
         ps.executeUpdate();
@@ -51,19 +52,26 @@ public class ServiceReservationHotel implements IService<ReservationHotel> {
 
     @Override
     public List<ReservationHotel> recuperer() throws SQLException {
-            List<ReservationHotel> reservationHotels = new ArrayList<>();
-            String req = "SELECT * FROM reservation";
-            Statement st = con.createStatement();
-            ResultSet rs = st.executeQuery(req);
-            while (rs.next()) {
-                int id_reserv = rs.getInt("id_reservation");
-                int id_h = rs.getInt("hotel_id");
-                int id_u = rs.getInt("id_utilisateur");
-                String date_in = rs.getString("checkin_date");
-                String date_out = rs.getString("checkout_date");
-                ReservationHotel r = new ReservationHotel(id_reserv, id_h , id_u , date_in , date_out);
-                reservationHotels.add(r);
-            }
-            return reservationHotels;
+        List<ReservationHotel> reservationHotels = new ArrayList<>();
+        String req = "SELECT * FROM reservation";
+        Statement st = con.createStatement();
+        ResultSet rs = st.executeQuery(req);
+
+        while (rs.next()) {
+            int id_reserv = rs.getInt("id_reservation");
+            int id_h = rs.getInt("hotel_id");
+            int id_u = rs.getInt("id_utilisateur");
+            String date_in = rs.getString("checkin_date");
+            String date_out = rs.getString("checkout_date");
+
+
+            ReservationHotel r = new ReservationHotel(id_reserv, id_h, id_u, date_in, date_out);
+
+
+            reservationHotels.add(r);
+        }
+
+
+        return reservationHotels;
     }
 }
