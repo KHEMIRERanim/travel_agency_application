@@ -66,6 +66,7 @@ public class AdminDashboardController implements Initializable {
                     private VBox emailBox, passwordBox, phoneBox, dobBox;
                     private Text emailLabel, emailValue, passwordLabel, passwordValue, phoneLabel, phoneValue, dobLabel, dobValue;
                     private Button editButton, deleteButton;
+                    private Client currentClient; // Store the client for this cell
 
                     {
                         // Initialize the layout
@@ -118,14 +119,12 @@ public class AdminDashboardController implements Initializable {
                         editButton.setPrefHeight(30.0);
                         editButton.setPrefWidth(100.0);
                         editButton.setVisible(false);
-                        editButton.setOnAction(event -> editSelectedClient(event));
 
                         deleteButton = new Button("Supprimer");
                         deleteButton.getStyleClass().addAll("button", "button-danger");
                         deleteButton.setPrefHeight(30.0);
                         deleteButton.setPrefWidth(100.0);
                         deleteButton.setVisible(false);
-                        deleteButton.setOnAction(event -> removeSelectedClient(event));
 
                         HBox buttonBox = new HBox(10);
                         buttonBox.getChildren().addAll(editButton, deleteButton);
@@ -153,12 +152,18 @@ public class AdminDashboardController implements Initializable {
                         if (empty || client == null) {
                             setText(null);
                             setGraphic(null);
+                            currentClient = null;
                         } else {
+                            currentClient = client; // Store the client for this cell
                             nameText.setText(client.getNom() + " " + client.getPrenom());
                             emailValue.setText(client.getEmail());
                             passwordValue.setText(client.getMot_de_passe());
                             phoneValue.setText(String.valueOf(client.getNumero_telephone()));
                             dobValue.setText(client.getDate_de_naissance());
+
+                            // Set button actions with the current client
+                            editButton.setOnAction(event -> editSelectedClient(event, currentClient));
+                            deleteButton.setOnAction(event -> removeSelectedClient(event, currentClient));
 
                             setGraphic(container);
                         }
@@ -194,23 +199,15 @@ public class AdminDashboardController implements Initializable {
     }
 
     @FXML
-    void editSelectedClient(ActionEvent event) {
-        Client selectedClient = clientListView.getSelectionModel().getSelectedItem();
-
-        if (selectedClient == null) {
-            showAlert(Alert.AlertType.WARNING, "Aucune sélection", "Aucun client sélectionné",
-                    "Veuillez sélectionner un client à modifier.");
-            return;
-        }
-
+    void editSelectedClient(ActionEvent event, Client client) {
         try {
-            // Load the EditClientPopup FXML instead of UserProfile
+            // Load the EditClientPopup FXML
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/EditClientPopup.fxml"));
             Parent root = loader.load();
 
             // Get the controller and set the client
             EditClientPopupController controller = loader.getController();
-            controller.setClient(selectedClient);
+            controller.setClient(client);
 
             // Create a new stage for the popup
             Stage popupStage = new Stage();
@@ -235,20 +232,12 @@ public class AdminDashboardController implements Initializable {
     }
 
     @FXML
-    void removeSelectedClient(ActionEvent event) {
-        Client selectedClient = clientListView.getSelectionModel().getSelectedItem();
-
-        if (selectedClient == null) {
-            showAlert(Alert.AlertType.WARNING, "Aucune sélection", "Aucun client sélectionné",
-                    "Veuillez sélectionner un client à supprimer.");
-            return;
-        }
-
+    void removeSelectedClient(ActionEvent event, Client client) {
         // Show confirmation dialog
         Alert confirmation = new Alert(Alert.AlertType.CONFIRMATION);
         confirmation.setTitle("Confirmation de suppression");
         confirmation.setHeaderText("Supprimer le client");
-        confirmation.setContentText("Êtes-vous sûr de vouloir supprimer " + selectedClient.getNom() + " " + selectedClient.getPrenom() + "?");
+        confirmation.setContentText("Êtes-vous sûr de vouloir supprimer " + client.getNom() + " " + client.getPrenom() + "?");
 
         // Customize the buttons
         ButtonType yesButton = new ButtonType("Oui");
@@ -259,7 +248,7 @@ public class AdminDashboardController implements Initializable {
         confirmation.showAndWait().ifPresent(response -> {
             if (response == yesButton) {
                 try {
-                    serviceClient.supprimer(selectedClient);
+                    serviceClient.supprimer(client);
                     loadClients(); // Refresh the list
                     showAlert(Alert.AlertType.INFORMATION, "Succès", "Client supprimé",
                             "Le client a été supprimé avec succès.");
