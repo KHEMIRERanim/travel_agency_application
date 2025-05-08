@@ -1,5 +1,6 @@
 package controllers;
 
+import entities.Client;
 import entities.Flight;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -9,13 +10,13 @@ import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.DatePicker;
 import javafx.scene.control.TextField;
-import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
 import services.ServiceFlight;
 
 import java.io.IOException;
 import java.sql.Date;
 import java.sql.SQLException;
+
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -39,21 +40,30 @@ public class ChercherVolController {
     @FXML
     private Button btnRechercherVol;
 
-    // Reference to the UserDashboardController if this controller is embedded in the dashboard
+    // Référence au UserDashboardController si ce contrôleur est intégré dans le tableau de bord
     private UserDashboardController dashboardController;
 
-    // Flag to determine if this controller is embedded within the dashboard
+    // Indicateur pour déterminer si ce contrôleur est intégré dans le tableau de bord
     private boolean isEmbeddedInDashboard = false;
 
+    // Ajout : Attribut pour stocker le client connecté
+    private Client currentClient;
+
+    // Méthode pour définir la référence au UserDashboardController
     public void setDashboardController(UserDashboardController controller) {
         this.dashboardController = controller;
         this.isEmbeddedInDashboard = (controller != null);
     }
 
+    // Ajout : Méthode pour définir le client
+    public void setClient(Client client) {
+        this.currentClient = client;
+    }
+
     @FXML
     void recherchervol(ActionEvent event) {
         try {
-            // Gather search parameters
+            // Récupérer les paramètres de recherche
             String departure = departurechercher.getText().trim();
             String destination = destinationchercher.getText().trim();
             Date flightDate = null;
@@ -61,20 +71,20 @@ public class ChercherVolController {
                 flightDate = Date.valueOf(flightdatechercher.getValue());
             }
 
-            // Parse passenger counts
+            // Analyser le nombre de passagers
             int adultCount = 0;
             int childCount = 0;
 
             try {
                 adultCount = Integer.parseInt(adultchercher.getText().trim());
             } catch (NumberFormatException e) {
-                System.out.println("Invalid adult count: " + e.getMessage());
+                System.out.println("Nombre d'adultes invalide : " + e.getMessage());
             }
 
             try {
                 childCount = Integer.parseInt(childchercher.getText().trim());
             } catch (NumberFormatException e) {
-                System.out.println("Invalid child count: " + e.getMessage());
+                System.out.println("Nombre d'enfants invalide : " + e.getMessage());
             }
 
             int totalPassengers = adultCount + childCount;
@@ -100,25 +110,25 @@ public class ChercherVolController {
             FlightSearchResultsController resultsController = loader.getController();
             resultsController.setFlights(filteredFlights, finalTotalPassengers);
             resultsController.setSourceController(this);
-
-            // Pass the dashboard controller to the results controller if this is embedded in dashboard
+            resultsController.setClient(currentClient); // Ajout : Passer le client
+            // Passer le contrôleur du tableau de bord au contrôleur des résultats si intégré dans le tableau de bord
             if (isEmbeddedInDashboard && dashboardController != null) {
                 resultsController.setDashboardController(dashboardController);
 
-                // Load the results into the dashboard's content area
+                // Charger les résultats dans la zone de contenu du tableau de bord
                 dashboardController.loadContentToArea(root);
             } else {
-                // Standalone mode - replace the current scene
+                // Mode autonome - remplacer la scène actuelle
                 Stage stage = (Stage) btnRechercherVol.getScene().getWindow();
                 stage.setScene(new Scene(root));
-                stage.setTitle("Flight Search Results");
+                stage.setTitle("Résultats de recherche de vols");
             }
 
         } catch (SQLException e) {
-            System.out.println("Database error: " + e.getMessage());
+            System.out.println("Erreur de base de données : " + e.getMessage());
             e.printStackTrace();
         } catch (IOException e) {
-            System.out.println("FXML loading error: " + e.getMessage());
+            System.out.println("Erreur de chargement FXML : " + e.getMessage());
             e.printStackTrace();
         }
     }
@@ -130,9 +140,9 @@ public class ChercherVolController {
 
             Stage stage = (Stage) btnRechercherVol.getScene().getWindow();
             stage.setScene(new Scene(root));
-            stage.setTitle("Flight Search");
+            stage.setTitle("Recherche de vol");
         } catch (IOException e) {
-            System.out.println("Error reloading search scene: " + e.getMessage());
+            System.out.println("Erreur lors du rechargement de la scène de recherche : " + e.getMessage());
             e.printStackTrace();
         }
     }
