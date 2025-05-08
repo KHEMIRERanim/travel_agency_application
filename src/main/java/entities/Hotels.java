@@ -4,32 +4,43 @@ public class Hotels {
     private int hotel_id;
     private String nom_hotel;
     private String destination;
-    private String check_in;
-    private String check_out;
     private double prix;
     private String type_chambre;
     private String status;
+    private boolean wifi;
+    private boolean piscine;
+    private byte[] image;
+    private int note;
 
-    // Constructeur avec id
-    public Hotels(int hotel_id, String nom_hotel, String destination, String check_in, String check_out, double prix, String type_chambre, String status) {
+    public Hotels(String nom_hotel, String destination, double prix,
+                  String type_chambre, String status,
+                  boolean wifi, boolean piscine,
+                  byte[] image, int note) {
+        this.nom_hotel = nom_hotel;
+        this.destination = destination;
+        this.prix = prix;
+        this.type_chambre = type_chambre;
+        this.status = status;
+        this.wifi = wifi;
+        this.piscine = piscine;
+        this.image = image;
+        this.note = note;
+    }
+
+    public Hotels(int hotel_id, String nom_hotel, String destination, double prix,
+                  String type_chambre, String status,
+                  boolean wifi, boolean piscine,
+                  byte[] image, int note) {
         this.hotel_id = hotel_id;
         this.nom_hotel = nom_hotel;
         this.destination = destination;
-        this.check_in = check_in;
-        this.check_out = check_out;
         this.prix = prix;
         this.type_chambre = type_chambre;
         this.status = status;
-    }
-    // Constructeur sans id
-    public Hotels(String nom_hotel, String destination, String check_in, String check_out, double prix, String type_chambre, String status){
-        this.nom_hotel = nom_hotel;
-        this.destination = destination;
-        this.check_in = check_in;
-        this.check_out = check_out;
-        this.prix = prix;
-        this.type_chambre = type_chambre;
-        this.status = status;
+        this.wifi = wifi;
+        this.piscine = piscine;
+        this.image = image;
+        this.note = note;
     }
 
     public int getHotel_id() {
@@ -56,22 +67,6 @@ public class Hotels {
         this.destination = destination;
     }
 
-    public String getCheck_in() {
-        return check_in;
-    }
-
-    public void setCheck_in(String check_in) {
-        this.check_in = check_in;
-    }
-
-    public String getCheck_out() {
-        return check_out;
-    }
-
-    public void setCheck_out(String check_out) {
-        this.check_out = check_out;
-    }
-
     public double getPrix() {
         return prix;
     }
@@ -96,17 +91,50 @@ public class Hotels {
         this.status = status;
     }
 
+    public boolean isWifi() {
+        return wifi;
+    }
+
+    public void setWifi(boolean wifi) {
+        this.wifi = wifi;
+    }
+
+    public boolean isPiscine() {
+        return piscine;
+    }
+
+    public void setPiscine(boolean piscine) {
+        this.piscine = piscine;
+    }
+
+    public byte[] getImage() {
+        return image;
+    }
+
+    public void setImage(byte[] image) {
+        this.image = image;
+    }
+
+    public int getNote() {
+        return note;
+    }
+
+    public void setNote(int note) {
+        this.note = note;
+    }
+
     @Override
     public String toString() {
-        return "Hotel{" +
+        return "Hotels{" +
                 "hotel_id=" + hotel_id +
                 ", nom_hotel='" + nom_hotel + '\'' +
                 ", destination='" + destination + '\'' +
-                ", check_in='" + check_in + '\'' +
-                ", check_out='" + check_out + '\'' +
                 ", prix=" + prix +
                 ", type_chambre='" + type_chambre + '\'' +
                 ", status='" + status + '\'' +
+                ", wifi=" + wifi +
+                ", piscine=" + piscine +
+                ", note=" + note +
                 '}';
     }
 }
