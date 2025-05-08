@@ -12,17 +12,16 @@
 <?import javafx.scene.layout.Pane?>
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.effect.DropShadow?>
-<?import javafx.scene.text.Font?>
 <?import java.net.URL?>
 
-<AnchorPane prefHeight="600.0" prefWidth="700.0" style="-fx-background-color: #f4f6f9;" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controllers.ClientReclamationsController">
+<AnchorPane prefHeight="800.0" prefWidth="700.0" style="-fx-background-color: #f4f6f9;" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controllers.ClientReclamationsController">
     <stylesheets>
         <URL value="@/styles/admin-common.css" />
         <URL value="@/styles/listviewReclamation.css" />
     </stylesheets>
 
     <children>
-        <VBox prefHeight="600.0" prefWidth="700.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+        <VBox prefHeight="800.0" prefWidth="700.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
             <children>
                 <HBox alignment="CENTER_LEFT" prefHeight="80.0" prefWidth="700.0" style="-fx-background-color: white;">
                     <effect>
@@ -50,7 +49,7 @@
                     </VBox.margin>
                 </HBox>
 
-                <ListView fx:id="reclamationsListView" prefHeight="180.0" prefWidth="700.0" styleClass="reclamations-list">
+                <ListView fx:id="reclamationsListView" prefHeight="280.0" prefWidth="650.0" styleClass="reclamations-list">
                     <VBox.margin>
                         <Insets bottom="20.0" left="25.0" right="25.0" top="10.0" />
                     </VBox.margin>
@@ -111,18 +110,23 @@
                         <Insets bottom="10.0" left="20.0" right="20.0" top="10.0" />
                     </padding>
                     <children>
-                        <Button fx:id="deleteButton" mnemonicParsing="false" onAction="#deleteReclamation" prefHeight="40.0" prefWidth="150.0" styleClass="button, button-danger" text="Supprimer" disable="true">
+                        <Button fx:id="deleteButton" mnemonicParsing="false" onAction="#deleteReclamation" prefHeight="40.0" prefWidth="150.0" styleClass="button button-danger" text="Supprimer" disable="true">
                             <HBox.margin>
                                 <Insets right="10.0" />
                             </HBox.margin>
                         </Button>
-                        <Button fx:id="newReclamationButton" mnemonicParsing="false" onAction="#newReclamation" prefHeight="40.0" prefWidth="150.0" styleClass="button, button-success" text="Nouvelle">
+                        <Button fx:id="newReclamationButton" mnemonicParsing="false" onAction="#newReclamation" prefHeight="40.0" prefWidth="150.0" styleClass="button button-success" text="Nouvelle">
                             <HBox.margin>
                                 <Insets right="10.0" />
                             </HBox.margin>
                         </Button>
-                        <Button fx:id="submitButton" mnemonicParsing="false" onAction="#submitReclamation" prefHeight="40.0" prefWidth="150.0" styleClass="button, button-primary" text="Soumettre" disable="true" />
-                        <Button fx:id="updateButton" mnemonicParsing="false" onAction="#updateReclamation" prefHeight="40.0" prefWidth="150.0" styleClass="button, button-primary" text="Modifier" disable="true">
+                        <Button fx:id="submitButton" mnemonicParsing="false" onAction="#submitReclamation" prefHeight="40.0" prefWidth="150.0" styleClass="button button-primary" text="Soumettre" disable="true" />
+                        <Button fx:id="updateButton" mnemonicParsing="false" onAction="#updateReclamation" prefHeight="40.0" prefWidth="150.0" styleClass="button button-primary" text="Modifier" disable="true">
+                            <HBox.margin>
+                                <Insets left="10.0" />
+                            </HBox.margin>
+                        </Button>
+                        <Button fx:id="viewConversationButton" mnemonicParsing="false" onAction="#viewConversation" prefHeight="40.0" prefWidth="150.0" styleClass="button button-secondary" text="Voir Conversation" disable="true">
                             <HBox.margin>
                                 <Insets left="10.0" />
                             </HBox.margin>

@@ -10,10 +10,7 @@ import javafx.fxml.Initializable;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.control.Alert;
-import javafx.scene.control.ListCell;
-import javafx.scene.control.ListView;
-import javafx.scene.control.TextField;
+import javafx.scene.control.*;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Priority;
@@ -21,7 +18,6 @@ import javafx.scene.layout.VBox;
 import javafx.scene.text.Text;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
-import javafx.stage.StageStyle;
 import javafx.util.Callback;
 import services.ServiceClient;
 
@@ -30,13 +26,6 @@ import java.net.URL;
 import java.sql.SQLException;
 import java.util.ResourceBundle;
 import java.util.stream.Collectors;
-import javafx.scene.control.Button;
-import javafx.scene.control.ButtonType;
-import java.util.ResourceBundle;
-import java.util.stream.Collectors;
-import javafx.scene.control.Button;
-import javafx.scene.control.ButtonType;
-import javafx.scene.Node;
 
 public class AdminDashboardController implements Initializable {
     private ServiceClient serviceClient = new ServiceClient();
@@ -70,6 +59,93 @@ public class AdminDashboardController implements Initializable {
             @Override
             public ListCell<Client> call(ListView<Client> param) {
                 return new ListCell<Client>() {
+                    private HBox container;
+                    private VBox infoContainer;
+                    private Text nameText;
+                    private HBox detailsBox;
+                    private VBox emailBox, passwordBox, phoneBox, dobBox;
+                    private Text emailLabel, emailValue, passwordLabel, passwordValue, phoneLabel, phoneValue, dobLabel, dobValue;
+                    private Button editButton, deleteButton;
+
+                    {
+                        // Initialize the layout
+                        container = new HBox(15);
+                        container.getStyleClass().add("list-cell-container");
+
+                        infoContainer = new VBox(5);
+                        infoContainer.getStyleClass().add("client-info-container");
+                        HBox.setHgrow(infoContainer, Priority.ALWAYS);
+
+                        nameText = new Text();
+                        nameText.getStyleClass().add("client-name");
+
+                        detailsBox = new HBox(15);
+                        emailBox = new VBox(2);
+                        emailLabel = new Text("Email");
+                        emailLabel.getStyleClass().add("info-label");
+                        emailValue = new Text();
+                        emailValue.getStyleClass().add("info-value");
+                        emailBox.getChildren().addAll(emailLabel, emailValue);
+
+                        passwordBox = new VBox(2);
+                        passwordLabel = new Text("Mot de passe");
+                        passwordLabel.getStyleClass().add("info-label");
+                        passwordValue = new Text();
+                        passwordValue.getStyleClass().add("info-value");
+                        passwordBox.getChildren().addAll(passwordLabel, passwordValue);
+
+                        phoneBox = new VBox(2);
+                        phoneLabel = new Text("Téléphone");
+                        phoneLabel.getStyleClass().add("info-label");
+                        phoneValue = new Text();
+                        phoneValue.getStyleClass().add("info-value");
+                        phoneBox.getChildren().addAll(phoneLabel, phoneValue);
+
+                        dobBox = new VBox(2);
+                        dobLabel = new Text("Date de naissance");
+                        dobLabel.getStyleClass().add("info-label");
+                        dobValue = new Text();
+                        dobValue.getStyleClass().add("info-value");
+                        dobBox.getChildren().addAll(dobLabel, dobValue);
+
+                        detailsBox.getChildren().addAll(emailBox, passwordBox, phoneBox, dobBox);
+
+                        infoContainer.getChildren().addAll(nameText, detailsBox);
+
+                        // Add buttons
+                        editButton = new Button("Modifier");
+                        editButton.getStyleClass().addAll("button", "button-primary");
+                        editButton.setPrefHeight(30.0);
+                        editButton.setPrefWidth(100.0);
+                        editButton.setVisible(false);
+                        editButton.setOnAction(event -> editSelectedClient(event));
+
+                        deleteButton = new Button("Supprimer");
+                        deleteButton.getStyleClass().addAll("button", "button-danger");
+                        deleteButton.setPrefHeight(30.0);
+                        deleteButton.setPrefWidth(100.0);
+                        deleteButton.setVisible(false);
+                        deleteButton.setOnAction(event -> removeSelectedClient(event));
+
+                        HBox buttonBox = new HBox(10);
+                        buttonBox.getChildren().addAll(editButton, deleteButton);
+                        buttonBox.setAlignment(javafx.geometry.Pos.CENTER_RIGHT);
+
+                        container.getChildren().addAll(infoContainer, buttonBox);
+
+                        // Hover behavior
+                        setOnMouseEntered(e -> {
+                            if (!isEmpty()) {
+                                editButton.setVisible(true);
+                                deleteButton.setVisible(true);
+                            }
+                        });
+                        setOnMouseExited(e -> {
+                            editButton.setVisible(false);
+                            deleteButton.setVisible(false);
+                        });
+                    }
+
                     @Override
                     protected void updateItem(Client client, boolean empty) {
                         super.updateItem(client, empty);
@@ -78,57 +154,11 @@ public class AdminDashboardController implements Initializable {
                             setText(null);
                             setGraphic(null);
                         } else {
-                            // Create the layout for each cell
-                            HBox container = new HBox(15);
-                            container.getStyleClass().add("list-cell-container");
-
-                            VBox infoContainer = new VBox(5);
-                            infoContainer.getStyleClass().add("client-info-container");
-                            HBox.setHgrow(infoContainer, Priority.ALWAYS);
-
-                            // Main client info
-                            Text nameText = new Text(client.getNom() + " " + client.getPrenom());
-                            nameText.getStyleClass().add("client-name");
-
-                            HBox detailsBox = new HBox(15);
-
-                            // Email
-                            VBox emailBox = new VBox(2);
-                            Text emailLabel = new Text("Email");
-                            emailLabel.getStyleClass().add("info-label");
-                            Text emailValue = new Text(client.getEmail());
-                            emailValue.getStyleClass().add("info-value");
-                            emailBox.getChildren().addAll(emailLabel, emailValue);
-
-                            // Password
-                            VBox passwordBox = new VBox(2);
-                            Text passwordLabel = new Text("Mot de passe");
-                            passwordLabel.getStyleClass().add("info-label");
-                            Text passwordValue = new Text(client.getMot_de_passe());
-                            passwordValue.getStyleClass().add("info-value");
-                            passwordBox.getChildren().addAll(passwordLabel, passwordValue);
-
-                            // Phone
-                            VBox phoneBox = new VBox(2);
-                            Text phoneLabel = new Text("Téléphone");
-                            phoneLabel.getStyleClass().add("info-label");
-                            Text phoneValue = new Text(String.valueOf(client.getNumero_telephone()));
-                            phoneValue.getStyleClass().add("info-value");
-                            phoneBox.getChildren().addAll(phoneLabel, phoneValue);
-
-                            // Date of birth
-                            VBox dobBox = new VBox(2);
-                            Text dobLabel = new Text("Date de naissance");
-                            dobLabel.getStyleClass().add("info-label");
-                            Text dobValue = new Text(client.getDate_de_naissance());
-                            dobValue.getStyleClass().add("info-value");
-                            dobBox.getChildren().addAll(dobLabel, dobValue);
-
-                            detailsBox.getChildren().addAll(emailBox, passwordBox, phoneBox, dobBox);
-
-                            // Add all elements to containers
-                            infoContainer.getChildren().addAll(nameText, detailsBox);
-                            container.getChildren().add(infoContainer);
+                            nameText.setText(client.getNom() + " " + client.getPrenom());
+                            emailValue.setText(client.getEmail());
+                            passwordValue.setText(client.getMot_de_passe());
+                            phoneValue.setText(String.valueOf(client.getNumero_telephone()));
+                            dobValue.setText(client.getDate_de_naissance());
 
                             setGraphic(container);
                         }
@@ -240,6 +270,7 @@ public class AdminDashboardController implements Initializable {
             }
         });
     }
+
     @FXML
     void refreshList(ActionEvent event) {
         loadClients();
