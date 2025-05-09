@@ -1,12 +1,7 @@
 package entities;
 
-import javafx.beans.property.SimpleStringProperty;
-import javafx.beans.property.StringProperty;
-
-import java.util.regex.Pattern;
-
 public class Client {
-    private int id_client;  // Changed from id to id_client
+    private int id_client;
     private String nom;
     private String prenom;
     private String email;
@@ -14,102 +9,34 @@ public class Client {
     private String date_de_naissance;
     private String mot_de_passe;
 
-    // Constructors
-    public Client(int id_client, String nom, String prenom, String email,
-                  int numero_telephone, String date_de_naissance, String mot_de_passe) {
+    public Client() {}
+
+    public Client(int id_client, String nom, String prenom, String email, int numero_telephone, String date_de_naissance, String mot_de_passe) {
         this.id_client = id_client;
         this.nom = nom;
         this.prenom = prenom;
-        setEmail(email);
-        setNumero_telephone(numero_telephone);
-        setDate_de_naissance(date_de_naissance);
+        this.email = email;
+        this.numero_telephone = numero_telephone;
+        this.date_de_naissance = date_de_naissance;
         this.mot_de_passe = mot_de_passe;
     }
 
-    public Client(String nom, String prenom, String email, int numero_telephone,
-                  String date_de_naissance, String mot_de_passe) {
+    public Client(String nom, String prenom, String email, int numero_telephone, String date_de_naissance, String mot_de_passe) {
         this(0, nom, prenom, email, numero_telephone, date_de_naissance, mot_de_passe);
     }
 
-    public Client() {}
-
-    // Getters and Setters
-    public int getId_client() {
-        return id_client;
-    }
-
-    public void setId_client(int id_client) {
-        this.id_client = id_client;
-    }
-
-    public String getNom() {
-        return nom;
-    }
-
-    public void setNom(String nom) {
-        this.nom = nom;
-    }
-
-    public String getPrenom() {
-        return prenom;
-    }
-
-    public void setPrenom(String prenom) {
-        this.prenom = prenom;
-    }
-
-    public String getEmail() {
-        return email;
-    }
-
-    public void setEmail(String email) {
-        if (email == null || !email.contains("@")) {
-            throw new IllegalArgumentException("Email must contain '@'");
-        }
-        this.email = email;
-    }
-
-    public int getNumero_telephone() {
-        return numero_telephone;
-    }
-
-    public void setNumero_telephone(int numero_telephone) {
-        if (String.valueOf(numero_telephone).length() != 8) {
-            throw new IllegalArgumentException("Phone number must be 8 digits");
-        }
-        this.numero_telephone = numero_telephone;
-    }
-
-    public String getDate_de_naissance() {
-        return date_de_naissance;
-    }
-
-    public void setDate_de_naissance(String date_de_naissance) {
-        if (!Pattern.matches("^\\d{2}/\\d{2}/\\d{4}$", date_de_naissance)) {
-            throw new IllegalArgumentException("Date must be in format jj/mm/aaaa");
-        }
-        this.date_de_naissance = date_de_naissance;
-    }
-
-    public String getMot_de_passe() {
-        return mot_de_passe;
-    }
-
-    public void setMot_de_passe(String mot_de_passe) {
-        if (mot_de_passe == null || mot_de_passe.trim().isEmpty()) {
-            throw new IllegalArgumentException("Password cannot be empty");
-        }
-        this.mot_de_passe = mot_de_passe;
-    }
-
-    @Override
-    public String toString() {
-        return "Client{" +
-                "id_client=" + id_client +
-                ", nom='" + nom + '\'' +
-                ", prenom='" + prenom + '\'' +
-                ", email='" + email + '\'' +
-                ", numero_telephone=" + numero_telephone +
-                ", date_de_naissance='" + date_de_naissance + '\'' +
-                '}';  // Password intentionally excluded from toString()
-    }}
+    public int getId_client() { return id_client; }
+    public void setId_client(int id_client) { this.id_client = id_client; }
+    public String getNom() { return nom; }
+    public void setNom(String nom) { this.nom = nom; }
+    public String getPrenom() { return prenom; }
+    public void setPrenom(String prenom) { this.prenom = prenom; }
+    public String getEmail() { return email; }
+    public void setEmail(String email) { this.email = email; }
+    public int getNumero_telephone() { return numero_telephone; }
+    public void setNumero_telephone(int numero_telephone) { this.numero_telephone = numero_telephone; }
+    public String getDate_de_naissance() { return date_de_naissance; }
+    public void setDate_de_naissance(String date_de_naissance) { this.date_de_naissance = date_de_naissance; }
+    public String getMot_de_passe() { return mot_de_passe; }
+    public void setMot_de_passe(String mot_de_passe) { this.mot_de_passe = mot_de_passe; }
+}

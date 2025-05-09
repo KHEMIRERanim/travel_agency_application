@@ -1,238 +1,116 @@
 package tests;
 
 import entities.Client;
+import entities.ReservationVehicule;
+import entities.Vehicule;
 import services.ServiceClient;
+import services.ServiceReservationVehicule;
+import services.ServiceVehicule;
+
 import java.sql.SQLException;
+import java.time.LocalDate;
 import java.util.List;
-import java.util.Scanner;
-import entities.Reclamation;
-import services.ServiceReclamation;
 
-public class Main {
+public class Main{
     public static void main(String[] args) {
-        ServiceClient clientService = new ServiceClient();
-        Scanner scanner = new Scanner(System.in);
-        ServiceReclamation reclamationService = new ServiceReclamation();
+        testVehiculeCRUD();
+        testReservationVehiculeCRUD();
+
+    }
+
+    private static void testVehiculeCRUD() {
+        ServiceVehicule service = new ServiceVehicule();
         try {
-            // ===== 1. CLIENT ADDITION =====
-            Client testClient = new Client(
-                    "Smith",
-                    "John",
-                    "john.mortadha@gamail.com",
-                    98765432,
-                    "20/05/1985",
-                    "password123"
-            );
+            // Create
+            System.out.println("Testing CREATE vehicle...");
+            Vehicule newVehicule = new Vehicule(0, "Sedan", "gabes", "Tunis", LocalDate.of(2025, 6, 1), LocalDate.of(2025, 6, 5), "images/sedan.jpg", 80.00);
+            service.ajouter(newVehicule);
+            System.out.println("Vehicle created: " + newVehicule.getType());
 
-            if (!clientService.emailExists(testClient.getEmail())) {
-                clientService.ajouter(testClient);
-                System.out.println("Client added with ID: " + testClient.getId_client());
-            } else {
-                System.out.println("Client not added - email already exists!");
+            // Read
+            System.out.println("Testing READ vehicles...");
+            List<Vehicule> vehicules = service.getAll();
+            vehicules.forEach(v -> System.out.println("Vehicle: ID=" + v.getId() + ", Type=" + v.getType() + ", Prix=" + v.getPrix()));
+
+            // Update
+            if (!vehicules.isEmpty()) {
+                System.out.println("Testing UPDATE vehicle...");
+                Vehicule toUpdate = vehicules.get(vehicules.size() - 1); // Update the last added vehicle
+                toUpdate.setType("Updated Sedan");
+                toUpdate.setPrix(90.00);
+                service.modifier(toUpdate);
+                System.out.println("Vehicle updated: ID=" + toUpdate.getId());
             }
 
-            // ===== 2. CLIENT DELETION =====
-            System.out.print("\nEnter client ID to delete: ");
-            int clientId = scanner.nextInt();
-
-            Client clientToDelete = new Client();
-            clientToDelete.setId_client(clientId);
-
-            clientService.supprimer(clientToDelete);
-            System.out.println("Client " + clientId + " deleted!");
-/*
-            // ===== 3. CLIENT MODIFICATION =====
-            System.out.print("Enter client ID to modify: ");
-            int clientId = scanner.nextInt();
-            scanner.nextLine(); // Clear buffer
-
-            Client existingClient = clientService.getById(clientId);
-            if (existingClient == null) {
-                System.out.println("Client not found!");
-                return;
+            // Delete
+            if (!vehicules.isEmpty()) {
+                System.out.println("Testing DELETE vehicle...");
+                int idToDelete = vehicules.get(vehicules.size() - 1).getId();
+                service.supprimer(idToDelete);
+                System.out.println("Vehicle deleted: ID=" + idToDelete);
             }
 
-            System.out.println("\nCurrent client data:");
-            System.out.println("1. Last Name: " + existingClient.getNom());
-            System.out.println("2. First Name: " + existingClient.getPrenom());
-            System.out.println("3. Email: " + existingClient.getEmail());
-            System.out.println("4. Phone: " + existingClient.getNumero_telephone());
-            System.out.println("5. Birth Date: " + existingClient.getDate_de_naissance());
-            System.out.println("6. Password");
-
-            System.out.print("\nEnter field number to update (1-6): ");
-            int choice = scanner.nextInt();
-            scanner.nextLine();
-
-            Client updatedClient = new Client(
-                    existingClient.getNom(),
-                    existingClient.getPrenom(),
-                    existingClient.getEmail(),
-                    existingClient.getNumero_telephone(),
-                    existingClient.getDate_de_naissance(),
-                    existingClient.getMot_de_passe()
-            );
-            updatedClient.setId_client(clientId);
-
-            System.out.print("Enter new value: ");
-            String newValue = scanner.nextLine();
-
-            switch (choice) {
-                case 1 -> updatedClient.setNom(newValue);
-                case 2 -> updatedClient.setPrenom(newValue);
-                case 3 -> {
-                    if (clientService.emailExists(newValue) &&
-                            !newValue.equals(existingClient.getEmail())) {
-                        System.out.println("Email already in use!");
-                        return;
-                    }
-                    updatedClient.setEmail(newValue);
-                }
-                case 4 -> {
-                    try {
-                        updatedClient.setNumero_telephone(Integer.parseInt(newValue));
-                    } catch (NumberFormatException e) {
-                        System.out.println("Phone must be a number!");
-                        return;
-                    }
-                }
-                case 5 -> updatedClient.setDate_de_naissance(newValue);
-                case 6 -> updatedClient.setMot_de_passe(newValue);
-                default -> {
-                    System.out.println("Invalid choice!");
-                    return;
-                }
-            }
-
-            clientService.modifier(updatedClient);
-            System.out.println("Client updated successfully!");
-
-            // ===== 4. CLIENT LIST =====
-           List<Client> clients = clientService.recuperer();
-
-            System.out.println("\n=== CLIENT LIST ===");
-            System.out.println("ID\tLast Name\tFirst Name\tEmail\t\tPhone\t\tBirth Date");
-            System.out.println("------------------------------------------------------------");
-            for (Client c : clients) {
-                System.out.println(
-                        c.getId_client() + "\t" +
-                                c.getNom() + "\t\t" +
-                                c.getPrenom() + "\t\t" +
-                                c.getEmail() + "\t" +
-                                c.getNumero_telephone() + "\t" +
-                                c.getDate_de_naissance()
-                );
-            }
-            System.out.println("\nTotal clients: " + clients.size());
-            // ajout reclamation
-            System.out.print("Enter Client ID for the reclamation: ");
-            //int clientId = scanner.nextInt();
-            scanner.nextLine(); // consume newline         // Existing client ID from your database
-            String type = "Complaint";
-            String dateIncident = "15/05/2023";
-            String description = "Product arrived damaged with broken packaging";
-
-
-            System.out.println("=== ADDING SAMPLE RECLAMATION ===");
-            System.out.println("Client ID: " + clientId);
-            System.out.println("Type: " + type);
-            System.out.println("Date: " + dateIncident);
-            System.out.println("Description: " + description);
-
-            Reclamation sampleReclamation = new Reclamation(
-                    clientId,
-                    type,
-                    dateIncident,
-                    description
-            );
-
-            reclamationService.ajouter(sampleReclamation);
-            System.out.println("\n✅ Reclamation added successfully!");
-            System.out.println("Generated ID: " + sampleReclamation.getId_reclamation());
-        //delete reclamation
-            System.out.print("Enter reclamation ID to delete: ");
-            int reclamationId = scanner.nextInt();
-
-            // Create minimal Reclamation object with just the ID set
-            Reclamation toDelete = new Reclamation(0, "dummy", "01/01/2000", "dummy");
-            toDelete.setId_reclamation(reclamationId);
-
-            reclamationService.supprimer(toDelete);
-            System.out.println("Reclamation " + reclamationId + " deleted!");
-// ===== RECLAMATION MODIFICATION =====
-           System.out.print("Enter reclamation ID to modify: ");
-            int recId = scanner.nextInt();
-            scanner.nextLine(); // Clear buffer
-
-// Get existing reclamation
-            Reclamation existingRec = reclamationService.getById(recId);
-            if (existingRec == null) {
-                System.out.println("Reclamation not found!");
-                return;
-            }
-
-// Show current data (excluding client ID)
-            System.out.println("\nCurrent reclamation data:");
-            System.out.println("1. Type: " + existingRec.getType());
-            System.out.println("2. Incident Date: " + existingRec.getDateIncident());
-            System.out.println("3. Description: " + existingRec.getDescription());
-
-// Get field to update
-            System.out.print("\nEnter field number to update (1-3): ");
-            int choice = scanner.nextInt();
-            scanner.nextLine();
-
-// Create updated reclamation (keeping original client ID)
-            Reclamation updatedRec = new Reclamation(
-                    existingRec.getId_reclamation(),
-                    existingRec.getClientId(), // Preserve original client ID
-                    existingRec.getType(),
-                    existingRec.getDateIncident(),
-                    existingRec.getDescription()
-            );
-
-// Get and set new value
-            System.out.print("Enter new value: ");
-            String newValue = scanner.nextLine();
-
-            switch (choice) {
-                case 1 -> updatedRec.setType(newValue);
-                case 2 -> updatedRec.setDateIncident(newValue);
-                case 3 -> updatedRec.setDescription(newValue);
-                default -> {
-                    System.out.println("Invalid choice!");
-                    return;
-                }
-            }
-
-// Perform update
-            reclamationService.modifier(updatedRec);
-            System.out.println("Reclamation updated successfully!");
-
-            // 1. Get all reclamations
-            List<Reclamation> reclamations = reclamationService.recuperer();
-
-            // 2. Display results
-            System.out.println("=== LIST OF RECLAMATIONS ===");
-            System.out.println("ID\tClient\tType\t\tDate\t\tDescription");
-            System.out.println("------------------------------------------------------------");
-
-            for (Reclamation r : reclamations) {
-                System.out.println(
-                        r.getId_reclamation() + "\t" +
-                                r.getClientId() + "\t" +
-                                r.getType() + "\t" +
-                                r.getDateIncident() + "\t" +
-                                r.getDescription()
-                );
-            }
-
-            System.out.println("\nTotal reclamations: " + reclamations.size());*/
+            // Read again
+            System.out.println("Testing READ vehicles after deletion...");
+            vehicules = service.getAll();
+            vehicules.forEach(v -> System.out.println("Vehicle: ID=" + v.getId() + ", Type=" + v.getType() + ", Prix=" + v.getPrix()));
 
         } catch (SQLException e) {
-            System.err.println("Database error: " + e.getMessage());
-        } finally {
-            scanner.close();
+            System.out.println("Error during Vehicule CRUD test: " + e.getMessage());
         }
     }
+
+    private static void testReservationVehiculeCRUD() {
+        ServiceReservationVehicule service = new ServiceReservationVehicule();
+        ServiceVehicule vehiculeService = new ServiceVehicule();
+        try {
+            // Get a vehicle ID for reservation
+            List<Vehicule> vehicules = vehiculeService.getAll();
+            if (vehicules.isEmpty()) {
+                System.out.println("No vehicles available for reservation test.");
+                return;
+            }
+            int vehicleId = vehicules.get(0).getId();
+            Integer clientId = 1; // Assuming client ID 1 exists
+
+            // Create
+            System.out.println("Testing CREATE reservation...");
+            ReservationVehicule newReservation = new ReservationVehicule(0, vehicleId, clientId, "Tunis", "Tunis", LocalDate.of(2025, 6, 1), LocalDate.of(2025, 6, 5));
+            service.ajouter(newReservation);
+            System.out.println("Reservation created for vehicle ID: " + vehicleId);
+
+            // Read
+            System.out.println("Testing READ reservations...");
+            List<ReservationVehicule> reservations = service.getAll();
+            reservations.forEach(r -> System.out.println("Reservation: ID=" + r.getId() + ", Vehicle ID=" + r.getIdVehicule() + ", Client ID=" + r.getIdClient()));
+
+            // Update
+            if (!reservations.isEmpty()) {
+                System.out.println("Testing UPDATE reservation...");
+                ReservationVehicule toUpdate = reservations.get(reservations.size() - 1); // Update the last added reservation
+                toUpdate.setLieuPrise("Sousse");
+                toUpdate.setLieuRetour("Sousse");
+                service.modifier(toUpdate);
+                System.out.println("Reservation updated: ID=" + toUpdate.getId());
+            }
+
+            // Delete
+            if (!reservations.isEmpty()) {
+                System.out.println("Testing DELETE reservation...");
+                int idToDelete = reservations.get(reservations.size() - 1).getId();
+                service.supprimer(idToDelete);
+                System.out.println("Reservation deleted: ID=" + idToDelete);
+            }
+
+            // Read again
+            System.out.println("Testing READ reservations after deletion...");
+            reservations = service.getAll();
+            reservations.forEach(r -> System.out.println("Reservation: ID=" + r.getId() + ", Vehicle ID=" + r.getIdVehicule() + ", Client ID=" + r.getIdClient()));
+
+        } catch (SQLException e) {
+            System.out.println("Error during ReservationVehicule CRUD test: " + e.getMessage());
+        }
+    }
+
+
 }
