@@ -6,6 +6,8 @@
 <?import javafx.scene.control.PasswordField?>
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.effect.DropShadow?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.GridPane?>
 <?import javafx.scene.layout.HBox?>
@@ -13,7 +15,7 @@
 <?import javafx.scene.paint.Color?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane prefHeight="600.0" prefWidth="500.0" style="-fx-background-color: #ffffff; -fx-background-radius: 5px;" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controllers.AddClientPopupController">
+<AnchorPane prefHeight="650.0" prefWidth="500.0" style="-fx-background-color: #ffffff; -fx-background-radius: 5px;" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controllers.AddClientPopupController">
     <effect>
         <DropShadow>
             <color>
@@ -22,14 +24,27 @@
         </DropShadow>
     </effect>
     <children>
-        <VBox alignment="CENTER" layoutX="25.0" layoutY="20.0" prefHeight="560.0" prefWidth="450.0" spacing="15.0">
+        <VBox alignment="CENTER" layoutX="25.0" layoutY="20.0" prefHeight="610.0" prefWidth="450.0" spacing="15.0">
             <children>
                 <Label text="Ajouter un nouvel utilisateur" textAlignment="CENTER" textFill="#1e3a8a">
                     <font>
                         <Font name="System Bold" size="20.0" />
                     </font>
                 </Label>
-
+                <VBox alignment="CENTER" spacing="10.0">
+                    <children>
+                        <ImageView fx:id="iv_profilePicture" fitHeight="100.0" fitWidth="100.0" pickOnBounds="true" preserveRatio="true">
+                            <image>
+                                <Image url="/images/default_profile.png" />
+                            </image>
+                        </ImageView>
+                        <Button mnemonicParsing="false" onAction="#selectProfilePicture" text="Choisir une photo" styleClass="button button-primary">
+                            <font>
+                                <Font size="12.0" />
+                            </font>
+                        </Button>
+                    </children>
+                </VBox>
                 <GridPane hgap="10.0" vgap="10.0">
                     <columnConstraints>
                         <javafx.scene.layout.ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="215.0" />
@@ -142,21 +157,19 @@
                         </VBox>
                     </children>
                 </GridPane>
-
                 <Label text="Le mot de passe doit contenir au moins: 1 majuscule, 1 chiffre, 1 caractère spécial" textFill="#868686" wrapText="true">
                     <font>
                         <Font size="12.0" />
                     </font>
                 </Label>
-
                 <HBox alignment="CENTER" spacing="20.0">
                     <children>
-                        <Button mnemonicParsing="false" onAction="#annuler" prefHeight="45.0" prefWidth="200.0" styleClass="button, button-secondary" text="ANNULER">
+                        <Button mnemonicParsing="false" onAction="#annuler" prefHeight="45.0" prefWidth="200.0" styleClass="button button-secondary" text="ANNULER">
                             <font>
                                 <Font name="System Bold" size="14.0" />
                             </font>
                         </Button>
-                        <Button mnemonicParsing="false" onAction="#ajouterClient" prefHeight="45.0" prefWidth="200.0" styleClass="button, button-primary" text="AJOUTER">
+                        <Button mnemonicParsing="false" onAction="#ajouterClient" prefHeight="45.0" prefWidth="200.0" styleClass="button button-primary" text="AJOUTER">
                             <font>
                                 <Font name="System Bold" size="14.0" />
                             </font>

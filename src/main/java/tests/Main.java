@@ -21,7 +21,8 @@ public class Main {
                     "john.mortadha@gamail.com",
                     98765432,
                     "20/05/1985",
-                    "password123"
+                    "password123",
+                    "/images/default_profile.png" // Added profilePicture parameter
             );
 
             if (!clientService.emailExists(testClient.getEmail())) {
@@ -70,7 +71,8 @@ public class Main {
                     existingClient.getEmail(),
                     existingClient.getNumero_telephone(),
                     existingClient.getDate_de_naissance(),
-                    existingClient.getMot_de_passe()
+                    existingClient.getMot_de_passe(),
+                    existingClient.getProfilePicture() // Preserve profilePicture
             );
             updatedClient.setId_client(clientId);
 
@@ -111,7 +113,7 @@ public class Main {
            List<Client> clients = clientService.recuperer();
 
             System.out.println("\n=== CLIENT LIST ===");
-            System.out.println("ID\tLast Name\tFirst Name\tEmail\t\tPhone\t\tBirth Date");
+            System.out.println("ID\tLast Name\tFirst Name\tEmail\t\tPhone\t\tBirth Date\tProfile Picture");
             System.out.println("------------------------------------------------------------");
             for (Client c : clients) {
                 System.out.println(
@@ -120,7 +122,8 @@ public class Main {
                                 c.getPrenom() + "\t\t" +
                                 c.getEmail() + "\t" +
                                 c.getNumero_telephone() + "\t" +
-                                c.getDate_de_naissance()
+                                c.getDate_de_naissance() + "\t" +
+                                c.getProfilePicture()
                 );
             }
             System.out.println("\nTotal clients: " + clients.size());
@@ -131,7 +134,6 @@ public class Main {
             String type = "Complaint";
             String dateIncident = "15/05/2023";
             String description = "Product arrived damaged with broken packaging";
-
 
             System.out.println("=== ADDING SAMPLE RECLAMATION ===");
             System.out.println("Client ID: " + clientId);

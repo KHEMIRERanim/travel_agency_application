@@ -38,7 +38,20 @@
                         <Font name="System Bold" size="18.0" />
                      </font>
                   </Label>
-
+                  <VBox alignment="CENTER" spacing="10.0">
+                     <children>
+                        <ImageView fx:id="iv_profilePicture" fitHeight="100.0" fitWidth="100.0" pickOnBounds="true" preserveRatio="true">
+                           <image>
+                              <Image url="/images/default_profile.png" />
+                           </image>
+                        </ImageView>
+                        <Button mnemonicParsing="false" onAction="#selectProfilePicture" text="Choisir une photo de profil" style="-fx-background-color: #2a6ec1; -fx-text-fill: white; -fx-background-radius: 5;">
+                           <font>
+                              <Font size="12.0" />
+                           </font>
+                        </Button>
+                     </children>
+                  </VBox>
                   <GridPane hgap="10.0" vgap="10.0">
                      <columnConstraints>
                         <javafx.scene.layout.ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="160.0" />
@@ -191,7 +204,6 @@
       </AnchorPane>
       <AnchorPane prefHeight="600.0" prefWidth="450.0">
          <children>
-            <!-- Full-sized image with no overlay -->
             <ImageView fitHeight="650.0" fitWidth="450.0" pickOnBounds="true" preserveRatio="false">
                <image>
                   <Image url="/images/atravel_signup_illustration.png" />

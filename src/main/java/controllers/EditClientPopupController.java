@@ -5,14 +5,24 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.Node;
 import javafx.scene.control.*;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
+import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 import services.ServiceClient;
+import utils.ImageUtils;
 
+import java.io.File;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.sql.SQLException;
 
 public class EditClientPopupController {
     private ServiceClient serviceClient = new ServiceClient();
     private Client currentClient;
+    private Runnable refreshCallback;
 
     @FXML
     private TextField tf_nom;
@@ -41,9 +51,17 @@ public class EditClientPopupController {
     @FXML
     private Label statusLabel;
 
+    @FXML
+    private ImageView iv_profilePicture;
+
     public void setClient(Client client) {
         this.currentClient = client;
         displayClientInfo();
+        loadProfilePicture();
+    }
+
+    public void setRefreshCallback(Runnable callback) {
+        this.refreshCallback = callback;
     }
 
     private void displayClientInfo() {
@@ -55,10 +73,35 @@ public class EditClientPopupController {
         tf_password.setText(currentClient.getMot_de_passe());
     }
 
+    private void loadProfilePicture() {
+        String imagePath = currentClient.getProfilePicture();
+        iv_profilePicture.setImage(ImageUtils.loadProfileImage(imagePath));
+    }
+
+    @FXML
+    void selectProfilePicture(ActionEvent event) {
+        FileChooser fileChooser = new FileChooser();
+        fileChooser.setTitle("Choisir une photo de profil");
+        fileChooser.getExtensionFilters().addAll(
+                new FileChooser.ExtensionFilter("Images", "*.png", "*.jpg", "*.jpeg")
+        );
+        File selectedFile = fileChooser.showOpenDialog(null);
+        if (selectedFile != null) {
+            try {
+                String newProfilePicturePath = ImageUtils.saveProfileImage(selectedFile);
+                currentClient.setProfilePicture(newProfilePicturePath);
+                iv_profilePicture.setImage(new Image(selectedFile.toURI().toString()));
+                statusLabel.setText("Photo de profil sélectionnée. Enregistrez pour confirmer.");
+            } catch (IOException e) {
+                statusLabel.setText("Erreur lors du chargement de l'image: " + e.getMessage());
+                e.printStackTrace();
+            }
+        }
+    }
+
     @FXML
     void saveClient(ActionEvent event) {
         try {
-            // Validate inputs
             if (tf_nom.getText().isEmpty() || tf_prenom.getText().isEmpty() ||
                     tf_email.getText().isEmpty() || tf_telephone.getText().isEmpty() ||
                     tf_dateNaissance.getText().isEmpty() || tf_password.getText().isEmpty()) {
@@ -66,7 +109,6 @@ public class EditClientPopupController {
                 return;
             }
 
-            // Update client object
             currentClient.setNom(tf_nom.getText());
             currentClient.setPrenom(tf_prenom.getText());
             currentClient.setEmail(tf_email.getText());
@@ -79,15 +121,13 @@ public class EditClientPopupController {
             currentClient.setDate_de_naissance(tf_dateNaissance.getText());
             currentClient.setMot_de_passe(tf_password.getText());
 
-            // Update in database
             serviceClient.modifier(currentClient);
-
-            // Show success message
             statusLabel.setText("Client mis à jour avec succès");
-
-            // Close the window after a short delay
             Thread.sleep(1000);
             closeWindow(event);
+            if (refreshCallback != null) {
+                refreshCallback.run();
+            }
         } catch (SQLException e) {
             statusLabel.setText("Erreur lors de la mise à jour: " + e.getMessage());
             System.out.println(e.getMessage());

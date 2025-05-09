@@ -11,6 +11,7 @@ import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
+import javafx.scene.image.ImageView;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Priority;
@@ -20,6 +21,8 @@ import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.util.Callback;
 import services.ServiceClient;
+import javafx.geometry.Insets;
+import utils.ImageUtils;
 
 import java.io.IOException;
 import java.net.URL;
@@ -38,6 +41,27 @@ public class AdminDashboardController implements Initializable {
 
     @FXML
     private TextField searchField;
+
+    @FXML
+    private Button clientsBtn;
+
+    @FXML
+    private Button reclamationsBtn;
+
+    @FXML
+    private Button volsBtn;
+
+    @FXML
+    private Button hotelsBtn;
+
+    @FXML
+    private Button transportBtn;
+
+    @FXML
+    private Button publicationsBtn;
+
+    @FXML
+    private Button logoutBtn;
 
     private ObservableList<Client> allClients;
 
@@ -59,78 +83,51 @@ public class AdminDashboardController implements Initializable {
             @Override
             public ListCell<Client> call(ListView<Client> param) {
                 return new ListCell<Client>() {
-                    private HBox container;
-                    private VBox infoContainer;
-                    private Text nameText;
-                    private HBox detailsBox;
-                    private VBox emailBox, passwordBox, phoneBox, dobBox;
-                    private Text emailLabel, emailValue, passwordLabel, passwordValue, phoneLabel, phoneValue, dobLabel, dobValue;
-                    private Button editButton, deleteButton;
-                    private Client currentClient; // Store the client for this cell
+                    private final HBox container = new HBox(15);
+                    private final VBox infoContainer = new VBox(5);
+                    private final Text nameText = new Text();
+                    private final HBox detailsBox = new HBox(15);
+                    private final ImageView profileImageView = new ImageView();
+                    private final Button editButton = new Button("Modifier");
+                    private final Button deleteButton = new Button("Supprimer");
+                    private Client currentClient;
 
                     {
                         // Initialize the layout
-                        container = new HBox(15);
                         container.getStyleClass().add("list-cell-container");
 
-                        infoContainer = new VBox(5);
+                        // Configure image view
+                        profileImageView.setFitHeight(50);
+                        profileImageView.setFitWidth(50);
+                        HBox.setMargin(profileImageView, new Insets(0, 15, 0, 0));
+
+                        // Configure info container
                         infoContainer.getStyleClass().add("client-info-container");
                         HBox.setHgrow(infoContainer, Priority.ALWAYS);
-
-                        nameText = new Text();
                         nameText.getStyleClass().add("client-name");
 
-                        detailsBox = new HBox(15);
-                        emailBox = new VBox(2);
-                        emailLabel = new Text("Email");
-                        emailLabel.getStyleClass().add("info-label");
-                        emailValue = new Text();
-                        emailValue.getStyleClass().add("info-value");
-                        emailBox.getChildren().addAll(emailLabel, emailValue);
-
-                        passwordBox = new VBox(2);
-                        passwordLabel = new Text("Mot de passe");
-                        passwordLabel.getStyleClass().add("info-label");
-                        passwordValue = new Text();
-                        passwordValue.getStyleClass().add("info-value");
-                        passwordBox.getChildren().addAll(passwordLabel, passwordValue);
-
-                        phoneBox = new VBox(2);
-                        phoneLabel = new Text("Téléphone");
-                        phoneLabel.getStyleClass().add("info-label");
-                        phoneValue = new Text();
-                        phoneValue.getStyleClass().add("info-value");
-                        phoneBox.getChildren().addAll(phoneLabel, phoneValue);
-
-                        dobBox = new VBox(2);
-                        dobLabel = new Text("Date de naissance");
-                        dobLabel.getStyleClass().add("info-label");
-                        dobValue = new Text();
-                        dobValue.getStyleClass().add("info-value");
-                        dobBox.getChildren().addAll(dobLabel, dobValue);
+                        // Create detail boxes
+                        VBox emailBox = createDetailBox("Email", "");
+                        VBox passwordBox = createDetailBox("Mot de passe", "");
+                        VBox phoneBox = createDetailBox("Téléphone", "");
+                        VBox dobBox = createDetailBox("Date de naissance", "");
 
                         detailsBox.getChildren().addAll(emailBox, passwordBox, phoneBox, dobBox);
-
                         infoContainer.getChildren().addAll(nameText, detailsBox);
 
-                        // Add buttons
-                        editButton = new Button("Modifier");
+                        // Configure buttons
                         editButton.getStyleClass().addAll("button", "button-primary");
-                        editButton.setPrefHeight(30.0);
-                        editButton.setPrefWidth(100.0);
+                        editButton.setPrefSize(100, 30);
                         editButton.setVisible(false);
 
-                        deleteButton = new Button("Supprimer");
                         deleteButton.getStyleClass().addAll("button", "button-danger");
-                        deleteButton.setPrefHeight(30.0);
-                        deleteButton.setPrefWidth(100.0);
+                        deleteButton.setPrefSize(100, 30);
                         deleteButton.setVisible(false);
 
-                        HBox buttonBox = new HBox(10);
-                        buttonBox.getChildren().addAll(editButton, deleteButton);
+                        HBox buttonBox = new HBox(10, editButton, deleteButton);
                         buttonBox.setAlignment(javafx.geometry.Pos.CENTER_RIGHT);
 
-                        container.getChildren().addAll(infoContainer, buttonBox);
+                        container.getChildren().addAll(profileImageView, infoContainer, buttonBox);
 
                         // Hover behavior
                         setOnMouseEntered(e -> {
@@ -145,6 +142,16 @@ public class AdminDashboardController implements Initializable {
                         });
                     }
 
+                    private VBox createDetailBox(String labelText, String valueText) {
+                        VBox box = new VBox(2);
+                        Text label = new Text(labelText);
+                        label.getStyleClass().add("info-label");
+                        Text value = new Text(valueText);
+                        value.getStyleClass().add("info-value");
+                        box.getChildren().addAll(label, value);
+                        return box;
+                    }
+
                     @Override
                     protected void updateItem(Client client, boolean empty) {
                         super.updateItem(client, empty);
@@ -154,14 +161,24 @@ public class AdminDashboardController implements Initializable {
                             setGraphic(null);
                             currentClient = null;
                         } else {
-                            currentClient = client; // Store the client for this cell
+                            currentClient = client;
                             nameText.setText(client.getNom() + " " + client.getPrenom());
-                            emailValue.setText(client.getEmail());
-                            passwordValue.setText(client.getMot_de_passe());
-                            phoneValue.setText(String.valueOf(client.getNumero_telephone()));
-                            dobValue.setText(client.getDate_de_naissance());
 
-                            // Set button actions with the current client
+                            // Update detail values
+                            ((Text)((VBox)detailsBox.getChildren().get(0)).getChildren().get(1)).setText(client.getEmail());
+                            ((Text)((VBox)detailsBox.getChildren().get(1)).getChildren().get(1)).setText(client.getMot_de_passe());
+                            ((Text)((VBox)detailsBox.getChildren().get(2)).getChildren().get(1)).setText(String.valueOf(client.getNumero_telephone()));
+                            ((Text)((VBox)detailsBox.getChildren().get(3)).getChildren().get(1)).setText(client.getDate_de_naissance());
+
+                            // Load profile image
+                            try {
+                                profileImageView.setImage(ImageUtils.loadProfileImage(client.getProfilePicture()));
+                            } catch (Exception e) {
+                                // If there's an error loading the image, we can use a default or just log the error
+                                System.err.println("Error loading profile image: " + e.getMessage());
+                            }
+
+                            // Set button actions
                             editButton.setOnAction(event -> editSelectedClient(event, currentClient));
                             deleteButton.setOnAction(event -> removeSelectedClient(event, currentClient));
 
@@ -187,11 +204,11 @@ public class AdminDashboardController implements Initializable {
             clientListView.setItems(allClients);
         } else {
             String lowerCaseFilter = searchText.toLowerCase();
-            ObservableList<Client> filteredList = allClients.stream().filter(client ->
-                            client.getNom().toLowerCase().contains(lowerCaseFilter) ||
-                                    client.getPrenom().toLowerCase().contains(lowerCaseFilter) ||
-                                    client.getEmail().toLowerCase().contains(lowerCaseFilter) ||
-                                    String.valueOf(client.getNumero_telephone()).contains(lowerCaseFilter))
+            ObservableList<Client> filteredList = allClients.stream()
+                    .filter(client -> client.getNom().toLowerCase().contains(lowerCaseFilter) ||
+                            client.getPrenom().toLowerCase().contains(lowerCaseFilter) ||
+                            client.getEmail().toLowerCase().contains(lowerCaseFilter) ||
+                            String.valueOf(client.getNumero_telephone()).contains(lowerCaseFilter))
                     .collect(Collectors.toCollection(FXCollections::observableArrayList));
 
             clientListView.setItems(filteredList);
@@ -201,28 +218,23 @@ public class AdminDashboardController implements Initializable {
     @FXML
     void editSelectedClient(ActionEvent event, Client client) {
         try {
-            // Load the EditClientPopup FXML
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/EditClientPopup.fxml"));
             Parent root = loader.load();
 
-            // Get the controller and set the client
             EditClientPopupController controller = loader.getController();
             controller.setClient(client);
+            controller.setRefreshCallback(this::loadClients);
 
-            // Create a new stage for the popup
             Stage popupStage = new Stage();
             popupStage.initModality(Modality.APPLICATION_MODAL);
             popupStage.initOwner(((Node)event.getSource()).getScene().getWindow());
             popupStage.setTitle("Modifier le client");
 
-            // Apply stylesheets
             Scene scene = new Scene(root);
             scene.getStylesheets().add(getClass().getResource("/styles/admin-common.css").toExternalForm());
-
             popupStage.setScene(scene);
             popupStage.showAndWait();
 
-            // Refresh the list after closing the edit window
             loadClients();
         } catch (IOException e) {
             showAlert(Alert.AlertType.ERROR, "Erreur", "Erreur de chargement",
@@ -233,23 +245,20 @@ public class AdminDashboardController implements Initializable {
 
     @FXML
     void removeSelectedClient(ActionEvent event, Client client) {
-        // Show confirmation dialog
         Alert confirmation = new Alert(Alert.AlertType.CONFIRMATION);
         confirmation.setTitle("Confirmation de suppression");
         confirmation.setHeaderText("Supprimer le client");
         confirmation.setContentText("Êtes-vous sûr de vouloir supprimer " + client.getNom() + " " + client.getPrenom() + "?");
 
-        // Customize the buttons
         ButtonType yesButton = new ButtonType("Oui");
         ButtonType noButton = new ButtonType("Non");
         confirmation.getButtonTypes().setAll(yesButton, noButton);
 
-        // Handle the response
         confirmation.showAndWait().ifPresent(response -> {
             if (response == yesButton) {
                 try {
                     serviceClient.supprimer(client);
-                    loadClients(); // Refresh the list
+                    loadClients();
                     showAlert(Alert.AlertType.INFORMATION, "Succès", "Client supprimé",
                             "Le client a été supprimé avec succès.");
                 } catch (SQLException e) {
@@ -268,30 +277,22 @@ public class AdminDashboardController implements Initializable {
     @FXML
     void addNewClient(ActionEvent event) {
         try {
-            // Load the FXML
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/AddClientPopup.fxml"));
             Parent root = loader.load();
 
-            // Get the controller
             AddClientPopupController controller = loader.getController();
-
-            // Set the refresh callback
             controller.setRefreshCallback(this::loadClients);
 
-            // Create a new stage for the popup
             Stage popupStage = new Stage();
             popupStage.initModality(Modality.APPLICATION_MODAL);
             popupStage.initOwner(((Node)event.getSource()).getScene().getWindow());
             popupStage.setTitle("Ajouter un client");
 
-            // Apply stylesheets
             Scene scene = new Scene(root);
             scene.getStylesheets().add(getClass().getResource("/styles/admin-common.css").toExternalForm());
-
             popupStage.setScene(scene);
             popupStage.setResizable(false);
             popupStage.showAndWait();
-
         } catch (IOException e) {
             showAlert(Alert.AlertType.ERROR, "Erreur", "Erreur de chargement",
                     "Impossible de charger le formulaire d'ajout: " + e.getMessage());

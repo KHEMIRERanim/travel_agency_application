@@ -21,7 +21,6 @@
         <URL value="@/styles/admin-common.css" />
         <URL value="@/styles/listviewClients.css" />
     </stylesheets>
-
     <left>
         <VBox prefHeight="700.0" prefWidth="240.0" style="-fx-background-color: #1e3a8a;" BorderPane.alignment="CENTER">
             <children>
@@ -42,9 +41,7 @@
                         </Label>
                     </children>
                 </HBox>
-
                 <Pane prefHeight="30.0" prefWidth="240.0" />
-
                 <Label prefHeight="30.0" prefWidth="240.0" text="ADMINISTRATION" textFill="#90a4ae" textAlignment="CENTER">
                     <padding>
                         <Insets left="20.0" />
@@ -53,7 +50,6 @@
                         <Font name="System Bold" size="12.0" />
                     </font>
                 </Label>
-
                 <Button fx:id="clientsBtn" alignment="BASELINE_LEFT" graphicTextGap="15.0" mnemonicParsing="false" onAction="#showClients" prefHeight="50.0" prefWidth="240.0" style="-fx-background-color: transparent; -fx-text-fill: white;" text="Gestion des Utilisateurs">
                     <graphic>
                         <ImageView fitHeight="20.0" fitWidth="20.0" pickOnBounds="true" preserveRatio="true">
@@ -69,7 +65,6 @@
                         <Font size="14.0" />
                     </font>
                 </Button>
-
                 <Button fx:id="reclamationsBtn" alignment="BASELINE_LEFT" graphicTextGap="15.0" mnemonicParsing="false" onAction="#showReclamations" prefHeight="50.0" prefWidth="240.0" style="-fx-background-color: transparent; -fx-text-fill: white;" text="Gestion des Réclamations">
                     <graphic>
                         <ImageView fitHeight="20.0" fitWidth="20.0" pickOnBounds="true" preserveRatio="true">
@@ -85,7 +80,6 @@
                         <Font size="14.0" />
                     </font>
                 </Button>
-
                 <Button fx:id="volsBtn" alignment="BASELINE_LEFT" graphicTextGap="15.0" mnemonicParsing="false" onAction="#showVols" prefHeight="50.0" prefWidth="240.0" style="-fx-background-color: transparent; -fx-text-fill: white;" text="Gestion des vols">
                     <graphic>
                         <ImageView fitHeight="20.0" fitWidth="20.0" pickOnBounds="true" preserveRatio="true">
@@ -101,7 +95,6 @@
                         <Font size="14.0" />
                     </font>
                 </Button>
-
                 <Button fx:id="hotelsBtn" alignment="BASELINE_LEFT" graphicTextGap="15.0" mnemonicParsing="false" onAction="#showHotels" prefHeight="50.0" prefWidth="240.0" style="-fx-background-color: transparent; -fx-text-fill: white;" text="Gestion des hôtels">
                     <graphic>
                         <ImageView fitHeight="20.0" fitWidth="20.0" pickOnBounds="true" preserveRatio="true">
@@ -117,7 +110,6 @@
                         <Font size="14.0" />
                     </font>
                 </Button>
-
                 <Button fx:id="transportBtn" alignment="BASELINE_LEFT" graphicTextGap="15.0" mnemonicParsing="false" onAction="#showTransport" prefHeight="50.0" prefWidth="240.0" style="-fx-background-color: transparent; -fx-text-fill: white;" text="Gestion du transport">
                     <graphic>
                         <ImageView fitHeight="20.0" fitWidth="20.0" pickOnBounds="true" preserveRatio="true">
@@ -133,7 +125,6 @@
                         <Font size="14.0" />
                     </font>
                 </Button>
-
                 <Button fx:id="publicationsBtn" alignment="BASELINE_LEFT" graphicTextGap="15.0" mnemonicParsing="false" onAction="#showPublications" prefHeight="50.0" prefWidth="240.0" style="-fx-background-color: transparent; -fx-text-fill: white;" text="Publications">
                     <graphic>
                         <ImageView fitHeight="20.0" fitWidth="20.0" pickOnBounds="true" preserveRatio="true">
@@ -149,9 +140,7 @@
                         <Font size="14.0" />
                     </font>
                 </Button>
-
                 <Pane prefHeight="160.0" prefWidth="240.0" VBox.vgrow="ALWAYS" />
-
                 <Button fx:id="logoutBtn" alignment="BASELINE_LEFT" graphicTextGap="15.0" mnemonicParsing="false" onAction="#logout" prefHeight="50.0" prefWidth="240.0" style="-fx-background-color: #17316f; -fx-text-fill: white;" text="Déconnexion">
                     <graphic>
                         <ImageView fitHeight="20.0" fitWidth="20.0" pickOnBounds="true" preserveRatio="true">
@@ -210,7 +199,6 @@
                                 <DropShadow height="10.0" radius="4.5" width="10.0" color="#00000033" />
                             </effect>
                         </HBox>
-
                         <HBox alignment="CENTER_LEFT" prefHeight="50.0" style="-fx-background-color: #f4f6f9;">
                             <children>
                                 <Label text="Liste des utilisateurs enregistrés" styleClass="label-subheader">
@@ -223,7 +211,6 @@
                                 <Insets top="20.0" />
                             </VBox.margin>
                         </HBox>
-
                         <ListView fx:id="clientListView" prefHeight="550.0" prefWidth="760.0" styleClass="client-list-view" VBox.vgrow="ALWAYS">
                             <VBox.margin>
                                 <Insets bottom="25.0" left="25.0" right="25.0" top="10.0" />

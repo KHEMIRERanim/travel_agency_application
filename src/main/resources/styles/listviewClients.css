@@ -27,6 +27,15 @@
     -fx-spacing: 15;
 }
 
+/* Profile Picture Styling */
+.profile-picture {
+    -fx-background-radius: 25px;
+    -fx-border-radius: 25px;
+    -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.1), 5, 0, 0, 2);
+    -fx-min-width: 50px;
+    -fx-min-height: 50px;
+}
+
 /* Password special styling */
 .client-list-view .password-protected {
     -fx-font-family: monospace;

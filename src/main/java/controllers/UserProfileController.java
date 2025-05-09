@@ -8,10 +8,18 @@ import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
+import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 import services.ServiceClient;
+import utils.ImageUtils;
 
+import java.io.File;
 import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.sql.SQLException;
 
 public class UserProfileController {
@@ -49,14 +57,23 @@ public class UserProfileController {
     @FXML
     private Label statusLabel;
 
+    @FXML
+    private ImageView iv_profilePicture;
+
     public void setClient(Client client) {
         this.currentClient = client;
+        System.out.println("Setting client in UserProfileController: " + (client != null ? client.getEmail() : "null"));
         displayClientInfo();
         setFieldsEditable(false);
         btn_save.setDisable(true);
+        updateProfilePicture();
     }
 
     private void displayClientInfo() {
+        if (currentClient == null) {
+            System.out.println("Current client is null in displayClientInfo");
+            return;
+        }
         tf_nom.setText(currentClient.getNom());
         tf_prenom.setText(currentClient.getPrenom());
         tf_email.setText(currentClient.getEmail());
@@ -65,6 +82,10 @@ public class UserProfileController {
         tf_password.setText(currentClient.getMot_de_passe());
     }
 
+    private void updateProfilePicture() {
+        if (currentClient == null) return;
+        iv_profilePicture.setImage(ImageUtils.loadProfileImage(currentClient.getProfilePicture()));
+    }
     private void setFieldsEditable(boolean editable) {
         tf_nom.setEditable(editable);
         tf_prenom.setEditable(editable);
@@ -72,6 +93,33 @@ public class UserProfileController {
         tf_telephone.setEditable(editable);
         tf_dateNaissance.setEditable(editable);
         tf_password.setEditable(editable);
+    }
+
+    @FXML
+    void selectProfilePicture(ActionEvent event) {
+        if (!editMode) {
+            statusLabel.setText("Veuillez activer le mode édition pour changer la photo.");
+            return;
+        }
+
+        FileChooser fileChooser = new FileChooser();
+        fileChooser.setTitle("Choisir une photo de profil");
+        fileChooser.getExtensionFilters().addAll(
+                new FileChooser.ExtensionFilter("Images", "*.png", "*.jpg", "*.jpeg")
+        );
+        File selectedFile = fileChooser.showOpenDialog(null);
+        if (selectedFile != null) {
+            try {
+                String newProfilePicturePath = ImageUtils.saveProfileImage(selectedFile);
+                currentClient.setProfilePicture(newProfilePicturePath);
+                serviceClient.modifier(currentClient);
+                updateProfilePicture();
+                statusLabel.setText("Photo de profil mise à jour avec succès.");
+            } catch (IOException | SQLException e) {
+                statusLabel.setText("Erreur lors du chargement de l'image: " + e.getMessage());
+                e.printStackTrace();
+            }
+        }
     }
 
     @FXML
@@ -86,7 +134,6 @@ public class UserProfileController {
     @FXML
     void saveProfile(ActionEvent event) {
         try {
-            // Validate inputs
             if (tf_nom.getText().isEmpty() || tf_prenom.getText().isEmpty() ||
                     tf_email.getText().isEmpty() || tf_telephone.getText().isEmpty() ||
                     tf_dateNaissance.getText().isEmpty() || tf_password.getText().isEmpty()) {
@@ -94,7 +141,6 @@ public class UserProfileController {
                 return;
             }
 
-            // Update client object
             currentClient.setNom(tf_nom.getText());
             currentClient.setPrenom(tf_prenom.getText());
             currentClient.setEmail(tf_email.getText());
@@ -107,10 +153,8 @@ public class UserProfileController {
             currentClient.setDate_de_naissance(tf_dateNaissance.getText());
             currentClient.setMot_de_passe(tf_password.getText());
 
-            // Update in database
             serviceClient.modifier(currentClient);
 
-            // Update UI
             editMode = false;
             setFieldsEditable(false);
             btn_save.setDisable(true);
@@ -139,10 +183,8 @@ public class UserProfileController {
         alert.showAndWait().ifPresent(type -> {
             if (type == buttonTypeYes) {
                 try {
-                    // Delete from database
                     serviceClient.supprimer(currentClient);
 
-                    // Return to login page
                     try {
                         FXMLLoader loader = new FXMLLoader(getClass().getResource("/Login.fxml"));
                         Parent root = loader.load();

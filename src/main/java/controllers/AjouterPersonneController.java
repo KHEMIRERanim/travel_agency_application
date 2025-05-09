@@ -10,10 +10,18 @@ import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
+import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 import services.ServiceClient;
+import utils.ImageUtils;
 
+import java.io.File;
 import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.sql.SQLException;
 import java.util.regex.Pattern;
 
@@ -42,6 +50,30 @@ public class AjouterPersonneController {
     private TextField tf_prenom;
 
     @FXML
+    private ImageView iv_profilePicture;
+
+    private String profilePicturePath = "/images/default_profile.png";
+
+    @FXML
+    void selectProfilePicture(ActionEvent event) {
+        FileChooser fileChooser = new FileChooser();
+        fileChooser.setTitle("Choisir une photo de profil");
+        fileChooser.getExtensionFilters().addAll(
+                new FileChooser.ExtensionFilter("Images", "*.png", "*.jpg", "*.jpeg")
+        );
+        File selectedFile = fileChooser.showOpenDialog(null);
+        if (selectedFile != null) {
+            try {
+                profilePicturePath = ImageUtils.saveProfileImage(selectedFile);
+                iv_profilePicture.setImage(new Image(selectedFile.toURI().toString()));
+            } catch (IOException e) {
+                showAlert(Alert.AlertType.ERROR, "Erreur", "Erreur lors du chargement de l'image", e.getMessage());
+                e.printStackTrace();
+            }
+        }
+    }
+
+    @FXML
     void AjouterPersonne(ActionEvent event) {
         try {
             // Validation des champs vides
@@ -58,47 +90,44 @@ public class AjouterPersonneController {
             String password = tf_mdp.getText();
             String confirmPassword = tf_mdp_confirm.getText();
 
-            // Vérification que les mots de passe correspondent
             if (!password.equals(confirmPassword)) {
                 showAlert(Alert.AlertType.ERROR, "Erreur", "Mots de passe différents",
                         "Les mots de passe ne correspondent pas");
                 return;
             }
 
-            // Vérification des critères de complexité du mot de passe
             if (!isValidPassword(password)) {
                 showAlert(Alert.AlertType.ERROR, "Erreur", "Mot de passe invalide",
                         "Le mot de passe doit contenir au moins:\n• Une lettre majuscule\n• Un chiffre\n• Un caractère spécial");
                 return;
             }
-            //email admin cant be used from user
+
             if (tf_email.getText().equals("admin@gmail.com")) {
                 showAlert(Alert.AlertType.ERROR, "Erreur", "Email non autorisé",
                         "L'email admin@gmail.com ne peut pas être utilisé pour l'inscription");
                 return;
             }
-            // Vérification si l'email existe déjà
+
             if (serviceClient.emailExists(tf_email.getText())) {
                 showAlert(Alert.AlertType.ERROR, "Erreur", "Email déjà utilisé",
                         "Cet email est déjà utilisé par un autre compte");
                 return;
             }
 
-            // Création d'un nouveau client
-            serviceClient.ajouter(new Client(
+            // Création d'un nouveau client avec le chemin de l'image
+            Client newClient = new Client(
                     tf_nom.getText(),
                     tf_prenom.getText(),
                     tf_email.getText(),
                     Integer.parseInt(tf_numero.getText()),
                     tf_datenaissance.getText(),
-                    tf_mdp.getText()
-            ));
+                    tf_mdp.getText(),
+                    profilePicturePath  // Make sure this is set
+            );
 
-            // Affichage d'un message de succès
+            serviceClient.ajouter(newClient);
             showAlert(Alert.AlertType.INFORMATION, "Succès", "Inscription réussie",
                     "Votre compte a été créé avec succès!");
-
-            // Retour à la page de connexion
             goToLogin(event);
 
         } catch (SQLException e) {
@@ -112,21 +141,10 @@ public class AjouterPersonneController {
         }
     }
 
-    /**
-     * Vérifie si le mot de passe répond aux critères de complexité
-     * @param password Le mot de passe à vérifier
-     * @return true si le mot de passe est valide, false sinon
-     */
     private boolean isValidPassword(String password) {
-        // Au moins une lettre majuscule
         boolean hasUppercase = Pattern.compile("[A-Z]").matcher(password).find();
-
-        // Au moins un chiffre
         boolean hasDigit = Pattern.compile("\\d").matcher(password).find();
-
-        // Au moins un caractère spécial (ponctuation)
         boolean hasSpecialChar = Pattern.compile("[!@#$%^&*(),.?\":{}|<>]").matcher(password).find();
-
         return hasUppercase && hasDigit && hasSpecialChar;
     }
 
