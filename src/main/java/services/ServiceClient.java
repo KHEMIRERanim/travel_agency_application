@@ -1,4 +1,4 @@
-package services;
+        package services;
 
 import entities.Client;
 import utils.MyDatabase;
@@ -109,6 +109,17 @@ public class ServiceClient implements IService<Client> {
                     rs.getString("date_de_naissance"),
                     rs.getString("mot_de_passe")
             );
+        }
+        return null;
+    }
+
+    public Integer getClientIdByEmail(String email) throws SQLException {
+        String sql = "SELECT id_client FROM client WHERE email = ?";
+        PreparedStatement ps = con.prepareStatement(sql);
+        ps.setString(1, email);
+        ResultSet rs = ps.executeQuery();
+        if (rs.next()) {
+            return rs.getInt("id_client");
         }
         return null;
     }
