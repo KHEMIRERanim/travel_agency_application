@@ -45,18 +45,12 @@ public class RealTimeFlightsController {
 
     @FXML
     public void initialize() {
+        // Charger real-time-flights.html dans WebView
         String htmlPath = getClass().getResource("/real-time-flights.html").toExternalForm();
         if (htmlPath != null) {
             webView.getEngine().load(htmlPath);
-            // Redimensionner le WebView après le chargement
-            webView.getEngine().getLoadWorker().stateProperty().addListener((obs, oldState, newState) -> {
-                if (newState == javafx.concurrent.Worker.State.SUCCEEDED) {
-                    webView.setPrefHeight(webView.getHeight());
-                    webView.setPrefWidth(webView.getWidth());
-                }
-            });
         } else {
-            System.err.println("Fichier real-time-flights.html non trouvé.");
+            Platform.runLater(() -> showAlert(Alert.AlertType.ERROR, "Erreur", "Fichier non trouvé", "Impossible de charger real-time-flights.html"));
         }
     }
 

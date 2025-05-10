@@ -223,14 +223,12 @@ public class ChercherVolController {
                 stage.setScene(new Scene(root));
                 stage.setTitle("Vols en temps réel en Tunisie");
             }
-
         } catch (IOException e) {
             showAlert(Alert.AlertType.ERROR, "Erreur", "Erreur de chargement FXML",
                     "Impossible de charger la page des vols en temps réel : " + e.getMessage());
             e.printStackTrace();
         }
     }
-
     public void reloadSearchScene() {
         try {
             java.net.URL fxmlLocation = getClass().getResource("/ChercherVol.fxml");

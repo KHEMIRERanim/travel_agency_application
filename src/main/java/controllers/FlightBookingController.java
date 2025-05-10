@@ -105,7 +105,6 @@ public class FlightBookingController {
             tf_dateNaissance.setText(currentClient.getDate_de_naissance() != null ? currentClient.getDate_de_naissance() : "");
             tf_passengers.setText(String.valueOf(requiredPassengers));
 
-            // Rendre les champs non éditables
             tf_nom.setEditable(false);
             tf_prenom.setEditable(false);
             tf_email.setEditable(false);
@@ -125,7 +124,6 @@ public class FlightBookingController {
 
     private void displayFlightDetails() {
         if (selectedFlight != null) {
-            // Image de la compagnie aérienne
             try {
                 String imagePath = selectedFlight.getImage_url();
                 if (imagePath != null && !imagePath.isEmpty()) {
@@ -146,7 +144,6 @@ public class FlightBookingController {
                 airlineImageView.setImage(new Image("https://via.placeholder.com/80x40?text=Error"));
             }
 
-            // Détails du vol
             airlineLabel.setText(selectedFlight.getAirline());
             flightNumberLabel.setText("Flight " + selectedFlight.getFlight_number());
 
@@ -209,6 +206,12 @@ public class FlightBookingController {
             if (selectedFlight == null) {
                 showAlert(Alert.AlertType.ERROR, "Erreur", "Aucun vol sélectionné",
                         "Veuillez sélectionner un vol pour continuer.");
+                return;
+            }
+            // Vérifier les sièges disponibles
+            if (selectedFlight.getAvailable_seats() < requiredPassengers) {
+                showAlert(Alert.AlertType.ERROR, "Erreur", "Sièges insuffisants",
+                        "Le nombre de sièges disponibles est insuffisant pour votre réservation.");
                 return;
             }
 
