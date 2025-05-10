@@ -75,4 +75,77 @@ public class ServiceVehicule {
             System.out.println("Vehicle deleted: ID " + id);
         }
     }
+
+    public Vehicule getById(int id_vehicule) throws SQLException {
+        String query = "SELECT * FROM vehicule WHERE id_vehicule = ?";
+        try (PreparedStatement stmt = conn.prepareStatement(query)) {
+            stmt.setInt(1, id_vehicule);
+            ResultSet rs = stmt.executeQuery();
+            if (rs.next()) {
+                Vehicule v = new Vehicule();
+                v.setId(rs.getInt("id_vehicule"));
+                v.setType(rs.getString("type"));
+                v.setLieuPrise(rs.getString("lieu_prise"));
+                v.setLieuRetour(rs.getString("lieu_retour"));
+                v.setDateLocation(rs.getDate("date_location") != null ? rs.getDate("date_location").toLocalDate() : null);
+                v.setDateRetour(rs.getDate("date_retour") != null ? rs.getDate("date_retour").toLocalDate() : null);
+                v.setImagePath(rs.getString("image_path"));
+                v.setPrix(rs.getDouble("prix"));
+                return v;
+            }
+            return null;
+        }
+    }
+
+    public List<String> getAllTypes() throws SQLException {
+        List<String> types = new ArrayList<>();
+        String query = "SELECT DISTINCT type FROM vehicule";
+        try (Statement stmt = conn.createStatement();
+             ResultSet rs = stmt.executeQuery(query)) {
+            while (rs.next()) {
+                types.add(rs.getString("type"));
+            }
+        }
+        return types;
+    }
+
+    public List<Vehicule> filterVehicles(String type, Double minPrice, Double maxPrice) throws SQLException {
+        List<Vehicule> vehicles = new ArrayList<>();
+        StringBuilder query = new StringBuilder("SELECT * FROM vehicule WHERE 1=1");
+        List<Object> params = new ArrayList<>();
+
+        if (type != null && !type.isEmpty()) {
+            query.append(" AND type = ?");
+            params.add(type);
+        }
+        if (minPrice != null) {
+            query.append(" AND prix >= ?");
+            params.add(minPrice);
+        }
+        if (maxPrice != null) {
+            query.append(" AND prix <= ?");
+            params.add(maxPrice);
+        }
+
+        try (PreparedStatement stmt = conn.prepareStatement(query.toString())) {
+            for (int i = 0; i < params.size(); i++) {
+                stmt.setObject(i + 1, params.get(i));
+            }
+            try (ResultSet rs = stmt.executeQuery()) {
+                while (rs.next()) {
+                    Vehicule v = new Vehicule();
+                    v.setId(rs.getInt("id_vehicule"));
+                    v.setType(rs.getString("type"));
+                    v.setLieuPrise(rs.getString("lieu_prise"));
+                    v.setLieuRetour(rs.getString("lieu_retour"));
+                    v.setDateLocation(rs.getDate("date_location") != null ? rs.getDate("date_location").toLocalDate() : null);
+                    v.setDateRetour(rs.getDate("date_retour") != null ? rs.getDate("date_retour").toLocalDate() : null);
+                    v.setImagePath(rs.getString("image_path"));
+                    v.setPrix(rs.getDouble("prix"));
+                    vehicles.add(v);
+                }
+            }
+        }
+        return vehicles;
+    }
 }
