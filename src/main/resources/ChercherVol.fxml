@@ -10,7 +10,7 @@
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
-<AnchorPane prefHeight="788.0" prefWidth="1227.0" style="-fx-background-color: #ab71ff;" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controllers.ChercherVolController">
+<AnchorPane prefHeight="788.0" prefWidth="1227.0" style="-fx-background-color: #E0F7FA;" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controllers.ChercherVolController">
     <children>
         <Rectangle arcHeight="20.0" arcWidth="20.0" fill="#c4e6ea" height="409.0" layoutX="207.0" layoutY="88.0" stroke="WHITE" strokeType="INSIDE" width="454.0" />
         <Rectangle arcHeight="20.0" arcWidth="20.0" fill="#ffebfb" height="530.0" layoutX="690.0" layoutY="88.0" stroke="#b4aaaa" strokeType="INSIDE" width="426.0" />
@@ -23,13 +23,12 @@
         </ImageView>
         <DatePicker fx:id="flightdatechercher" layoutX="727.0" layoutY="316.0" prefHeight="26.0" prefWidth="226.0" promptText="Depature-Date" style="-fx-border-color: #39909D; -fx-border-radius: 5;" />
         <Button fx:id="btnRechercherVol" layoutX="732.0" layoutY="529.0" mnemonicParsing="false" onAction="#recherchervol" prefHeight="35.0" prefWidth="204.0" style="-fx-background-color: FF9E0C; -fx-background-radius: 5;" text="Search" />
+        <Button fx:id="btnRealTimeFlights" layoutX="732.0" layoutY="574.0" mnemonicParsing="false" onAction="#showRealTimeFlights" prefHeight="35.0" prefWidth="204.0" style="-fx-background-color: #FF9E0C; -fx-background-radius: 5;" text="Real-Time Tunis Flights" />
         <Text layoutX="727.0" layoutY="165.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Departure" wrappingWidth="213.15423583984375" />
         <Text layoutX="727.0" layoutY="235.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Destination" />
         <Text layoutX="727.0" layoutY="302.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Flight-Date" />
         <Text layoutX="726.0" layoutY="381.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Number of adult passengers" />
         <Text layoutX="727.0" layoutY="458.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Number of child passengers" />
-        <Text layoutX="370.0" layoutY="108.0" strokeType="OUTSIDE" strokeWidth="0.0" />
-        <Text layoutX="370.0" layoutY="117.0" strokeType="OUTSIDE" strokeWidth="0.0" />
         <Text fill="#dc2a2a" layoutX="226.0" layoutY="121.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Ready to explore tho world ?">
             <font>
                 <Font name="Bookman Old Style Italic" size="30.0" />
@@ -61,7 +60,8 @@
             </image>
         </ImageView>
         <Text layoutX="556.0" layoutY="613.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Access to a wide range of destinations" textAlignment="CENTER" wrappingWidth="81.59999999999991" />
-      <TextField fx:id="adultchercher" layoutX="727.0" layoutY="402.0" prefHeight="26.0" prefWidth="226.0" promptText="Destination" style="-fx-border-color: #39909D; -fx-border-radius: 5;" />
-      <TextField fx:id="childchercher" layoutX="727.0" layoutY="470.0" prefHeight="26.0" prefWidth="226.0" promptText="Destination" style="-fx-border-color: #39909D; -fx-border-radius: 5;" />
+        <TextField fx:id="adultchercher" layoutX="727.0" layoutY="402.0" prefHeight="26.0" prefWidth="226.0" promptText="Number of adult passengers" style="-fx-border-color: #39909D; -fx-border-radius: 5;" />
+        <TextField fx:id="childchercher" layoutX="727.0" layoutY="470.0" prefHeight="26.0" prefWidth="226.0" promptText="Number of child passengers" style="-fx-border-color: #39909D; -fx-border-radius: 5;" />
+        <Button fx:id="btnmyreservations" layoutX="903.0" layoutY="110.0" mnemonicParsing="false" onAction="#showMyReservations" prefHeight="35.0" prefWidth="204.0" style="-fx-background-color: FF9E0C; -fx-background-radius: 5;" text="My reservations" />
     </children>
 </AnchorPane>

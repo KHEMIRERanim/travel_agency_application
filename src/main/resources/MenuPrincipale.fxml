@@ -5,7 +5,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane prefHeight="831.0" prefWidth="1381.0" style="-fx-background-color: #ab71ff;" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controllers.MenuPrincipalController">
+<AnchorPane prefHeight="831.0" prefWidth="1381.0" style="-fx-background-color: #E0F7FA;" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controllers.MenuPrincipalController">
     <children>
         <VBox layoutX="14.0" layoutY="31.0" prefHeight="203.0" prefWidth="188.0" spacing="20.0" style="-fx-background-color: #B2EBF2; -fx-background-radius: 10;">
             <children>

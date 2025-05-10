@@ -129,11 +129,9 @@ public class FlightSearchResultsController {
         airlineImageView.setFitWidth(80);
         airlineImageView.setPreserveRatio(true);
 
-        // Charger l'image comme dans AfficherVolsController
         try {
             String imagePath = flight.getImage_url();
             if (imagePath != null && !imagePath.isEmpty()) {
-                // Construire le chemin absolu si c'est un chemin relatif au projet
                 if (!imagePath.startsWith("http")) {
                     String projectDir = System.getProperty("user.dir");
                     File file = new File(projectDir, "src/" + imagePath);
@@ -253,12 +251,15 @@ public class FlightSearchResultsController {
             } else {
                 FXMLLoader loader = new FXMLLoader(getClass().getResource("/ChercherVol.fxml"));
                 Parent root = loader.load();
+                ChercherVolController controller = loader.getController();
+                controller.setClient(currentClient);
                 Stage stage = (Stage) backButton.getScene().getWindow();
                 stage.setScene(new Scene(root));
                 stage.setTitle("Flight Search");
             }
         } catch (IOException e) {
-            System.out.println("Error returning to search screen: " + e.getMessage());
+            showAlert(Alert.AlertType.ERROR, "Erreur", "Erreur de navigation",
+                    "Impossible de retourner à la recherche: " + e.getMessage());
             e.printStackTrace();
         }
     }
@@ -272,51 +273,25 @@ public class FlightSearchResultsController {
                 return;
             }
 
-            // Créer une réservation
-            ServiceReservationVol reservationService = new ServiceReservationVol();
-            java.sql.Date currentDate = new java.sql.Date(System.currentTimeMillis());
-            ReservationVol reservation = new ReservationVol(
-                    currentClient.getId_client(), // client_id
-                    "Confirmed",                  // status
-                    currentDate,                  // reservation_date
-                    flight.getPrice() * requiredSeats, // price (multiplié par le nombre de passagers)
-                    currentClient.getPrenom() + " " + currentClient.getNom(), // passenger_name
-                    flight.getFlight_id()         // flight_id
-            );
-
-            // Ajouter la réservation à la base de données
-            reservationService.ajouter(reservation);
-
-            // Mettre à jour le nombre de sièges disponibles
-            ServiceFlight flightService = new ServiceFlight();
-            flight.setAvailable_seats(flight.getAvailable_seats() - requiredSeats);
-            flightService.modifier(flight);
-
-            // Afficher une alerte de succès
-            showAlert(Alert.AlertType.INFORMATION, "Succès", "Réservation confirmée",
-                    "Votre réservation a été ajoutée avec succès !");
-
-            // Rediriger vers le tableau de bord
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("/UserDashboard.fxml"));
+            // Charger FlightBookingConfirmation.fxml
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/FlightBookingConfirmation.fxml"));
             Parent root = loader.load();
-            UserDashboardController controller = loader.getController();
+            FlightBookingController controller = loader.getController();
             controller.setClient(currentClient);
+            controller.setFlight(flight, requiredSeats);
 
             Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
             stage.setScene(new Scene(root));
-            stage.setTitle("Tableau de bord");
+            stage.setTitle("Confirmation de la réservation");
             stage.show();
 
-        } catch (SQLException e) {
-            showAlert(Alert.AlertType.ERROR, "Erreur", "Erreur lors de la réservation",
-                    "Impossible d'ajouter la réservation: " + e.getMessage());
         } catch (IOException e) {
             showAlert(Alert.AlertType.ERROR, "Erreur", "Erreur de navigation",
-                    "Impossible de retourner au tableau de bord: " + e.getMessage());
+                    "Impossible de charger la page de confirmation: " + e.getMessage());
+            e.printStackTrace();
         }
     }
 
-    // Méthode utilitaire pour afficher une alerte
     private void showAlert(Alert.AlertType type, String title, String header, String content) {
         Alert alert = new Alert(type);
         alert.setTitle(title);

@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ScrollPane?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.ColumnConstraints?>
+<?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.text.Font?>
+
+<AnchorPane prefHeight="788.0" prefWidth="1227.0" style="-fx-background-color: #E0F7FA;" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controllers.MyReservationsController">
+    <children>
+        <Label layoutX="520.0" layoutY="30.0" text="Mes Réservations" textFill="#006064">
+            <font>
+                <Font name="System Bold" size="24.0" />
+            </font>
+        </Label>
+        <ScrollPane layoutX="150.0" layoutY="80.0" prefHeight="600.0" prefWidth="927.0" fitToWidth="true">
+            <content>
+                <GridPane fx:id="reservationsContainer" hgap="20" vgap="20" style="-fx-padding: 20;">
+                    <columnConstraints>
+                        <ColumnConstraints percentWidth="20.0" />
+                        <ColumnConstraints percentWidth="20.0" />
+                        <ColumnConstraints percentWidth="20.0" />
+                        <ColumnConstraints percentWidth="20.0" />
+                        <ColumnConstraints percentWidth="20.0" />
+                    </columnConstraints>
+                </GridPane>
+            </content>
+        </ScrollPane>
+        <Button fx:id="backButton" layoutX="150.0" layoutY="700.0" mnemonicParsing="false" onAction="#goBack" prefHeight="35.0" prefWidth="204.0" style="-fx-background-color: #FF9E0C; -fx-text-fill: white; -fx-background-radius: 5;" text="Retour" />
+    </children>
+</AnchorPane>

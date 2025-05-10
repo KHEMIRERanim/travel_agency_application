@@ -1,0 +1,211 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Vols en Temps Réel - Tunisie</title>
+  <style>
+    #map {
+      height: 400px;
+      max-width: 1100px;
+      margin: 40px auto;
+      border-radius: 15px;
+      box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+    }
+    .flight-card {
+      border: 1px solid #ddd;
+      padding: 15px;
+      margin: 10px 0;
+      border-radius: 5px;
+      background-color: #fff;
+      animation: fadeIn 0.5s ease-in-out;
+    }
+    @keyframes fadeIn {
+      from { opacity: 0; }
+      to { opacity: 1; }
+    }
+    .status {
+      padding: 5px 10px;
+      border-radius: 3px;
+      color: white;
+    }
+    .active { background-color: #4CAF50; }
+    .landed { background-color: #2196F3; }
+    .scheduled { background-color: #9E9E9E; }
+    .cancelled { background-color: #F44336; }
+    .loading, .error {
+      text-align: center;
+      padding: 20px;
+      color: #757575;
+    }
+    .error { color: #D32F2F; }
+  </style>
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+</head>
+<body>
+<h1>Vols en Temps Réel - Tunisie (TUN)</h1>
+<div id="map"></div>
+<div id="flights-container"></div>
+
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+<script>
+  let map = null;
+  let isFetching = false;
+
+  const airportCoords = {
+    'DTTA': [36.8510, 10.2272],
+    'LFPG': [49.0097, 2.5479],
+    'LTFM': [41.2753, 28.7519],
+    'EGLL': [51.4700, -0.4543],
+    'KJFK': [40.6413, -73.7781],
+  };
+
+  const airportNames = {
+    'DTTA': 'Tunis-Carthage',
+    'LFPG': 'Paris Charles de Gaulle',
+    'LTFM': 'Istanbul',
+    'EGLL': 'London Heathrow',
+    'KJFK': 'New York JFK',
+  };
+
+  function initMap() {
+    map = L.map('map').setView([36.8065, 10.1815], 6);
+
+    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+      attribution: '© <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+    }).addTo(map);
+  }
+
+  function addFlightToMap(flight) {
+    const depCoords = flight.departureCoords || airportCoords['DTTA'];
+    const arrCoords = flight.arrivalCoords || airportCoords['DTTA'];
+
+    L.marker(depCoords).addTo(map)
+            .bindPopup(`${flight.departureAirport} (${flight.departureIata}) - Départ`);
+    L.marker(arrCoords).addTo(map)
+            .bindPopup(`${flight.arrivalAirport} (${flight.arrivalIata}) - Arrivée`);
+
+    L.polyline([depCoords, arrCoords], {
+      color: '#0277bd',
+      weight: 2,
+      dashArray: '5, 10'
+    }).addTo(map);
+
+    if (flight.currentPosition) {
+      L.marker(flight.currentPosition).addTo(map)
+              .bindPopup(`Vol ${flight.callsign} - Position actuelle`);
+    }
+  }
+
+  function displayFlights(flights) {
+    const container = document.getElementById('flights-container');
+    container.innerHTML = '';
+
+    if (!flights || flights.length === 0) {
+      container.innerHTML = '<p class="error">Aucun vol trouvé pour la Tunisie. Les données sont en temps réel, veuillez réessayer plus tard.</p>';
+      return;
+    }
+
+    map.eachLayer(layer => {
+      if (!(layer instanceof L.TileLayer)) {
+        map.removeLayer(layer);
+      }
+    });
+
+    flights.forEach((flight, index) => {
+      const flightCard = document.createElement('div');
+      flightCard.className = 'flight-card';
+      flightCard.style.animationDelay = `${index * 0.1}s`;
+      const statusClass = flight.status.toLowerCase();
+      flightCard.innerHTML = `
+        <h3>Vol ${flight.callsign || 'N/A'}</h3>
+        <p><strong>Départ :</strong> ${flight.departureAirport} (${flight.departureIata})</p>
+        <p><strong>Arrivée :</strong> ${flight.arrivalAirport} (${flight.arrivalIata})</p>
+        <p><strong>Statut :</strong> <span class="status ${statusClass}">${flight.status}</span></p>
+      `;
+      container.appendChild(flightCard);
+
+      addFlightToMap(flight);
+    });
+  }
+
+  function showLoading() {
+    document.getElementById('flights-container').innerHTML = '<p class="loading">Chargement des vols...</p>';
+  }
+
+  function showError(message) {
+    document.getElementById('flights-container').innerHTML = `<p class="error">Erreur : ${message}</p>`;
+  }
+
+  async function fetchFlights(useAuth = true) {
+    if (isFetching) return;
+    isFetching = true;
+    showLoading();
+    const url = 'https://opensky-network.org/api/states/all?lamin=25.0&lomin=5.0&lamax=40.0&lomax=15.0';
+
+    try {
+      const headers = useAuth ? {
+        'Authorization': 'Basic ' + btoa('ranim:LY2Yqy5@JeH9x6f'),
+        'Accept': 'application/json'
+      } : { 'Accept': 'application/json' };
+
+      const response = await fetch(url, { headers });
+
+      if (!response.ok) {
+        if (response.status === 401 && useAuth) {
+          console.warn('Échec de l\'authentification, tentative sans authentification...');
+          isFetching = false;
+          return fetchFlights(false);
+        }
+        throw new Error(`Erreur HTTP ${response.status}: ${response.statusText}`);
+      }
+
+      const data = await response.json();
+      if (!data || !Array.isArray(data.states)) {
+        throw new Error('Réponse API invalide ou aucun état de vol disponible');
+      }
+
+      console.log(`Nombre total de vols reçus : ${data.states.length}`);
+      const tunisiaFlights = data.states
+              .filter(state => {
+                const originCountry = state[2];
+                const departure = state[3];
+                const arrival = state[4];
+                const isRelevant = originCountry === 'Tunisia' || departure === 'DTTA' || arrival === 'DTTA' || (state[5] && state[6] && state[6] >= 25.0 && state[6] <= 40.0 && state[5] >= 5.0 && state[5] <= 15.0);
+                if (!isRelevant) {
+                  console.log(`Vol filtré : callsign=${state[1]}, pays=${originCountry}, dep=${departure}, arr=${arrival}`);
+                }
+                return isRelevant;
+              })
+              .map(state => ({
+                callsign: state[1]?.trim() || 'N/A',
+                departureIata: state[3] || 'DTTA',
+                arrivalIata: state[4] || 'DTTA',
+                departureAirport: airportNames[state[3]] || 'Tunis-Carthage',
+                arrivalAirport: airportNames[state[4]] || 'Tunis-Carthage',
+                departureCoords: airportCoords[state[3]] || airportCoords['DTTA'],
+                arrivalCoords: airportCoords[state[4]] || airportCoords['DTTA'],
+                currentPosition: state[5] && state[6] ? [state[6], state[5]] : null,
+                status: state[8] ? 'Landed' : 'Active'
+              }))
+              .slice(0, 10);
+
+      console.log(`Nombre de vols pour la Tunisie : ${tunisiaFlights.length}`);
+      displayFlights(tunisiaFlights);
+    } catch (error) {
+      console.error('Erreur détaillée:', error);
+      let errorMessage = error.message.includes('401') ?
+              'Échec de l\'authentification. Vérifiez vos identifiants OpenSky Network ou essayez plus tard.' :
+              `Impossible de récupérer les vols : ${error.message}`;
+      showError(errorMessage);
+    } finally {
+      isFetching = false;
+    }
+  }
+
+  initMap();
+  fetchFlights();
+  setInterval(() => fetchFlights(), 30000);
+</script>
+</body>
+</html>

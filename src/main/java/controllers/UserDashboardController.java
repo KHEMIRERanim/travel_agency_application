@@ -145,12 +145,19 @@ public class UserDashboardController implements Initializable {
 
     @FXML
     void showReservations(ActionEvent event) {
-        // Cette méthode est maintenant remplacée par le sous-menu, mais conservée pour la compatibilité
-        contentArea.getChildren().clear();
-        Label label = new Label("Vos réservations seront affichées ici");
-        label.setLayoutX(200);
-        label.setLayoutY(200);
-        contentArea.getChildren().add(label);
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/MyReservations.fxml"));
+            Parent reservationsView = loader.load();
+
+            // Passer le client au contrôleur des réservations
+            MyReservationsController controller = loader.getController();
+            controller.setClient(currentClient);
+
+            loadContentToArea(reservationsView);
+        } catch (IOException e) {
+            showAlert(Alert.AlertType.ERROR, "Erreur", "Erreur de chargement",
+                    "Impossible de charger les réservations: " + e.getMessage());
+        }
     }
 
     @FXML

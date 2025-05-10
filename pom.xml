@@ -1,21 +1,14 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<project xmlns="http://maven.apache.org/POM/4.0.0"
-         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
-
     <groupId>org.example</groupId>
     <artifactId>WorkshopJDBCJavaFX--3B2</artifactId>
     <version>1.0-SNAPSHOT</version>
-
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <maven.compiler.source>11</maven.compiler.source>
         <maven.compiler.target>11</maven.compiler.target>
         <javafx.version>17.0.2</javafx.version>
     </properties>
-
-
     <dependencies>
         <!-- MySQL Connector -->
         <dependency>
@@ -23,7 +16,6 @@
             <artifactId>mysql-connector-j</artifactId>
             <version>8.0.33</version>
         </dependency>
-
         <!-- JavaFX modules -->
         <dependency>
             <groupId>org.openjfx</groupId>
@@ -35,8 +27,12 @@
             <artifactId>javafx-fxml</artifactId>
             <version>${javafx.version}</version>
         </dependency>
+        <dependency>
+            <groupId>org.openjfx</groupId>
+            <artifactId>javafx-web</artifactId>
+            <version>${javafx.version}</version>
+        </dependency>
     </dependencies>
-
     <build>
         <plugins>
             <!-- JavaFX Maven Plugin -->
@@ -56,5 +52,16 @@
                 </executions>
             </plugin>
         </plugins>
+        <resources>
+            <resource>
+                <directory>src/main/resources</directory>
+                <includes>
+                    <include>**/*.html</include>
+                    <include>**/*.fxml</include>
+                    <include>**/*.properties</include>
+                    <include>**/*.css</include>
+                </includes>
+            </resource>
+        </resources>
     </build>
 </project>
