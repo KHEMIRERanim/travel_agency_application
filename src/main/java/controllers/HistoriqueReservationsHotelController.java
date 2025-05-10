@@ -68,7 +68,9 @@ public class HistoriqueReservationsHotelController implements Initializable {
                 LocalDate checkin = LocalDate.parse(cellData.getValue().getCheckin_date(), formatter);
                 LocalDate checkout = LocalDate.parse(cellData.getValue().getCheckout_date(), formatter);
                 long nbNuits = ChronoUnit.DAYS.between(checkin, checkout);
+                // get by id hotel
                 Hotels hotel = hotelService.recuperer().get(cellData.getValue().getHotel_id());
+                System.out.println(hotel.toString());
                 double total = hotel.getPrix() * nbNuits;
                 return new ReadOnlyStringWrapper(String.format("%.2f TND", total));
             } catch (Exception e) {
@@ -82,6 +84,10 @@ public class HistoriqueReservationsHotelController implements Initializable {
                 .stream()
                 .filter(r -> r.getId_utilisateur() == clientId)
                 .collect(Collectors.toList());
+
+        for (ReservationHotel r : filteredReservations) {
+            System.out.println(r.getHotel_id());
+        }
 
         table.setItems(FXCollections.observableArrayList(filteredReservations));
     }
