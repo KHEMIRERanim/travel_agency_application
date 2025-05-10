@@ -112,14 +112,18 @@ public class UserDashboardController implements Initializable {
     @FXML
     void reserveTransport(ActionEvent event) {
         try {
-            // Placeholder for future functionality - load transport reservation screen
-            contentArea.getChildren().clear();
-            Label label = new Label("Réservation de transport");
-            label.setLayoutX(200);
-            label.setLayoutY(200);
-            label.setStyle("-fx-font-size: 20px; -fx-font-weight: bold;");
-            contentArea.getChildren().add(label);
-        } catch (Exception e) {
+            // Charger ton fichier FXML
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/CatalogueVehicules.fxml"));
+            Parent transportView = loader.load();
+
+            // Récupérer ton contrôleur et établir une communication (si nécessaire)
+            CatalogueVehiculesController controller = loader.getController();
+            controller.setDashboardController(this); // Passe une référence au contrôleur principal
+
+            // Charger ton interface dans la zone de contenu
+            contentArea.getChildren().setAll(transportView);
+        } catch (IOException e) {
+            // Afficher une alerte en cas d'erreur
             showAlert(Alert.AlertType.ERROR, "Erreur", "Erreur de chargement",
                     "Impossible de charger la réservation de transport: " + e.getMessage());
         }
