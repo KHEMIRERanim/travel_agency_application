@@ -5,19 +5,20 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Cursor;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
-import javafx.scene.layout.HBox;
-import javafx.stage.Modality;
-import javafx.stage.Stage;
-import entities.Hotels;
-import services.ServiceHotel;
 import javafx.scene.image.ImageView;
 import javafx.scene.image.Image;
 import javafx.stage.FileChooser;
+import javafx.stage.Modality;
+import javafx.stage.Stage;
 import javafx.scene.web.WebView;
 import javafx.scene.layout.VBox;
+import javafx.scene.layout.HBox;
+import javafx.geometry.Insets;
+
+import entities.Hotels;
+import services.ServiceHotel;
 
 import java.io.*;
-
 import java.sql.SQLException;
 
 public class AjoutHotelController {
@@ -30,6 +31,7 @@ public class AjoutHotelController {
     @FXML private Label errorLabel;
     @FXML private ImageView imageView;
     @FXML private HBox noteBox;
+
     private final Image STAR_FULL = new Image(getClass().getResource("/images/star.png").toExternalForm());
     private final Image STAR_EMPTY = new Image(getClass().getResource("/images/star_empty.png").toExternalForm());
     private int currentNote = 1;
@@ -165,19 +167,29 @@ public class AjoutHotelController {
                         <meta charset="utf-8" />
                         <title>Carte interactive</title>
                         <style>
-                            html, body, #map {
+                            html, body {
                                 height: 100%;
                                 margin: 0;
                                 padding: 0;
+                            }
+                            #map {
+                                position: absolute;
+                                top: 0; left: 0;
+                                right: 0; bottom: 0;
+                                z-index: 0;
                             }
                             #info {
                                 position: absolute;
                                 bottom: 10px;
                                 left: 10px;
-                                background: rgba(255, 255, 255, 0.8);
-                                padding: 10px;
+                                background: rgba(255, 255, 255, 0.9);
+                                padding: 10px 14px;
                                 border-radius: 6px;
                                 font-family: Arial, sans-serif;
+                                font-size: 14px;
+                                color: #333;
+                                z-index: 1000;
+                                box-shadow: 0 2px 8px rgba(0,0,0,0.15);
                             }
                         </style>
                         <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.3/dist/leaflet.css" />
@@ -188,7 +200,7 @@ public class AjoutHotelController {
                         <div id="info">Cliquez sur une position pour choisir une destination</div>
                         <script>
                             var selectedCountry = "";
-                            var map = L.map('map').setView([34.0, 9.0], 5); // Center on Tunisia
+                            var map = L.map('map').setView([34.0, 9.0], 5);
 
                             L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
                                 maxZoom: 19,
@@ -200,7 +212,7 @@ public class AjoutHotelController {
                             map.on('click', function(e) {
                                 var latlng = e.latlng;
 
-                                fetch(`https://nominatim.openstreetmap.org/reverse?format=json&lat=${latlng.lat}&lon=${latlng.lng}`)
+                                fetch(`https://nominatim.openstreetmap.org/reverse?format=json&lat=${latlng.lat}&lon=${latlng.lng}`)//appel api
                                     .then(response => response.json())
                                     .then(data => {
                                         if (data && data.address) {
@@ -222,7 +234,6 @@ public class AjoutHotelController {
                     </body>
                     </html>
                     """;
-
 
             webView.getEngine().loadContent(htmlContent);
 

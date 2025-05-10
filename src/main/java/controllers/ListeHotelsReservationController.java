@@ -101,6 +101,7 @@ public class ListeHotelsReservationController implements Initializable {
 
     private void selectHotel(Hotels h) {
         selectedHotel = h;
+        System.out.println(selectedHotel.getHotel_id() + " " + currentClient.getId_client() );
         selectedTitle.setText(h.getNom_hotel());
         selectedDetails.setText(
                 "Destination: " + h.getDestination() + "\n" +
@@ -136,6 +137,7 @@ public class ListeHotelsReservationController implements Initializable {
             Parent root = loader.load();
 
             AjoutReservationHotelController ctrl = loader.getController();
+            System.out.println(selectedHotel.getHotel_id() + " " + currentClient.getId_client() );
             ctrl.setContext(selectedHotel.getHotel_id(), currentClient.getId_client());
             Stage stage = new Stage();
             stage.initStyle(StageStyle.UNDECORATED);
