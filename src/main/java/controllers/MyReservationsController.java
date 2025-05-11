@@ -57,7 +57,8 @@ public class MyReservationsController {
         this.isEmbeddedInDashboard = (controller != null);
     }
 
-    private void loadReservations() {
+    // Changed from private to public to allow access from ModifyReservationController
+    public void loadReservations() {
         try {
             if (currentClient == null) {
                 showAlert(Alert.AlertType.ERROR, "Erreur", "Aucun client connecté", "Veuillez vous connecter pour voir vos réservations.");
@@ -417,7 +418,21 @@ public class MyReservationsController {
     }
 
     private void modifyReservation(ReservationVol reservation) {
-        showAlert(Alert.AlertType.INFORMATION, "Modification", "Fonction de modification non implémentée encore.", "Veuillez ajouter la logique de modification.");
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/ModifyReservation.fxml"));
+            Parent root = loader.load();
+            ModifyReservationController controller = loader.getController();
+            controller.setReservation(reservation);
+            controller.setParentController(this);
+
+            Stage stage = new Stage();
+            stage.setTitle("Modifier la Réservation");
+            stage.setScene(new Scene(root));
+            stage.show();
+        } catch (IOException e) {
+            showAlert(Alert.AlertType.ERROR, "Erreur", "Erreur de chargement FXML", "Impossible de charger la page de modification : " + e.getMessage());
+            e.printStackTrace();
+        }
     }
 
     private void deleteReservation(ReservationVol reservation) {
@@ -436,22 +451,23 @@ public class MyReservationsController {
                     reservationService.updateReservationStatus(reservation, "Deleted");
                     reservation.setStatus("Deleted");
 
+                    // Parcourir uniquement pour mettre à jour la carte correspondante
                     for (javafx.scene.Node node : reservationsContainer.getChildren()) {
                         if (node instanceof VBox) {
                             VBox card = (VBox) node;
                             for (javafx.scene.Node child : card.getChildren()) {
-                                if (child instanceof Label && ((Label) child).getText().startsWith("Statut: ")) {
+                                if (child instanceof Label && ((Label) child).getText().equals("Statut: " + reservation.getStatus())) {
                                     ((Label) child).setText("Statut: Deleted");
-                                    break;
-                                }
-                            }
-                            for (javafx.scene.Node child : card.getChildren()) {
-                                if (child instanceof VBox) {
-                                    for (javafx.scene.Node button : ((VBox) child).getChildren()) {
-                                        if (button instanceof Button) {
-                                            ((Button) button).setDisable(true);
+                                    for (javafx.scene.Node innerChild : card.getChildren()) {
+                                        if (innerChild instanceof VBox) {
+                                            for (javafx.scene.Node button : ((VBox) innerChild).getChildren()) {
+                                                if (button instanceof Button) {
+                                                    ((Button) button).setDisable(true);
+                                                }
+                                            }
                                         }
                                     }
+                                    break;
                                 }
                             }
                         }
