@@ -8,16 +8,14 @@ import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.control.Alert;
-import javafx.scene.control.Button;
-import javafx.scene.control.Label;
-import javafx.scene.control.ButtonType;
-import javafx.scene.control.ButtonBar;
+import javafx.scene.control.*;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.GridPane;
+import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
+import javafx.stage.FileChooser;
 import services.ServiceFlight;
 import services.ServiceReservationVol;
 import javafx.animation.ScaleTransition;
@@ -25,10 +23,15 @@ import javafx.util.Duration;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
 import javafx.geometry.Insets;
+import java.io.File;
 import java.io.IOException;
 import java.sql.SQLException;
 import java.text.SimpleDateFormat;
 import java.util.List;
+import javafx.scene.web.WebView;
+import javafx.scene.image.WritableImage;
+import javafx.embed.swing.SwingFXUtils;
+import javax.imageio.ImageIO;
 
 public class MyReservationsController {
 
@@ -41,8 +44,8 @@ public class MyReservationsController {
     private Client currentClient;
     private ServiceReservationVol reservationService = new ServiceReservationVol();
     private ServiceFlight flightService = new ServiceFlight();
-    private UserDashboardController dashboardController; // Added for dashboard integration
-    private boolean isEmbeddedInDashboard = false; // Added for dashboard integration
+    private UserDashboardController dashboardController;
+    private boolean isEmbeddedInDashboard = false;
 
     public void setClient(Client client) {
         this.currentClient = client;
@@ -67,13 +70,13 @@ public class MyReservationsController {
             if (reservations == null || reservations.isEmpty()) {
                 Label noReservationsLabel = new Label("Aucune réservation trouvée.");
                 noReservationsLabel.setFont(Font.font("System", 16));
-                reservationsContainer.add(noReservationsLabel, 0, 0, 5, 1); // Span across all 5 columns
+                reservationsContainer.add(noReservationsLabel, 0, 0, 5, 1);
             } else {
                 for (int i = 0; i < reservations.size(); i++) {
                     ReservationVol reservation = reservations.get(i);
                     VBox card = createReservationCard(reservation);
-                    int row = i / 5; // Division entière pour déterminer la ligne (5 cartes par ligne)
-                    int col = i % 5; // Modulo pour déterminer la colonne (0 à 4)
+                    int row = i / 5;
+                    int col = i % 5;
                     reservationsContainer.add(card, col, row);
                 }
             }
@@ -85,18 +88,16 @@ public class MyReservationsController {
 
     private VBox createReservationCard(ReservationVol reservation) {
         VBox card = new VBox();
-        card.setPrefWidth(180); // Réduit pour s'adapter à 5 colonnes
+        card.setPrefWidth(180);
         card.setPrefHeight(420);
         card.setStyle("-fx-background-color: white; -fx-border-color: #039BE5; -fx-border-radius: 0; " +
                 "-fx-padding: 12; -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.1), 5, 0, 0, 5);");
         card.setSpacing(10);
 
-        // Animation à l'entrée de la souris
         ScaleTransition scaleIn = new ScaleTransition(Duration.millis(200), card);
         scaleIn.setToX(1.05);
         scaleIn.setToY(1.05);
 
-        // Animation à la sortie de la souris
         ScaleTransition scaleOut = new ScaleTransition(Duration.millis(200), card);
         scaleOut.setToX(1.0);
         scaleOut.setToY(1.0);
@@ -104,10 +105,9 @@ public class MyReservationsController {
         card.setOnMouseEntered(e -> scaleIn.play());
         card.setOnMouseExited(e -> scaleOut.play());
 
-        // Image section
         ImageView reservationImage = new ImageView();
-        reservationImage.setFitWidth(160); // Réduit pour correspondre à la largeur de la carte
-        reservationImage.setFitHeight(120); // Ajusté pour l'esthétique
+        reservationImage.setFitWidth(160);
+        reservationImage.setFitHeight(120);
         reservationImage.setPreserveRatio(true);
         reservationImage.setStyle("-fx-background-color: #f5f5f5; -fx-background-radius: 4;");
 
@@ -118,13 +118,12 @@ public class MyReservationsController {
             reservationImage.setImage(new Image("https://via.placeholder.com/160x120?text=Image+Non+Trouvée"));
         }
 
-        // Informations sur la réservation
         Label passengerName = new Label("Passager: " + reservation.getPassenger_name());
-        passengerName.setFont(Font.font("System", FontWeight.BOLD, 14)); // Police réduite
-        passengerName.setWrapText(true); // Permettre le retour à la ligne
+        passengerName.setFont(Font.font("System", FontWeight.BOLD, 14));
+        passengerName.setWrapText(true);
 
         Label date = new Label("Date: " + (reservation.getReservationvol_date() != null ? new SimpleDateFormat("dd/MM/yyyy").format(reservation.getReservationvol_date()) : "N/A"));
-        date.setFont(Font.font("System", 12)); // Police réduite
+        date.setFont(Font.font("System", 12));
         date.setStyle("-fx-text-fill: #555;");
         date.setWrapText(true);
 
@@ -136,14 +135,12 @@ public class MyReservationsController {
         status.setFont(Font.font("System", 12));
         status.setWrapText(true);
 
-        // Boutons d'action - Conteneur
-        VBox buttonsContainer = new VBox(8); // Espacement réduit
+        VBox buttonsContainer = new VBox(8);
 
-        // Bouton de modification
         Button modifyButton = new Button("Modifier");
         modifyButton.setStyle("-fx-background-color: #039BE5; -fx-text-fill: white; " +
-                "-fx-font-weight: bold; -fx-padding: 6 10; -fx-background-radius: 5;"); // Padding réduit
-        modifyButton.setPrefWidth(160); // Réduit
+                "-fx-font-weight: bold; -fx-padding: 6 10; -fx-background-radius: 5;");
+        modifyButton.setPrefWidth(160);
 
         ScaleTransition modifyScaleIn = new ScaleTransition(Duration.millis(150), modifyButton);
         modifyScaleIn.setToX(1.1);
@@ -157,7 +154,6 @@ public class MyReservationsController {
         modifyButton.setOnMouseExited(e -> modifyScaleOut.play());
         modifyButton.setOnAction(e -> modifyReservation(reservation));
 
-        // Bouton de suppression
         Button deleteButton = new Button("Supprimer");
         deleteButton.setStyle("-fx-background-color: #FF5252; -fx-text-fill: white; " +
                 "-fx-font-weight: bold; -fx-padding: 6 10; -fx-background-radius: 5;");
@@ -175,7 +171,6 @@ public class MyReservationsController {
         deleteButton.setOnMouseExited(e -> deleteScaleOut.play());
         deleteButton.setOnAction(e -> deleteReservation(reservation));
 
-        // Bouton pour afficher le billet
         Button ticketButton = new Button("Afficher le billet");
         ticketButton.setStyle("-fx-background-color: #4CAF50; -fx-text-fill: white; " +
                 "-fx-font-weight: bold; -fx-padding: 6 10; -fx-background-radius: 5;");
@@ -193,10 +188,8 @@ public class MyReservationsController {
         ticketButton.setOnMouseExited(e -> ticketScaleOut.play());
         ticketButton.setOnAction(e -> showTicket(reservation));
 
-        // Ajouter les boutons au conteneur
         buttonsContainer.getChildren().addAll(modifyButton, deleteButton, ticketButton);
 
-        // Ajouter tous les éléments à la carte
         card.getChildren().addAll(
                 reservationImage,
                 passengerName,
@@ -220,72 +213,27 @@ public class MyReservationsController {
             Stage ticketStage = new Stage();
             ticketStage.setTitle("Billet de vol");
 
-            VBox ticketContainer = new VBox(20);
-            ticketContainer.setPadding(new Insets(20));
-            ticketContainer.setStyle("-fx-background-color: linear-gradient(to bottom, #E3F2FD, #BBDEFB); " +
-                    "-fx-border-color: #0288D1; -fx-border-width: 2; -fx-border-radius: 10; " +
-                    "-fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.2), 10, 0, 0, 5);");
-            ticketContainer.setPrefWidth(400);
-            ticketContainer.setPrefHeight(500);
+            WebView webView = new WebView();
+            webView.setPrefSize(800, 300);
 
-            Label title = new Label("Billet de Vol");
-            title.setFont(Font.font("System", FontWeight.BOLD, 24));
-            title.setStyle("-fx-text-fill: #01579B;");
+            String htmlContent = buildTicketHtml(reservation, flight);
+            webView.getEngine().loadContent(htmlContent);
 
-            Label passengerLabel = new Label("Passager: " + reservation.getPassenger_name());
-            passengerLabel.setFont(Font.font("System", FontWeight.BOLD, 16));
-            passengerLabel.setStyle("-fx-text-fill: #1A237E;");
-
-            Label flightNumber = new Label("Numéro de vol: " + flight.getFlight_number());
-            flightNumber.setFont(Font.font("System", 14));
-            flightNumber.setStyle("-fx-text-fill: #263238;");
-
-            Label departure = new Label("Départ: " + flight.getDeparture());
-            departure.setFont(Font.font("System", 14));
-            departure.setStyle("-fx-text-fill: #263238;");
-
-            Label destination = new Label("Destination: " + flight.getDestination());
-            destination.setFont(Font.font("System", 14));
-            destination.setStyle("-fx-text-fill: #263238;");
-
-            Label dateLabel = new Label("Date: " + new SimpleDateFormat("dd/MM/yyyy").format(flight.getFlight_date()));
-            dateLabel.setFont(Font.font("System", 14));
-            dateLabel.setStyle("-fx-text-fill: #263238;");
-
-            Label departureTime = new Label("Heure de départ: " + new SimpleDateFormat("HH:mm").format(flight.getDeparture_Time()));
-            departureTime.setFont(Font.font("System", 14));
-            departureTime.setStyle("-fx-text-fill: #263238;");
-
-            Label arrivalTime = new Label("Heure d'arrivée: " + new SimpleDateFormat("HH:mm").format(flight.getArrival_Time()));
-            arrivalTime.setFont(Font.font("System", 14));
-            arrivalTime.setStyle("-fx-text-fill: #263238;");
-
-            Label airline = new Label("Compagnie: " + flight.getAirline());
-            airline.setFont(Font.font("System", 14));
-            airline.setStyle("-fx-text-fill: #263238;");
-
-            Label priceLabel = new Label("Prix: $" + String.format("%.2f", reservation.getPrice()));
-            priceLabel.setFont(Font.font("System", FontWeight.BOLD, 16));
-            priceLabel.setStyle("-fx-text-fill: #2E7D32;");
+            Button saveImageButton = new Button("Enregistrer comme image");
+            saveImageButton.setStyle("-fx-background-color: #4CAF50; -fx-text-fill: white; -fx-font-weight: bold; -fx-padding: 8 15; -fx-background-radius: 5;");
+            saveImageButton.setOnAction(e -> saveTicketAsImage(webView, ticketStage));
 
             Button closeButton = new Button("Fermer");
-            closeButton.setStyle("-fx-background-color: #0288D1; -fx-text-fill: white; " +
-                    "-fx-font-weight: bold; -fx-padding: 8 15; -fx-background-radius: 5;");
+            closeButton.setStyle("-fx-background-color: #0288D1; -fx-text-fill: white; -fx-font-weight: bold; -fx-padding: 8 15; -fx-background-radius: 5;");
             closeButton.setOnAction(e -> ticketStage.close());
 
-            ticketContainer.getChildren().addAll(
-                    title,
-                    passengerLabel,
-                    flightNumber,
-                    departure,
-                    destination,
-                    dateLabel,
-                    departureTime,
-                    arrivalTime,
-                    airline,
-                    priceLabel,
-                    closeButton
-            );
+            HBox buttonBox = new HBox(10, saveImageButton, closeButton);
+            buttonBox.setPadding(new Insets(10));
+            buttonBox.setStyle("-fx-alignment: center;");
+
+            VBox ticketContainer = new VBox(10, webView, buttonBox);
+            ticketContainer.setPadding(new Insets(10));
+            ticketContainer.setStyle("-fx-background-color: #E3F2FD;");
 
             Scene ticketScene = new Scene(ticketContainer);
             ticketStage.setScene(ticketScene);
@@ -295,6 +243,177 @@ public class MyReservationsController {
             showAlert(Alert.AlertType.ERROR, "Erreur", "Erreur lors de la récupération des détails du vol", e.getMessage());
             e.printStackTrace();
         }
+    }
+
+    private String buildTicketHtml(ReservationVol reservation, Flight flight) {
+        SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
+        SimpleDateFormat timeFormat = new SimpleDateFormat("HH:mm");
+        StringBuilder html = new StringBuilder();
+        html.append("<!DOCTYPE html>");
+        html.append("<html lang='fr'>");
+        html.append("<head>");
+        html.append("<meta charset='UTF-8'>");
+        html.append("<meta name='viewport' content='width=device-width, initial-scale=1.0'>");
+        html.append("<title>Billet ").append(escapeHtml(flight.getAirline())).append("</title>");
+        html.append("<style>");
+        html.append("body { font-family: Arial, sans-serif; display: flex; justify-content: center; align-items: center; min-height: 100vh; margin: 0; background-color: #f5f5f5; }");
+        html.append(".ticket { display: flex; width: 800px; height: 300px; background-color: white; border-radius: 15px; overflow: hidden; box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1); border: 2px solid #8b8b8b; }");
+        html.append(".sidebar { width: 60px; background-color: #0e4d80; color: white; padding: 10px 0; display: flex; flex-direction: column; align-items: center; justify-content: center; }");
+        html.append(".sidebar-text { writing-mode: vertical-rl; text-orientation: mixed; transform: rotate(180deg); font-weight: bold; font-size: 16px; letter-spacing: 1px; }");
+        html.append(".content { flex-grow: 1; display: flex; }");
+        html.append(".left-section { width: 60%; padding: 20px; background-color: #0e4d80; color: white; }");
+        html.append(".passenger-info, .flight-info, .location-info { border-bottom: 1px dotted rgba(255, 255, 255, 0.3); padding-bottom: 15px; margin-bottom: 15px; }");
+        html.append(".label { font-size: 12px; margin-bottom: 4px; }");
+        html.append(".value { font-weight: bold; font-size: 18px; }");
+        html.append(".flight-details { display: flex; justify-content: space-between; margin-bottom: 8px; }");
+        html.append(".flight-detail { width: 30%; }");
+        html.append(".location-details { display: flex; justify-content: space-between; }");
+        html.append(".location { width: 45%; }");
+        html.append(".barcode { margin-top: 20px; text-align: center; }");
+        html.append(".barcode img { max-width: 90%; height: 50px; }");
+        html.append(".right-section { width: 40%; background-color: #0e4d80; display: flex; flex-direction: column; align-items: center; justify-content: center; position: relative; overflow: hidden; padding: 20px; }");
+        html.append(".plane-logo { position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); width: 120px; height: 120px; opacity: 0.2; }");
+        html.append(".airline-name { position: relative; z-index: 2; color: white; font-size: 24px; font-weight: bold; text-align: center; letter-spacing: 2px; margin-bottom: 20px; }");
+        html.append(".flight-times { position: relative; z-index: 2; color: white; text-align: center; width: 100%; }");
+        html.append(".time-label { font-size: 12px; margin-bottom: 4px; }");
+        html.append(".time-value { font-weight: bold; font-size: 16px; margin-bottom: 12px; }");
+        html.append(".price-tag { position: relative; z-index: 2; color: white; background-color: rgba(255, 255, 255, 0.2); padding: 8px 15px; border-radius: 20px; font-weight: bold; margin-top: 15px; }");
+        html.append("</style>");
+        html.append("</head>");
+        html.append("<body>");
+        html.append("<div class='ticket'>");
+        html.append("<div class='sidebar'>");
+        html.append("<div class='sidebar-text'>").append(escapeHtml(flight.getAirline())).append("</div>");
+        html.append("</div>");
+        html.append("<div class='content'>");
+        html.append("<div class='left-section'>");
+        html.append("<div class='passenger-info'>");
+        html.append("<div class='label'>Passager</div>");
+        html.append("<div class='value'>").append(escapeHtml(reservation.getPassenger_name())).append("</div>");
+        html.append("</div>");
+        html.append("<div class='flight-info'>");
+        html.append("<div class='flight-details'>");
+        html.append("<div class='flight-detail'>");
+        html.append("<div class='label'>Embarquement</div>");
+        html.append("<div class='value'>").append(timeFormat.format(flight.getDeparture_Time())).append("</div>");
+        html.append("</div>");
+        html.append("<div class='flight-detail'>");
+        html.append("<div class='label'>Porte</div>");
+        html.append("<div class='value'>N/A</div>");
+        html.append("</div>");
+        html.append("<div class='flight-detail'>");
+        html.append("<div class='label'>Vol</div>");
+        html.append("<div class='value'>").append(escapeHtml(flight.getFlight_number())).append("</div>");
+        html.append("</div>");
+        html.append("</div>");
+        html.append("<div class='flight-details'>");
+        html.append("<div class='flight-detail'>");
+        html.append("<div class='label'>Date</div>");
+        html.append("<div class='value'>").append(dateFormat.format(flight.getFlight_date())).append("</div>");
+        html.append("</div>");
+        html.append("<div class='flight-detail'>");
+        html.append("<div class='label'>Classe</div>");
+        html.append("<div class='value'>Économie</div>");
+        html.append("</div>");
+        html.append("</div>");
+        html.append("</div>");
+        html.append("<div class='location-info'>");
+        html.append("<div class='location-details'>");
+        html.append("<div class='location'>");
+        html.append("<div class='label'>De</div>");
+        html.append("<div class='value'>").append(escapeHtml(flight.getDeparture())).append("</div>");
+        html.append("</div>");
+        html.append("<div class='location'>");
+        html.append("<div class='label'>À</div>");
+        html.append("<div class='value'>").append(escapeHtml(flight.getDestination())).append("</div>");
+        html.append("</div>");
+        html.append("</div>");
+        html.append("</div>");
+        html.append("<div class='barcode'>");
+        html.append("<svg width='240' height='50'>");
+        html.append("<rect x='0' y='0' width='4' height='50' fill='white'></rect>");
+        html.append("<rect x='8' y='0' width='2' height='50' fill='white'></rect>");
+        html.append("<rect x='12' y='0' width='4' height='50' fill='white'></rect>");
+        html.append("<rect x='22' y='0' width='2' height='50' fill='white'></rect>");
+        html.append("<rect x='28' y='0' width='6' height='50' fill='white'></rect>");
+        html.append("<rect x='38' y='0' width='2' height='50' fill='white'></rect>");
+        html.append("<rect x='44' y='0' width='4' height='50' fill='white'></rect>");
+        html.append("<rect x='52' y='0' width='2' height='50' fill='white'></rect>");
+        html.append("<rect x='60' y='0' width='6' height='50' fill='white'></rect>");
+        html.append("<rect x='70' y='0' width='2' height='50' fill='white'></rect>");
+        html.append("<rect x='76' y='0' width='4' height='50' fill='white'></rect>");
+        html.append("<rect x='84' y='0' width='2' height='50' fill='white'></rect>");
+        html.append("<rect x='90' y='0' width='6' height='50' fill='white'></rect>");
+        html.append("<rect x='100' y='0' width='2' height='50' fill='white'></rect>");
+        html.append("<rect x='106' y='0' width='4' height='50' fill='white'></rect>");
+        html.append("<rect x='114' y='0' width='2' height='50' fill='white'></rect>");
+        html.append("<rect x='120' y='0' width='6' height='50' fill='white'></rect>");
+        html.append("<rect x='132' y='0' width='2' height='50' fill='white'></rect>");
+        html.append("<rect x='138' y='0' width='4' height='50' fill='white'></rect>");
+        html.append("<rect x='146' y='0' width='2' height='50' fill='white'></rect>");
+        html.append("<rect x='152' y='0' width='6' height='50' fill='white'></rect>");
+        html.append("<rect x='164' y='0' width='2' height='50' fill='white'></rect>");
+        html.append("<rect x='170' y='0' width='4' height='50' fill='white'></rect>");
+        html.append("<rect x='178' y='0' width='2' height='50' fill='white'></rect>");
+        html.append("<rect x='184' y='0' width='6' height='50' fill='white'></rect>");
+        html.append("<rect x='194' y='0' width='2' height='50' fill='white'></rect>");
+        html.append("<rect x='200' y='0' width='4' height='50' fill='white'></rect>");
+        html.append("<rect x='208' y='0' width='2' height='50' fill='white'></rect>");
+        html.append("<rect x='214' y='0' width='6' height='50' fill='white'></rect>");
+        html.append("<rect x='224' y='0' width='2' height='50' fill='white'></rect>");
+        html.append("<rect x='230' y='0' width='4' height='50' fill='white'></rect>");
+        html.append("<rect x='238' y='0' width='2' height='50' fill='white'></rect>");
+        html.append("</svg>");
+        html.append("</div>");
+        html.append("</div>");
+        html.append("<div class='right-section'>");
+        html.append("<div class='plane-logo'>");
+        html.append("<svg viewBox='0 0 24 24' fill='white'>");
+        html.append("<path d='M21,16V14L13,9V3.5A1.5,1.5 0 0,0 11.5,2A1.5,1.5 0 0,0 10,3.5V9L2,14V16L10,13.5V19L8,20.5V22L11.5,21L15,22V20.5L13,19V13.5L21,16Z' />");
+        html.append("</svg>");
+        html.append("</div>");
+        html.append("<div class='airline-name'>").append(escapeHtml(flight.getAirline())).append("</div>");
+        html.append("<div class='flight-times'>");
+        html.append("<div class='time-label'>Départ</div>");
+        html.append("<div class='time-value'>").append(timeFormat.format(flight.getDeparture_Time())).append("</div>");
+        html.append("<div class='time-label'>Arrivée</div>");
+        html.append("<div class='time-value'>").append(timeFormat.format(flight.getArrival_Time())).append("</div>");
+        html.append("</div>");
+        html.append("<div class='price-tag'>$").append(String.format("%.2f", reservation.getPrice())).append("</div>");
+        html.append("</div>");
+        html.append("</div>");
+        html.append("</div>");
+        html.append("</body>");
+        html.append("</html>");
+        return html.toString();
+    }
+
+    private void saveTicketAsImage(WebView webView, Stage stage) {
+        WritableImage image = webView.snapshot(null, null);
+        FileChooser fileChooser = new FileChooser();
+        fileChooser.setTitle("Enregistrer le billet comme image");
+        fileChooser.getExtensionFilters().add(new FileChooser.ExtensionFilter("Fichiers PNG", "*.png"));
+        fileChooser.setInitialFileName("Billet_" + System.currentTimeMillis() + ".png");
+        File file = fileChooser.showSaveDialog(stage);
+
+        if (file != null) {
+            try {
+                ImageIO.write(SwingFXUtils.fromFXImage(image, null), "png", file);
+                showAlert(Alert.AlertType.INFORMATION, "Succès", "Billet sauvegardé", "Le billet a été enregistré comme image à : " + file.getAbsolutePath());
+            } catch (IOException e) {
+                showAlert(Alert.AlertType.ERROR, "Erreur", "Erreur lors de la sauvegarde de l'image", e.getMessage());
+                e.printStackTrace();
+            }
+        }
+    }
+
+    private String escapeHtml(String input) {
+        if (input == null) return "";
+        return input.replace("&", "&amp;")
+                .replace("<", "&lt;")
+                .replace(">", "&gt;")
+                .replace("\"", "&quot;")
+                .replace("'", "&#39;");
     }
 
     private void modifyReservation(ReservationVol reservation) {
@@ -352,7 +471,6 @@ public class MyReservationsController {
     void goBack(ActionEvent event) {
         try {
             if (isEmbeddedInDashboard && dashboardController != null) {
-                // Load ChercherVol.fxml into the dashboard's content area
                 FXMLLoader loader = new FXMLLoader(getClass().getResource("/ChercherVol.fxml"));
                 Parent root = loader.load();
                 ChercherVolController controller = loader.getController();
@@ -360,7 +478,6 @@ public class MyReservationsController {
                 controller.setDashboardController(dashboardController);
                 dashboardController.loadContentToArea(root);
             } else {
-                // Load ChercherVol.fxml in a new stage
                 Stage stage = (Stage) backButton.getScene().getWindow();
                 FXMLLoader loader = new FXMLLoader(getClass().getResource("/ChercherVol.fxml"));
                 Parent root = loader.load();
