@@ -69,3 +69,7 @@
     -fx-wrap-text: true;
     -fx-max-width: 500px;
 }
+
+.button-box {
+    -fx-padding: 5px;
+}

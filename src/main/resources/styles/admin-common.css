@@ -13,6 +13,7 @@
 .button-primary {
     -fx-background-color: #1e40af;
     -fx-text-fill: white;
+    -fx-alignment: center-left;
 }
 
 .button-primary:hover {
