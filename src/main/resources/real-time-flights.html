@@ -165,8 +165,8 @@
 <h1>Vols en Temps Réel - Tunisie (TUN)</h1>
 <div id="map"></div>
 <div id="flights-container"><div class="loading">Chargement des vols...<div class="loading-spinner"></div></div></div>
-<!-- Bouton de test pour confirmer avec des données statiques -->
-<button onclick='confirmFlight({flight_id:"TEST123",flight_number:"TEST123",departure:"Tunis",arrival:"Paris",airline:"TestAir",departure_time:"2025-05-12T10:00:00",arrival_time:"2025-05-12T12:30:00",flight_date:"2025-05-12",price:200,available_seats:50,flight_duration:150})'>Test Confirm</button>
+<!-- Bouton statique pour tester -->
+<button onclick='console.log("Static test button clicked"); confirmFlight({flight_id:"TEST123",flight_number:"TEST123",departure:"Tunis",arrival:"Paris",airline:"TestAir",departure_time:"2025-05-12T10:00:00",arrival_time:"2025-05-12T12:30:00",flight_date:"2025-05-12",price:200,available_seats:50,flight_duration:150})'>Static Test Confirm</button>
 
 <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
 <script>
@@ -284,8 +284,11 @@
 
     clearMapMarkers();
 
+    window.flightData = []; // Réinitialiser le tableau global
+
     flights.forEach((flight, index) => {
       if (!flight.departure || !flight.arrival || !flight.flight) {
+        console.warn("Skipping invalid flight data:", flight);
         return;
       }
 
@@ -314,7 +317,11 @@
         flight_duration: Math.round((new Date(flight.arrival.scheduled) - new Date(flight.departure.scheduled)) / 60000)
       };
 
-      const isConfirmable = flight.flight_status.toLowerCase() === 'scheduled' || flight.flight_status.toLowerCase() === 'active';
+      const isConfirmable = true; // Forcer à true pour tester
+      console.log(`Flight ${flight.flight.number}: status=${flight.flight_status}, isConfirmable=${isConfirmable}`);
+
+      // Stocker flightData dans un tableau global
+      window.flightData[index] = flightData;
 
       flightCard.innerHTML = `
         <div class="flight-header">
@@ -349,7 +356,7 @@
           </div>
         </div>
         <div class="flight-actions">
-          <button class="confirm-button" ${isConfirmable ? '' : 'disabled'} onclick='confirmFlight(${JSON.stringify(flightData).replace(/"/g, "&quot;")})'>
+          <button class="confirm-button" ${isConfirmable ? '' : 'disabled'} onclick='console.log("Dynamic button clicked for index: ${index}"); handleConfirmClick(${index})'>
             Confirmer la réservation
           </button>
         </div>
@@ -365,20 +372,37 @@
     }
   }
 
-  function confirmFlight(flightData) {
-    console.log("Confirm button clicked, flight data:", flightData);
+  function handleConfirmClick(index) {
+    console.log("handleConfirmClick called for index:", index);
     try {
+      const flightData = window.flightData[index];
+      if (!flightData) {
+        throw new Error("Flight data not found for index: " + index);
+      }
+      confirmFlight(flightData);
+    } catch (error) {
+      console.error("Error in handleConfirmClick:", error.message, error.stack);
+      alert("Erreur lors du clic: " + error.message);
+    }
+  }
+
+  function confirmFlight(flightData) {
+    console.log("confirmFlight called with data:", flightData);
+    try {
+      if (!flightData) {
+        throw new Error("Flight data is undefined or null");
+      }
+      console.log("Validating flight data:", Object.keys(flightData));
       const jsonString = JSON.stringify(flightData);
       console.log("JSON stringified:", jsonString);
       if (!window.javafxBridge) {
         console.error("JavaFX bridge not available");
-        alert("Erreur: Impossible de communiquer avec l'application JavaFX");
-        return;
+        throw new Error("JavaFX bridge not available");
       }
-      console.log("Sending flight data to JavaFX");
+      console.log("JavaFX bridge exists, calling confirmFlight...");
       window.javafxBridge.confirmFlight(jsonString);
     } catch (error) {
-      console.error("Error in confirmFlight:", error.message);
+      console.error("Error in confirmFlight:", error.message, error.stack);
       alert("Erreur JavaScript: " + error.message);
     }
   }
@@ -393,24 +417,17 @@
 
   async function fetchFlights() {
     showLoading();
-    const url = `https://api.aviationstack.com/v1/flights?access_key=${API_KEY}&dep_iata=TUN&limit=10`;
-
-    try {
-      const response = await fetch(url);
-      if (!response.ok) throw new Error(`Erreur API : ${response.statusText}`);
-      const data = await response.json();
-      if (data.error) throw new Error(data.error.info || "Erreur API inconnue");
-      console.log("Flights data:", data);
-      displayFlights(data.data || []);
-      // Réinitialiser le pont pour éviter sa perte
-      if (window.javafxBridge) {
-        console.log("Reinitializing JavaFX bridge");
-        window.javafxBridge = window.javafxBridge;
+    const mockFlights = [
+      {
+        flight: { iata: "TU123", number: "123" },
+        airline: { name: "Tunisair" },
+        departure: { airport: "Tunis-Carthage", iata: "TUN", scheduled: "2025-05-12T10:00:00+00:00" },
+        arrival: { airport: "Paris CDG", iata: "CDG", scheduled: "2025-05-12T12:30:00+00:00" },
+        flight_status: "scheduled"
       }
-    } catch (error) {
-      showError(error.message);
-      console.error('Erreur lors de la récupération des vols:', error);
-    }
+    ];
+    console.log("Using mock flights:", mockFlights);
+    displayFlights(mockFlights);
   }
 
   document.addEventListener('DOMContentLoaded', () => {
@@ -418,7 +435,7 @@
     fetchFlights();
   });
 
-  // Commenter temporairement pour tester sans rafraîchissement
+  // Commenté pour éviter les interférences pendant les tests
   // setInterval(fetchFlights, 30000);
 </script>
 </body>
