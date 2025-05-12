@@ -5,6 +5,17 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Vols en Temps Réel - Tunisie</title>
   <style>
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      margin: 0;
+      padding: 20px;
+      background-color: #f4f6f9;
+    }
+    h1 {
+      color: #0277bd;
+      text-align: center;
+      margin-bottom: 30px;
+    }
     #map {
       height: 400px;
       max-width: 1100px;
@@ -14,79 +25,252 @@
     }
     .flight-card {
       border: 1px solid #ddd;
-      padding: 15px;
-      margin: 10px 0;
-      border-radius: 5px;
+      padding: 20px;
+      margin: 15px 0;
+      border-radius: 8px;
       background-color: #fff;
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
       animation: fadeIn 0.5s ease-in-out;
+      display: flex;
+      flex-direction: column;
+      max-width: 1100px;
+      margin-left: auto;
+      margin-right: auto;
+    }
+    .flight-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      border-bottom: 1px solid #eee;
+      padding-bottom: 10px;
+      margin-bottom: 15px;
+    }
+    .flight-info {
+      display: flex;
+      justify-content: space-between;
+      flex-wrap: wrap;
+    }
+    .flight-info-column {
+      flex: 1;
+      min-width: 200px;
+      margin: 0 10px;
+    }
+    .flight-info-item {
+      margin-bottom: 12px;
+    }
+    .flight-info-label {
+      font-weight: bold;
+      color: #616161;
+      margin-bottom: 3px;
+    }
+    .flight-info-value {
+      color: #212121;
+    }
+    .flight-actions {
+      display: flex;
+      justify-content: flex-end;
+      margin-top: 20px;
     }
     @keyframes fadeIn {
-      from { opacity: 0; }
-      to { opacity: 1; }
+      from { opacity: 0; transform: translateY(10px); }
+      to { opacity: 1; transform: translateY(0); }
     }
     .status {
-      padding: 5px 10px;
-      border-radius: 3px;
+      padding: 6px 12px;
+      border-radius: 20px;
       color: white;
+      font-size: 14px;
+      font-weight: bold;
+      text-transform: uppercase;
     }
     .active { background-color: #4CAF50; }
     .landed { background-color: #2196F3; }
     .scheduled { background-color: #9E9E9E; }
     .cancelled { background-color: #F44336; }
+    .delayed { background-color: #FF9800; }
     .loading, .error {
       text-align: center;
       padding: 20px;
       color: #757575;
+      font-size: 18px;
     }
     .error { color: #D32F2F; }
+    .confirm-button {
+      background-color: #FF9E0C;
+      color: white;
+      padding: 10px 20px;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+      font-weight: bold;
+      font-size: 16px;
+      transition: background-color 0.2s;
+    }
+    .confirm-button:hover {
+      background-color: #e68a00;
+    }
+    .confirm-button:disabled {
+      background-color: #BDBDBD;
+      cursor: not-allowed;
+    }
+    .view-details-button {
+      background-color: #2196F3;
+      color: white;
+      padding: 10px 20px;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+      font-weight: bold;
+      font-size: 16px;
+      margin-right: 10px;
+      transition: background-color 0.2s;
+    }
+    .view-details-button:hover {
+      background-color: #0b7dda;
+    }
+    .price-tag {
+      background-color: #43a047;
+      color: white;
+      padding: 8px 16px;
+      border-radius: 20px;
+      font-weight: bold;
+      font-size: 18px;
+    }
+    .seats-tag {
+      background-color: #f5f5f5;
+      color: #616161;
+      padding: 8px 16px;
+      border-radius: 20px;
+      font-weight: bold;
+      font-size: 14px;
+      margin-right: 10px;
+    }
+    .loading-spinner {
+      border: 4px solid rgba(0, 0, 0, 0.1);
+      width: 36px;
+      height: 36px;
+      border-radius: 50%;
+      border-left-color: #09f;
+      animation: spin 1s linear infinite;
+      margin: 20px auto;
+    }
+    @keyframes spin {
+      0% { transform: rotate(0deg); }
+      100% { transform: rotate(360deg); }
+    }
   </style>
   <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
 </head>
 <body>
 <h1>Vols en Temps Réel - Tunisie (TUN)</h1>
 <div id="map"></div>
-<div id="flights-container"></div>
+<div id="flights-container"><div class="loading">Chargement des vols...<div class="loading-spinner"></div></div></div>
+<!-- Bouton de test pour confirmer avec des données statiques -->
+<button onclick='confirmFlight({flight_id:"TEST123",flight_number:"TEST123",departure:"Tunis",arrival:"Paris",airline:"TestAir",departure_time:"2025-05-12T10:00:00",arrival_time:"2025-05-12T12:30:00",flight_date:"2025-05-12",price:200,available_seats:50,flight_duration:150})'>Test Confirm</button>
 
 <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
 <script>
-  // Utilisation de votre clé API fournie
-  const API_KEY = "40332193d585303a0dac758bc74451ae";
+  const API_KEY = "b54ed24b5ede2e30cbeeb4202c6b5cb4";
   let map = null;
+  let markers = [];
+  let polylines = [];
 
   function initMap() {
-    map = L.map('map').setView([36.8065, 10.1815], 6); // Centré sur la Tunisie
+    map = L.map('map').setView([36.8065, 10.1815], 6);
     L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
       attribution: '© <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
     }).addTo(map);
   }
 
+  function clearMapMarkers() {
+    markers.forEach(marker => map.removeLayer(marker));
+    polylines.forEach(polyline => map.removeLayer(polyline));
+    markers = [];
+    polylines = [];
+  }
+
   function addFlightToMap(flight) {
     const airportCoords = {
-      'TUN': [36.8510, 10.2272], // Tunis-Carthage
-      'CDG': [48.8566, 2.3522],  // Paris Charles de Gaulle
-      'IST': [41.0082, 28.9784], // Istanbul
-      'LHR': [51.5074, -0.1278], // London Heathrow
-      'JFK': [40.6413, -73.7781], // New York JFK
-      // Ajoutez d'autres aéroports si nécessaire
+      'TUN': [36.8510, 10.2272],
+      'CDG': [49.0097, 2.5479],
+      'IST': [41.0082, 28.9784],
+      'LHR': [51.4700, -0.4543],
+      'JFK': [40.6413, -73.7781],
+      'FCO': [41.8003, 12.2389],
+      'FRA': [50.0379, 8.5622],
+      'BCN': [41.2971, 2.0784],
+      'MRS': [43.4360, 5.2146],
+      'LYS': [45.7234, 5.0887],
+      'MXP': [45.6286, 8.7236],
+      'BRU': [50.9014, 4.4844],
+      'AMS': [52.3105, 4.7683],
+      'CAI': [30.1119, 31.3998],
+      'RUH': [24.9603, 46.7028],
+      'DXB': [25.2532, 55.3657],
+      'DOH': [25.2609, 51.6138],
+      'CMN': [33.3677, -7.5900],
+      'ALG': [36.6910, 3.2142],
+      'MIR': [35.7580, 10.7554],
+      'NBE': [36.0757, 10.4387],
+      'TOE': [33.9397, 8.1108],
+      'DJE': [33.8075, 10.7755],
+      'SFX': [34.7179, 10.6910]
     };
 
-    const depIata = flight.departure.iata;
-    const arrIata = flight.arrival.iata;
+    const defCoords = [36.8510, 10.2272];
+    const depIata = flight.departure.iata || 'TUN';
+    const arrIata = flight.arrival.iata || 'TUN';
+    const depCoords = airportCoords[depIata] || defCoords;
+    const arrCoords = airportCoords[arrIata] || defCoords;
 
-    // Utiliser les coordonnées des aéroports ou des coordonnées par défaut si absentes
-    const depCoords = airportCoords[depIata] || [36.8510, 10.2272]; // Fallback à TUN
-    const arrCoords = airportCoords[arrIata] || [36.8510, 10.2272];
+    const depMarker = L.marker(depCoords).addTo(map);
+    depMarker.bindPopup(`<b>${flight.departure.airport}</b> (${depIata})<br>Départ: ${formatDateTime(flight.departure.scheduled)}`);
+    markers.push(depMarker);
 
-    L.marker(depCoords).addTo(map)
-            .bindPopup(`${flight.departure.airport} (${depIata}) - Départ`);
-    L.marker(arrCoords).addTo(map)
-            .bindPopup(`${flight.arrival.airport} (${arrIata}) - Arrivée`);
+    const arrMarker = L.marker(arrCoords).addTo(map);
+    arrMarker.bindPopup(`<b>${flight.arrival.airport}</b> (${arrIata})<br>Arrivée: ${formatDateTime(flight.arrival.scheduled)}`);
+    markers.push(arrMarker);
 
-    L.polyline([depCoords, arrCoords], {
-      color: '#0277bd',
-      weight: 2,
-      dashArray: '5, 10'
+    const flightPath = L.polyline([depCoords, arrCoords], {
+      color: getStatusColor(flight.flight_status),
+      weight: 3,
+      dashArray: '5, 10',
+      opacity: 0.7
     }).addTo(map);
+
+    flightPath.bindPopup(`<b>${flight.airline.name}</b><br>Vol ${flight.flight.number}<br>Statut: ${flight.flight_status}`);
+    polylines.push(flightPath);
+  }
+
+  function getStatusColor(status) {
+    switch(status.toLowerCase()) {
+      case 'active': return '#4CAF50';
+      case 'landed': return '#2196F3';
+      case 'scheduled': return '#9E9E9E';
+      case 'cancelled': return '#F44336';
+      case 'delayed': return '#FF9800';
+      default: return '#757575';
+    }
+  }
+
+  function formatDateTime(dateString) {
+    const date = new Date(dateString);
+    return date.toLocaleString('fr-FR', {
+      year: 'numeric',
+      month: '2-digit',
+      day: '2-digit',
+      hour: '2-digit',
+      minute: '2-digit'
+    });
+  }
+
+  function calculateDuration(departure, arrival) {
+    const depTime = new Date(departure);
+    const arrTime = new Date(arrival);
+    const diffMinutes = Math.round((arrTime - depTime) / 60000);
+    const hours = Math.floor(diffMinutes / 60);
+    const minutes = diffMinutes % 60;
+    return `${hours}h ${minutes.toString().padStart(2, '0')}m`;
   }
 
   function displayFlights(flights) {
@@ -94,40 +278,117 @@
     container.innerHTML = '';
 
     if (!flights || flights.length === 0) {
-      container.innerHTML = '<p class="error">Aucun vol trouvé.</p>';
+      container.innerHTML = '<div class="error">Aucun vol trouvé. Veuillez réessayer plus tard.</div>';
       return;
     }
 
-    // Supprimer toutes les couches sauf la couche de tuiles
-    map.eachLayer(layer => {
-      if (!(layer instanceof L.TileLayer)) {
-        map.removeLayer(layer);
-      }
-    });
+    clearMapMarkers();
 
     flights.forEach((flight, index) => {
+      if (!flight.departure || !flight.arrival || !flight.flight) {
+        return;
+      }
+
       const flightCard = document.createElement('div');
       flightCard.className = 'flight-card';
       flightCard.style.animationDelay = `${index * 0.1}s`;
-      const statusClass = flight.flight_status.toLowerCase();
-      flightCard.innerHTML = `
-        <h3>${flight.airline.name} - ${flight.flight.number}</h3>
-        <p><strong>Départ :</strong> ${flight.departure.airport} (${flight.departure.iata}) - ${new Date(flight.departure.scheduled).toLocaleString()}</p>
-        <p><strong>Arrivée :</strong> ${flight.arrival.airport} (${flight.arrival.iata}) - ${new Date(flight.arrival.scheduled).toLocaleString()}</p>
-        <p><strong>Statut :</strong> <span class="status ${statusClass}">${flight.flight_status}</span></p>
-      `;
-      container.appendChild(flightCard);
 
+      const statusClass = flight.flight_status.toLowerCase();
+      const duration = calculateDuration(flight.departure.scheduled, flight.arrival.scheduled);
+
+      const randomPrice = Math.floor(Math.random() * 400) + 100;
+      const randomSeats = Math.floor(Math.random() * 30) + 5;
+
+      const flightData = {
+        flight_id: flight.flight.iata || flight.flight.number,
+        airline: flight.airline.name || 'Unknown Airline',
+        flight_number: flight.flight.number || 'N/A',
+        departure: flight.departure.airport || 'Unknown Departure',
+        arrival: flight.arrival.airport || 'Unknown Arrival',
+        departure_time: flight.departure.scheduled,
+        arrival_time: flight.arrival.scheduled,
+        flight_status: flight.flight_status || 'scheduled',
+        price: randomPrice,
+        available_seats: randomSeats,
+        flight_date: flight.departure.scheduled.split('T')[0],
+        flight_duration: Math.round((new Date(flight.arrival.scheduled) - new Date(flight.departure.scheduled)) / 60000)
+      };
+
+      const isConfirmable = flight.flight_status.toLowerCase() === 'scheduled' || flight.flight_status.toLowerCase() === 'active';
+
+      flightCard.innerHTML = `
+        <div class="flight-header">
+          <h3>${flight.airline.name} - ${flight.flight.number}</h3>
+          <span class="status ${statusClass}">${flight.flight_status}</span>
+        </div>
+        <div class="flight-info">
+          <div class="flight-info-column">
+            <div class="flight-info-item">
+              <div class="flight-info-label">Départ</div>
+              <div class="flight-info-value">${flight.departure.airport} (${flight.departure.iata})</div>
+              <div class="flight-info-value">${formatDateTime(flight.departure.scheduled)}</div>
+            </div>
+            <div class="flight-info-item">
+              <div class="flight-info-label">Durée</div>
+              <div class="flight-info-value">${duration}</div>
+            </div>
+          </div>
+          <div class="flight-info-column">
+            <div class="flight-info-item">
+              <div class="flight-info-label">Arrivée</div>
+              <div class="flight-info-value">${flight.arrival.airport} (${flight.arrival.iata})</div>
+              <div class="flight-info-value">${formatDateTime(flight.arrival.scheduled)}</div>
+            </div>
+            <div class="flight-info-item">
+              <div class="flight-info-label">Informations</div>
+              <div class="flight-info-value">
+                <span class="price-tag">$${randomPrice}</span>
+                <span class="seats-tag">${randomSeats} sièges disponibles</span>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="flight-actions">
+          <button class="confirm-button" ${isConfirmable ? '' : 'disabled'} onclick='confirmFlight(${JSON.stringify(flightData).replace(/"/g, "&quot;")})'>
+            Confirmer la réservation
+          </button>
+        </div>
+      `;
+
+      container.appendChild(flightCard);
       addFlightToMap(flight);
     });
+
+    if (markers.length > 0) {
+      const group = new L.featureGroup(markers);
+      map.fitBounds(group.getBounds(), { padding: [30, 30] });
+    }
+  }
+
+  function confirmFlight(flightData) {
+    console.log("Confirm button clicked, flight data:", flightData);
+    try {
+      const jsonString = JSON.stringify(flightData);
+      console.log("JSON stringified:", jsonString);
+      if (!window.javafxBridge) {
+        console.error("JavaFX bridge not available");
+        alert("Erreur: Impossible de communiquer avec l'application JavaFX");
+        return;
+      }
+      console.log("Sending flight data to JavaFX");
+      window.javafxBridge.confirmFlight(jsonString);
+    } catch (error) {
+      console.error("Error in confirmFlight:", error.message);
+      alert("Erreur JavaScript: " + error.message);
+    }
   }
 
   function showLoading() {
-    document.getElementById('flights-container').innerHTML = '<p class="loading">Chargement des vols...</p>';
+    document.getElementById('flights-container').innerHTML = '<div class="loading">Chargement des vols...<div class="loading-spinner"></div></div>';
   }
 
   function showError(message) {
-    document.getElementById('flights-container').innerHTML = `<p class="error">Erreur : ${message}</p>`;
+    document.getElementById('flights-container').innerHTML = `<div class="error">Erreur : ${message}</div>`;
   }
 
   async function fetchFlights() {
@@ -136,21 +397,29 @@
 
     try {
       const response = await fetch(url);
-      if (!response.ok) {
-        throw new Error(`Erreur API : ${response.statusText}`);
-      }
+      if (!response.ok) throw new Error(`Erreur API : ${response.statusText}`);
       const data = await response.json();
-      const flights = data.data || [];
-      displayFlights(flights);
+      if (data.error) throw new Error(data.error.info || "Erreur API inconnue");
+      console.log("Flights data:", data);
+      displayFlights(data.data || []);
+      // Réinitialiser le pont pour éviter sa perte
+      if (window.javafxBridge) {
+        console.log("Reinitializing JavaFX bridge");
+        window.javafxBridge = window.javafxBridge;
+      }
     } catch (error) {
       showError(error.message);
       console.error('Erreur lors de la récupération des vols:', error);
     }
   }
 
-  initMap();
-  fetchFlights();
-  setInterval(fetchFlights, 30000); // Mise à jour toutes les 30 secondes
+  document.addEventListener('DOMContentLoaded', () => {
+    initMap();
+    fetchFlights();
+  });
+
+  // Commenter temporairement pour tester sans rafraîchissement
+  // setInterval(fetchFlights, 30000);
 </script>
 </body>
 </html>

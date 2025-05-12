@@ -70,7 +70,7 @@
                             <Label fx:id="flightNumberLabel" style="-fx-text-fill: #757575;" text="Flight XYZ123" />
                         </HBox>
 
-                        <HBox alignment="CENTER" prefHeight="92.0" prefWidth="861.0" spacing="10.0" style="-fx-background-color: #87f3cf;">
+                        <HBox alignment="CENTER" prefHeight="92.0" prefWidth="861.0" spacing="10.0" style="-fx-background-color: #a4ebf7;">
                             <padding>
                                 <Insets bottom="15.0" top="15.0" />
                             </padding>
@@ -108,7 +108,7 @@
                     </VBox.margin>
                 </HBox>
 
-                <VBox prefHeight="320.0" prefWidth="850.0" style="-fx-background-color: #87f3cf;" styleClass="card">
+                <VBox prefHeight="320.0" prefWidth="850.0" style="-fx-background-color: #a4ebf7;" styleClass="card">
                     <VBox.margin>
                         <Insets bottom="20.0" left="25.0" right="25.0" top="10.0" />
                     </VBox.margin>
