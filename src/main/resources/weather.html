@@ -12,16 +12,16 @@
             background-color: #f4f6f9;
             text-align: center;
         }
-        .weather-container {
-            max-width: 300px;
-            margin: 0 auto;
+        .weather-container, .hourly-container {
+            max-width: 600px; /* Élargi pour les rectangles horizontaux */
+            margin: 20px auto;
             background-color: #fff;
             padding: 20px;
             border-radius: 10px;
             box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
             color: #34495e;
         }
-        .weather-header {
+        .weather-header, .hourly-header {
             font-size: 20px;
             margin-bottom: 15px;
             color: #2980b9;
@@ -41,6 +41,31 @@
             color: #7f8c8d;
             margin-top: 10px;
         }
+        .hourly-forecast {
+            display: flex;
+            flex-wrap: nowrap;
+            overflow-x: auto;
+            gap: 10px;
+            padding: 10px 0;
+        }
+        .hourly-item {
+            flex: 0 0 auto;
+            width: 120px;
+            background-color: #f9f9f9;
+            border-radius: 8px;
+            padding: 10px;
+            text-align: center;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+        .hourly-icon {
+            width: 40px;
+            height: 40px;
+            margin: 5px auto;
+        }
+        .hourly-info {
+            font-size: 14px;
+            margin: 5px 0;
+        }
         .error {
             color: red;
             font-size: 14px;
@@ -58,24 +83,34 @@
     <div id="error" class="error"></div>
 </div>
 
+<div class="hourly-container">
+    <div class="hourly-header">Prévisions Heure par Heure</div>
+    <div id="hourlyForecast" class="hourly-forecast"></div>
+    <div id="hourlyError" class="error"></div>
+</div>
+
 <script>
     const apiKey = "11eae9fc94bde36cec45b9fcd143fa13"; // Remplace par ta clé API
-    const apiUrl = `https://api.openweathermap.org/data/2.5/weather?q=Tunis,TN&appid=${apiKey}&units=metric&lang=fr`;
+    const currentWeatherUrl = `https://api.openweathermap.org/data/2.5/weather?q=Tunis,TN&appid=${apiKey}&units=metric&lang=fr`;
+    const forecastUrl = `https://api.openweathermap.org/data/2.5/forecast?q=Tunis,TN&appid=${apiKey}&units=metric&lang=fr`;
+    const yellowSunIcon = "https://cdn-icons-png.flaticon.com/512/869/869869.png"; // Icône soleil jaune
 
-    async function fetchWeather() {
+    async function fetchCurrentWeather() {
         const errorElement = document.getElementById('error');
         try {
-            const response = await fetch(apiUrl);
+            const response = await fetch(currentWeatherUrl);
             if (!response.ok) {
                 throw new Error(`Erreur HTTP : ${response.status} - ${response.statusText}`);
             }
             const data = await response.json();
 
-            // Extraire les données météo
+            // Extraire les données météo actuelles
             const temp = data.main.temp.toFixed(1);
             const description = data.weather[0].description;
             const iconCode = data.weather[0].icon;
-            const iconUrl = `http://openweathermap.org/img/wn/${iconCode}@2x.png`;
+            const iconUrl = (iconCode === '01d' || iconCode === '01n')
+                ? yellowSunIcon
+                : `http://openweathermap.org/img/wn/${iconCode}@2x.png`;
             const updateTime = new Date(data.dt * 1000).toLocaleString('fr-FR', {
                 day: '2-digit',
                 month: '2-digit',
@@ -100,8 +135,57 @@
         }
     }
 
-    // Appeler la fonction au chargement de la page
-    window.onload = fetchWeather;
+    async function fetchHourlyForecast() {
+        const hourlyForecastElement = document.getElementById('hourlyForecast');
+        const hourlyErrorElement = document.getElementById('hourlyError');
+        try {
+            const response = await fetch(forecastUrl);
+            if (!response.ok) {
+                throw new Error(`Erreur HTTP : ${response.status} - ${response.statusText}`);
+            }
+            const data = await response.json();
+
+            // Prendre les 8 premières prévisions (24 heures, toutes les 3 heures)
+            const forecasts = data.list.slice(0, 8);
+            hourlyForecastElement.innerHTML = ''; // Vider le conteneur
+
+            forecasts.forEach(forecast => {
+                const time = new Date(forecast.dt * 1000).toLocaleString('fr-FR', {
+                    hour: '2-digit',
+                    minute: '2-digit'
+                });
+                const temp = forecast.main.temp.toFixed(1);
+                const description = forecast.weather[0].description;
+                const iconCode = forecast.weather[0].icon;
+                const iconUrl = (iconCode === '01d' || iconCode === '01n')
+                    ? yellowSunIcon
+                    : `http://openweathermap.org/img/wn/${iconCode}.png`;
+
+                // Créer un rectangle pour chaque prévision
+                const forecastItem = document.createElement('div');
+                forecastItem.className = 'hourly-item';
+                forecastItem.innerHTML = `
+                    <div class="hourly-info">Heure : ${time}</div>
+                    <img src="${iconUrl}" alt="Icône météo" class="hourly-icon">
+                    <div class="hourly-info">Temp : ${temp}°C</div>
+                    <div class="hourly-info">${description}</div>
+                `;
+                hourlyForecastElement.appendChild(forecastItem);
+            });
+
+            hourlyErrorElement.textContent = '';
+        } catch (error) {
+            console.error('Erreur lors de la récupération des prévisions:', error);
+            hourlyErrorElement.textContent = `Erreur : ${error.message}`;
+            hourlyForecastElement.innerHTML = '<div class="hourly-info">Prévisions indisponibles</div>';
+        }
+    }
+
+    // Appeler les deux fonctions au chargement de la page
+    window.onload = () => {
+        fetchCurrentWeather();
+        fetchHourlyForecast();
+    };
 </script>
 </body>
 </html>
