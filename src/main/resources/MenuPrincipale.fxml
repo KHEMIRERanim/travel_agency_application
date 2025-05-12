@@ -7,7 +7,7 @@
 
 <AnchorPane prefHeight="831.0" prefWidth="1381.0" style="-fx-background-color: #E0F7FA;" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controllers.MenuPrincipalController">
     <children>
-        <VBox layoutX="14.0" layoutY="31.0" prefHeight="203.0" prefWidth="188.0" spacing="20.0" style="-fx-background-color: #B2EBF2; -fx-background-radius: 10;">
+        <VBox layoutX="14.0" layoutY="31.0" prefHeight="303.0" prefWidth="188.0" spacing="20.0" style="-fx-background-color: #B2EBF2; -fx-background-radius: 10;">
             <children>
                 <Button fx:id="btnAjouter" mnemonicParsing="false" onAction="#ouvrirAjouter" prefHeight="50.0" prefWidth="200.0" style="-fx-background-color: #039BE5; -fx-text-fill: white; -fx-background-radius: 5;" text="Ajouter Vol">
                     <font>
@@ -15,6 +15,11 @@
                     </font>
                 </Button>
                 <Button fx:id="btnAfficher" mnemonicParsing="false" onAction="#ouvrirAfficher" prefHeight="50.0" prefWidth="200.0" style="-fx-background-color: #039BE5; -fx-text-fill: white; -fx-background-radius: 5;" text="Afficher Vols">
+                    <font>
+                        <Font size="14.0" />
+                    </font>
+                </Button>
+                <Button fx:id="btnAfficherReservations" mnemonicParsing="false" onAction="#ouvrirAfficherReservations" prefHeight="50.0" prefWidth="200.0" style="-fx-background-color: #039BE5; -fx-text-fill: white; -fx-background-radius: 5;" text="Afficher Réservations">
                     <font>
                         <Font size="14.0" />
                     </font>
