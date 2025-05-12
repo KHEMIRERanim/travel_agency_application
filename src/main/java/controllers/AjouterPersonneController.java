@@ -8,6 +8,8 @@ import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
+import javafx.scene.control.Button;
+import javafx.scene.control.ComboBox;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
@@ -38,7 +40,19 @@ public class AjouterPersonneController {
     private PasswordField tf_mdp;
 
     @FXML
+    private TextField tf_mdp_visible;
+
+    @FXML
+    private Button btn_toggle_mdp;
+
+    @FXML
     private PasswordField tf_mdp_confirm;
+
+    @FXML
+    private TextField tf_mdp_confirm_visible;
+
+    @FXML
+    private Button btn_toggle_mdp_confirm;
 
     @FXML
     private TextField tf_nom;
@@ -52,7 +66,19 @@ public class AjouterPersonneController {
     @FXML
     private ImageView iv_profilePicture;
 
+    @FXML
+    private ComboBox<String> cb_gender;
+
     private String profilePicturePath = "/images/default_profile.png";
+
+    private boolean mdpVisible = false;
+    private boolean mdpConfirmVisible = false;
+
+    @FXML
+    void initialize() {
+        cb_gender.getItems().addAll("Homme", "Femme", "Autre");
+        cb_gender.setValue(null);
+    }
 
     @FXML
     void selectProfilePicture(ActionEvent event) {
@@ -74,21 +100,61 @@ public class AjouterPersonneController {
     }
 
     @FXML
+    void toggleMdpVisibility(ActionEvent event) {
+        mdpVisible = !mdpVisible;
+        if (mdpVisible) {
+            tf_mdp_visible.setText(tf_mdp.getText());
+            tf_mdp_visible.setVisible(true);
+            tf_mdp_visible.setManaged(true);
+            tf_mdp.setVisible(false);
+            tf_mdp.setManaged(false);
+            btn_toggle_mdp.setGraphic(new ImageView(new Image(getClass().getResourceAsStream("/images/eye-off.png"))));
+        } else {
+            tf_mdp.setText(tf_mdp_visible.getText());
+            tf_mdp.setVisible(true);
+            tf_mdp.setManaged(true);
+            tf_mdp_visible.setVisible(false);
+            tf_mdp_visible.setManaged(false);
+            btn_toggle_mdp.setGraphic(new ImageView(new Image(getClass().getResourceAsStream("/images/eye.png"))));
+        }
+    }
+
+    @FXML
+    void toggleMdpConfirmVisibility(ActionEvent event) {
+        mdpConfirmVisible = !mdpConfirmVisible;
+        if (mdpConfirmVisible) {
+            tf_mdp_confirm_visible.setText(tf_mdp_confirm.getText());
+            tf_mdp_confirm_visible.setVisible(true);
+            tf_mdp_confirm_visible.setManaged(true);
+            tf_mdp_confirm.setVisible(false);
+            tf_mdp_confirm.setManaged(false);
+            btn_toggle_mdp_confirm.setGraphic(new ImageView(new Image(getClass().getResourceAsStream("/images/eye-off.png"))));
+        } else {
+            tf_mdp_confirm.setText(tf_mdp_confirm_visible.getText());
+            tf_mdp_confirm.setVisible(true);
+            tf_mdp_confirm.setManaged(true);
+            tf_mdp_confirm_visible.setVisible(false);
+            tf_mdp_confirm_visible.setManaged(false);
+            btn_toggle_mdp_confirm.setGraphic(new ImageView(new Image(getClass().getResourceAsStream("/images/eye.png"))));
+        }
+    }
+
+    @FXML
     void AjouterPersonne(ActionEvent event) {
         try {
             // Validation des champs vides
             if (tf_nom.getText().isEmpty() || tf_prenom.getText().isEmpty() ||
                     tf_email.getText().isEmpty() || tf_numero.getText().isEmpty() ||
                     tf_datenaissance.getText().isEmpty() || tf_mdp.getText().isEmpty() ||
-                    tf_mdp_confirm.getText().isEmpty()) {
+                    tf_mdp_confirm.getText().isEmpty() || cb_gender.getValue() == null) {
 
                 showAlert(Alert.AlertType.ERROR, "Erreur", "Champs vides", "Veuillez remplir tous les champs");
                 return;
             }
 
             // Validation du mot de passe
-            String password = tf_mdp.getText();
-            String confirmPassword = tf_mdp_confirm.getText();
+            String password = mdpVisible ? tf_mdp_visible.getText() : tf_mdp.getText();
+            String confirmPassword = mdpConfirmVisible ? tf_mdp_confirm_visible.getText() : tf_mdp_confirm.getText();
 
             if (!password.equals(confirmPassword)) {
                 showAlert(Alert.AlertType.ERROR, "Erreur", "Mots de passe différents",
@@ -114,15 +180,17 @@ public class AjouterPersonneController {
                 return;
             }
 
-            // Création d'un nouveau client avec le chemin de l'image
+            // Création d'un nouveau client avec le chemin de l'image et le rôle par défaut "USER"
             Client newClient = new Client(
                     tf_nom.getText(),
                     tf_prenom.getText(),
                     tf_email.getText(),
                     Integer.parseInt(tf_numero.getText()),
                     tf_datenaissance.getText(),
-                    tf_mdp.getText(),
-                    profilePicturePath  // Make sure this is set
+                    password,
+                    profilePicturePath,
+                    "USER",
+                    cb_gender.getValue()
             );
 
             serviceClient.ajouter(newClient);

@@ -26,6 +26,7 @@ public class UserProfileController {
     private ServiceClient serviceClient = new ServiceClient();
     private Client currentClient;
     private boolean editMode = false;
+    private boolean passwordVisible = false;
 
     @FXML
     private TextField tf_nom;
@@ -46,6 +47,9 @@ public class UserProfileController {
     private PasswordField tf_password;
 
     @FXML
+    private TextField tf_password_visible;
+
+    @FXML
     private Button btn_edit;
 
     @FXML
@@ -55,10 +59,16 @@ public class UserProfileController {
     private Button btn_delete;
 
     @FXML
+    private Button btn_toggle_password;
+
+    @FXML
     private Label statusLabel;
 
     @FXML
     private ImageView iv_profilePicture;
+
+    @FXML
+    private ComboBox<String> cb_gender;
 
     public void setClient(Client client) {
         this.currentClient = client;
@@ -80,6 +90,10 @@ public class UserProfileController {
         tf_telephone.setText(String.valueOf(currentClient.getNumero_telephone()));
         tf_dateNaissance.setText(currentClient.getDate_de_naissance());
         tf_password.setText(currentClient.getMot_de_passe());
+        if (cb_gender != null) {
+            cb_gender.getItems().setAll("Homme", "Femme", "Autre");
+            cb_gender.setValue(currentClient.getGender());
+        }
     }
 
     private void updateProfilePicture() {
@@ -92,7 +106,14 @@ public class UserProfileController {
         tf_email.setEditable(editable);
         tf_telephone.setEditable(editable);
         tf_dateNaissance.setEditable(editable);
-        tf_password.setEditable(editable);
+        if (editable && editMode) {
+            tf_password.setEditable(true);
+            tf_password_visible.setEditable(true);
+        } else {
+            tf_password.setEditable(false);
+            tf_password_visible.setEditable(false);
+        }
+        if (cb_gender != null) cb_gender.setDisable(!editable);
     }
 
     @FXML
@@ -136,11 +157,11 @@ public class UserProfileController {
         try {
             if (tf_nom.getText().isEmpty() || tf_prenom.getText().isEmpty() ||
                     tf_email.getText().isEmpty() || tf_telephone.getText().isEmpty() ||
-                    tf_dateNaissance.getText().isEmpty() || tf_password.getText().isEmpty()) {
+                    tf_dateNaissance.getText().isEmpty() || tf_password_visible.getText().isEmpty() ||
+                    cb_gender.getValue() == null) {
                 statusLabel.setText("Veuillez remplir tous les champs");
                 return;
             }
-
             currentClient.setNom(tf_nom.getText());
             currentClient.setPrenom(tf_prenom.getText());
             currentClient.setEmail(tf_email.getText());
@@ -151,10 +172,10 @@ public class UserProfileController {
                 return;
             }
             currentClient.setDate_de_naissance(tf_dateNaissance.getText());
-            currentClient.setMot_de_passe(tf_password.getText());
-
+            String password = passwordVisible ? tf_password_visible.getText() : tf_password.getText();
+            currentClient.setMot_de_passe(password);
+            currentClient.setGender(cb_gender.getValue());
             serviceClient.modifier(currentClient);
-
             editMode = false;
             setFieldsEditable(false);
             btn_save.setDisable(true);
@@ -201,5 +222,25 @@ public class UserProfileController {
                 }
             }
         });
+    }
+
+    @FXML
+    void togglePasswordVisibility(ActionEvent event) {
+        passwordVisible = !passwordVisible;
+        if (passwordVisible) {
+            tf_password_visible.setText(tf_password.getText());
+            tf_password_visible.setVisible(true);
+            tf_password_visible.setManaged(true);
+            tf_password.setVisible(false);
+            tf_password.setManaged(false);
+            btn_toggle_password.setGraphic(new ImageView(new Image(getClass().getResourceAsStream("/images/eye-off.png"))));
+        } else {
+            tf_password.setText(tf_password_visible.getText());
+            tf_password.setVisible(true);
+            tf_password.setManaged(true);
+            tf_password_visible.setVisible(false);
+            tf_password_visible.setManaged(false);
+            btn_toggle_password.setGraphic(new ImageView(new Image(getClass().getResourceAsStream("/images/eye.png"))));
+        }
     }
 }

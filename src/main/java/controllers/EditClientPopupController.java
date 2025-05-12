@@ -43,16 +43,27 @@ public class EditClientPopupController {
     private PasswordField tf_password;
 
     @FXML
+    private TextField tf_password_visible;
+
+    @FXML
     private Button btn_save;
 
     @FXML
     private Button btn_cancel;
 
     @FXML
+    private Button btn_toggle_password;
+
+    @FXML
     private Label statusLabel;
 
     @FXML
     private ImageView iv_profilePicture;
+
+    @FXML
+    private ComboBox<String> cb_gender;
+
+    private boolean passwordVisible = false;
 
     public void setClient(Client client) {
         this.currentClient = client;
@@ -71,6 +82,10 @@ public class EditClientPopupController {
         tf_telephone.setText(String.valueOf(currentClient.getNumero_telephone()));
         tf_dateNaissance.setText(currentClient.getDate_de_naissance());
         tf_password.setText(currentClient.getMot_de_passe());
+        if (cb_gender != null) {
+            cb_gender.getItems().setAll("Homme", "Femme", "Autre");
+            cb_gender.setValue(currentClient.getGender());
+        }
     }
 
     private void loadProfilePicture() {
@@ -100,15 +115,35 @@ public class EditClientPopupController {
     }
 
     @FXML
+    void togglePasswordVisibility(ActionEvent event) {
+        passwordVisible = !passwordVisible;
+        if (passwordVisible) {
+            tf_password_visible.setText(tf_password.getText());
+            tf_password_visible.setVisible(true);
+            tf_password_visible.setManaged(true);
+            tf_password.setVisible(false);
+            tf_password.setManaged(false);
+            btn_toggle_password.setGraphic(new ImageView(new Image(getClass().getResourceAsStream("/images/eye-off.png"))));
+        } else {
+            tf_password.setText(tf_password_visible.getText());
+            tf_password.setVisible(true);
+            tf_password.setManaged(true);
+            tf_password_visible.setVisible(false);
+            tf_password_visible.setManaged(false);
+            btn_toggle_password.setGraphic(new ImageView(new Image(getClass().getResourceAsStream("/images/eye.png"))));
+        }
+    }
+
+    @FXML
     void saveClient(ActionEvent event) {
         try {
             if (tf_nom.getText().isEmpty() || tf_prenom.getText().isEmpty() ||
                     tf_email.getText().isEmpty() || tf_telephone.getText().isEmpty() ||
-                    tf_dateNaissance.getText().isEmpty() || tf_password.getText().isEmpty()) {
+                    tf_dateNaissance.getText().isEmpty() || tf_password_visible.getText().isEmpty() ||
+                    cb_gender.getValue() == null) {
                 statusLabel.setText("Veuillez remplir tous les champs");
                 return;
             }
-
             currentClient.setNom(tf_nom.getText());
             currentClient.setPrenom(tf_prenom.getText());
             currentClient.setEmail(tf_email.getText());
@@ -119,8 +154,9 @@ public class EditClientPopupController {
                 return;
             }
             currentClient.setDate_de_naissance(tf_dateNaissance.getText());
-            currentClient.setMot_de_passe(tf_password.getText());
-
+            String password = passwordVisible ? tf_password_visible.getText() : tf_password.getText();
+            currentClient.setMot_de_passe(password);
+            currentClient.setGender(cb_gender.getValue());
             serviceClient.modifier(currentClient);
             statusLabel.setText("Client mis à jour avec succès");
             Thread.sleep(1000);

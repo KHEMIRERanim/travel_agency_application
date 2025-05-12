@@ -14,6 +14,8 @@
 <?import javafx.scene.effect.DropShadow?>
 <?import javafx.scene.text.Font?>
 <?import java.net.URL?>
+<?import javafx.scene.control.ComboBox?>
+<?import javafx.scene.image.Image?>
 
 <AnchorPane prefHeight="650.0" prefWidth="700.0" style="-fx-background-color: #f4f6f9;" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controllers.EditClientPopupController">
     <stylesheets>
@@ -109,7 +111,27 @@
                                 <VBox spacing="5.0" GridPane.columnIndex="1" GridPane.rowIndex="2">
                                     <children>
                                         <Label text="Mot de passe" styleClass="label-info" />
-                                        <PasswordField fx:id="tf_password" styleClass="text-field" />
+                                        <HBox spacing="0">
+                                            <children>
+                                                <PasswordField fx:id="tf_password" styleClass="text-field" />
+                                                <TextField fx:id="tf_password_visible" styleClass="text-field" visible="false" managed="false" />
+                                                <Button fx:id="btn_toggle_password" mnemonicParsing="false" prefHeight="40.0" prefWidth="40.0" styleClass="text-field" onAction="#togglePasswordVisibility">
+                                                    <graphic>
+                                                        <ImageView fitHeight="20.0" fitWidth="20.0">
+                                                            <image>
+                                                                <Image url="@/images/eye.png" />
+                                                            </image>
+                                                        </ImageView>
+                                                    </graphic>
+                                                </Button>
+                                            </children>
+                                        </HBox>
+                                    </children>
+                                </VBox>
+                                <VBox spacing="5.0" GridPane.columnIndex="0" GridPane.rowIndex="3">
+                                    <children>
+                                        <Label text="Genre" styleClass="label-info" />
+                                        <ComboBox fx:id="cb_gender" promptText="Sélectionnez le genre" styleClass="combo-box" />
                                     </children>
                                 </VBox>
                             </children>

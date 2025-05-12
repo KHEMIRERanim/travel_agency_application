@@ -13,14 +13,14 @@
 <?import javafx.scene.effect.DropShadow?>
 <?import java.net.URL?>
 
-<AnchorPane prefHeight="700.0" prefWidth="760.0" style="-fx-background-color: #f4f6f9;" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controllers.AdminReclamationsController">
+<AnchorPane style="-fx-background-color: #f4f6f9;" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controllers.AdminReclamationsController">
     <stylesheets>
         <URL value="@/styles/admin-common.css" />
         <URL value="@/styles/listview.css" />
     </stylesheets>
 
     <children>
-        <VBox prefHeight="700.0" prefWidth="760.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+        <VBox AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
             <children>
                 <HBox alignment="CENTER_LEFT" prefHeight="80.0" prefWidth="760.0" style="-fx-background-color: white;">
                     <children>
@@ -48,7 +48,7 @@
                     </VBox.margin>
                 </HBox>
 
-                <ListView fx:id="reclamationsListView" prefHeight="350.0" prefWidth="760.0" styleClass="reclamations-list">
+                <ListView fx:id="reclamationsListView" prefWidth="760.0" styleClass="reclamations-list" VBox.vgrow="ALWAYS">
                     <VBox.margin>
                         <Insets bottom="20.0" left="0.0" right="0.0" top="10.0" />
                     </VBox.margin>

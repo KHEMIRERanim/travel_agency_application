@@ -15,7 +15,6 @@
         <javafx.version>17.0.2</javafx.version>
     </properties>
 
-
     <dependencies>
         <!-- MySQL Connector -->
         <dependency>

@@ -64,6 +64,7 @@ public class AdminDashboardController implements Initializable {
     private Button logoutBtn;
 
     private ObservableList<Client> allClients;
+    private Client currentLoggedInClient;
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
@@ -92,6 +93,11 @@ public class AdminDashboardController implements Initializable {
                     private final Button deleteButton = new Button("Supprimer");
                     private Client currentClient;
 
+                    // Add a VBox for the role
+                    private final VBox roleBox = createDetailBox("Rôle", "");
+                    // Add a VBox for the gender
+                    private final VBox genderBox = createDetailBox("Genre", "");
+
                     {
                         // Initialize the layout
                         container.getStyleClass().add("list-cell-container");
@@ -112,7 +118,8 @@ public class AdminDashboardController implements Initializable {
                         VBox phoneBox = createDetailBox("Téléphone", "");
                         VBox dobBox = createDetailBox("Date de naissance", "");
 
-                        detailsBox.getChildren().addAll(emailBox, passwordBox, phoneBox, dobBox);
+                        // Add roleBox and genderBox to detailsBox
+                        detailsBox.getChildren().addAll(emailBox, passwordBox, phoneBox, dobBox, roleBox, genderBox);
                         infoContainer.getChildren().addAll(nameText, detailsBox);
 
                         // Configure buttons
@@ -166,15 +173,36 @@ public class AdminDashboardController implements Initializable {
 
                             // Update detail values
                             ((Text)((VBox)detailsBox.getChildren().get(0)).getChildren().get(1)).setText(client.getEmail());
-                            ((Text)((VBox)detailsBox.getChildren().get(1)).getChildren().get(1)).setText(client.getMot_de_passe());
+                            ((Text)((VBox)detailsBox.getChildren().get(1)).getChildren().get(1)).setText("********");
                             ((Text)((VBox)detailsBox.getChildren().get(2)).getChildren().get(1)).setText(String.valueOf(client.getNumero_telephone()));
                             ((Text)((VBox)detailsBox.getChildren().get(3)).getChildren().get(1)).setText(client.getDate_de_naissance());
+                            ((Text)((VBox)detailsBox.getChildren().get(4)).getChildren().get(1)).setText(client.getRole());
+                            ((Text)((VBox)detailsBox.getChildren().get(5)).getChildren().get(1)).setText(client.getGender());
+
+                            // Main admin logic
+                            if (client.getEmail().equalsIgnoreCase("admin@gmail.com")) {
+                                deleteButton.setDisable(true);
+                                deleteButton.setVisible(false);
+                                // Only allow edit if this is the logged-in admin
+                                if (currentLoggedInClient != null && currentLoggedInClient.getEmail().equalsIgnoreCase("admin@gmail.com") &&
+                                    client.getEmail().equalsIgnoreCase(currentLoggedInClient.getEmail())) {
+                                    editButton.setDisable(false);
+                                    editButton.setVisible(true);
+                                } else {
+                                    editButton.setDisable(true);
+                                    editButton.setVisible(false);
+                                }
+                            } else {
+                                deleteButton.setDisable(false);
+                                deleteButton.setVisible(true);
+                                editButton.setDisable(false);
+                                editButton.setVisible(true);
+                            }
 
                             // Load profile image
                             try {
                                 profileImageView.setImage(ImageUtils.loadProfileImage(client.getProfilePicture()));
                             } catch (Exception e) {
-                                // If there's an error loading the image, we can use a default or just log the error
                                 System.err.println("Error loading profile image: " + e.getMessage());
                             }
 
@@ -410,5 +438,9 @@ public class AdminDashboardController implements Initializable {
         alert.setHeaderText(header);
         alert.setContentText(content);
         alert.showAndWait();
+    }
+
+    public void setCurrentLoggedInClient(Client client) {
+        this.currentLoggedInClient = client;
     }
 }

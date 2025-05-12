@@ -22,7 +22,9 @@ public class Main {
                     98765432,
                     "20/05/1985",
                     "password123",
-                    "/images/default_profile.png" // Added profilePicture parameter
+                    "/images/default_profile.png",
+                    "USER",
+                    "Homme"
             );
 
             if (!clientService.emailExists(testClient.getEmail())) {
@@ -72,7 +74,9 @@ public class Main {
                     existingClient.getNumero_telephone(),
                     existingClient.getDate_de_naissance(),
                     existingClient.getMot_de_passe(),
-                    existingClient.getProfilePicture() // Preserve profilePicture
+                    existingClient.getProfilePicture(),
+                    existingClient.getRole(),
+                    existingClient.getGender()
             );
             updatedClient.setId_client(clientId);
 
