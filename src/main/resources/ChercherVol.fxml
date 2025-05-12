@@ -24,6 +24,7 @@
         <DatePicker fx:id="flightdatechercher" layoutX="727.0" layoutY="316.0" prefHeight="26.0" prefWidth="226.0" promptText="Depature-Date" style="-fx-border-color: #39909D; -fx-border-radius: 5;" />
         <Button fx:id="btnRechercherVol" layoutX="732.0" layoutY="529.0" mnemonicParsing="false" onAction="#recherchervol" prefHeight="35.0" prefWidth="204.0" style="-fx-background-color: FF9E0C; -fx-background-radius: 5;" text="Search" />
         <Button fx:id="btnRealTimeFlights" layoutX="732.0" layoutY="574.0" mnemonicParsing="false" onAction="#showRealTimeFlights" prefHeight="35.0" prefWidth="204.0" style="-fx-background-color: #FF9E0C; -fx-background-radius: 5;" text="Real-Time Tunis Flights" />
+        <Button fx:id="btnWeather" layoutX="732.0" layoutY="619.0" mnemonicParsing="false" onAction="#showWeather" prefHeight="35.0" prefWidth="204.0" style="-fx-background-color: #FF9E0C; -fx-background-radius: 5;" text="Weather in Tunis" />
         <Text layoutX="727.0" layoutY="165.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Departure" wrappingWidth="213.15423583984375" />
         <Text layoutX="727.0" layoutY="235.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Destination" />
         <Text layoutX="727.0" layoutY="302.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Flight-Date" />

@@ -12,6 +12,7 @@ import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.DatePicker;
 import javafx.scene.control.TextField;
+import javafx.scene.web.WebView;
 import javafx.stage.Stage;
 import services.ServiceFlight;
 
@@ -47,6 +48,9 @@ public class ChercherVolController {
     @FXML
     private Button btnRealTimeFlights;
 
+    @FXML
+    private Button btnWeather;
+
     private UserDashboardController dashboardController;
     private boolean isEmbeddedInDashboard = false;
     private Client currentClient;
@@ -70,9 +74,17 @@ public class ChercherVolController {
         checkFxmlResource("/MyReservations.fxml", "MyReservations.fxml");
         checkFxmlResource("/FlightSearchResults.fxml", "FlightSearchResults.fxml");
         checkFxmlResource("/ChercherVol.fxml", "ChercherVol.fxml");
+        checkHtmlResource("/weather.html", "weather.html");
     }
 
     private void checkFxmlResource(String resourcePath, String resourceName) {
+        if (getClass().getResource(resourcePath) == null) {
+            showAlert(Alert.AlertType.WARNING, "Attention", "Ressource manquante",
+                    "Le fichier " + resourceName + " est introuvable.");
+        }
+    }
+
+    private void checkHtmlResource(String resourcePath, String resourceName) {
         if (getClass().getResource(resourcePath) == null) {
             showAlert(Alert.AlertType.WARNING, "Attention", "Ressource manquante",
                     "Le fichier " + resourceName + " est introuvable.");
@@ -229,6 +241,38 @@ public class ChercherVolController {
             e.printStackTrace();
         }
     }
+
+    @FXML
+    void showWeather(ActionEvent event) {
+        try {
+            // Create WebView to display weather.html
+            WebView webView = new WebView();
+            java.net.URL htmlLocation = getClass().getResource("/weather.html");
+            if (htmlLocation == null) {
+                showAlert(Alert.AlertType.ERROR, "Erreur", "Fichier HTML non trouvé",
+                        "Le fichier /weather.html n'a pas été trouvé dans les ressources.");
+                return;
+            }
+            webView.getEngine().load(htmlLocation.toExternalForm());
+
+            // Create a new scene
+            Scene scene = new Scene(webView, 400, 300);
+
+            if (isEmbeddedInDashboard && dashboardController != null) {
+                dashboardController.loadContentToArea(webView);
+            } else {
+                Stage stage = (Stage) btnWeather.getScene().getWindow();
+                stage.setScene(scene);
+                stage.setTitle("Météo en Temps Réel - Tunis");
+            }
+
+        } catch (Exception e) {
+            showAlert(Alert.AlertType.ERROR, "Erreur", "Erreur inattendue",
+                    "Une erreur est survenue : " + e.getMessage());
+            e.printStackTrace();
+        }
+    }
+
     public void reloadSearchScene() {
         try {
             java.net.URL fxmlLocation = getClass().getResource("/ChercherVol.fxml");
