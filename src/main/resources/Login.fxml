@@ -117,12 +117,15 @@
         </AnchorPane>
         <AnchorPane prefHeight="600.0" prefWidth="450.0">
             <children>
-                <!-- Full-sized image with no overlay -->
+                <!-- Full-sized image with semi-transparent overlay for better text visibility -->
                 <ImageView fitHeight="600.0" fitWidth="450.0" pickOnBounds="true" preserveRatio="false">
                     <image>
                         <Image url="/images/atravel_illustration.png" />
                     </image>
                 </ImageView>
+
+                <!-- Lighter semi-transparent overlay to allow more image visibility -->
+                <AnchorPane prefHeight="600.0" prefWidth="450.0" style="-fx-background-color: rgba(0, 0, 0, 0.3);" />
 
                 <VBox alignment="CENTER" layoutX="50.0" prefHeight="600.0" prefWidth="350.0" spacing="20.0">
                     <children>
@@ -130,11 +133,25 @@
                             <font>
                                 <Font name="System Bold" size="32.0" />
                             </font>
+                            <effect>
+                                <DropShadow height="15.0" radius="7.0" spread="0.2" width="15.0">
+                                    <color>
+                                        <Color opacity="0.6" />
+                                    </color>
+                                </DropShadow>
+                            </effect>
                         </Label>
-                        <Label text="Connectez-vous pour gérer votre compte, vos réservations, vos réclamations et bien plus encore" textAlignment="CENTER" textFill="YELLOW" wrapText="true">
+                        <Label text="Connectez-vous pour gérer votre compte, vos réservations, vos réclamations et bien plus encore" textAlignment="CENTER" textFill="WHITE" wrapText="true">
                             <font>
-                                <Font size="28.0" />
+                                <Font size="24.0" />
                             </font>
+                            <effect>
+                                <DropShadow height="15.0" radius="7.0" spread="0.2" width="15.0">
+                                    <color>
+                                        <Color opacity="0.6" />
+                                    </color>
+                                </DropShadow>
+                            </effect>
                         </Label>
                     </children>
                 </VBox>
