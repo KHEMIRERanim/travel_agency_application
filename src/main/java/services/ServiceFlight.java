@@ -154,4 +154,29 @@ public class ServiceFlight implements IService<Flight> {
         }
         return null;
     }
+    // New method to find flight by flight number
+    public Flight findByFlightNumber(String flightNumber) throws SQLException {
+        String req = "SELECT * FROM flight WHERE flight_number = ?";
+        try (PreparedStatement ps = con.prepareStatement(req)) {
+            ps.setString(1, flightNumber);
+            ResultSet rs = ps.executeQuery();
+            if (rs.next()) {
+                return new Flight(
+                        rs.getInt("flight_id"),
+                        rs.getInt("flight_duration"),
+                        rs.getString("flight_number"),
+                        rs.getInt("available_seats"),
+                        rs.getString("departure"),
+                        rs.getString("destination"),
+                        rs.getString("airline"),
+                        rs.getTimestamp("arrival_time"),
+                        rs.getTimestamp("departure_time"),
+                        rs.getDate("flight_date"),
+                        rs.getDouble("price"),
+                        rs.getString("image_url")
+                );
+            }
+        }
+        return null;
+    }
 }

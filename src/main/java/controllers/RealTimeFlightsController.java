@@ -1,5 +1,5 @@
 package controllers;
-
+import services.ServiceFlight;
 import entities.Client;
 import entities.Flight;
 import javafx.application.Platform;
@@ -44,7 +44,7 @@ public class RealTimeFlightsController {
     private String destination;
     private Date flightDate;
 
-    private static final String API_KEY = "b54ed24b5ede2e30cbeeb4202c6b5cb4"; // Replace with your AviationStack API key
+    private static final String API_KEY = "b54ed24b5ede2e30cbeeb4202c6b5cb4"; // Remplacez par votre clé API AviationStack
     private static final String API_URL = "http://api.aviationstack.com/v1/flights?access_key=" + API_KEY;
 
     public void setClient(Client client) {
@@ -115,13 +115,11 @@ public class RealTimeFlightsController {
     public void fetchRealTimeFlights(ActionEvent event) {
         Platform.runLater(() -> {
             try {
-                // Faire deux appels API : un pour les départs de TUN, un pour les arrivées à TUN
                 StringBuilder depUrl = new StringBuilder(API_URL);
                 depUrl.append("&dep_iata=TUN");
                 StringBuilder arrUrl = new StringBuilder(API_URL);
                 arrUrl.append("&arr_iata=TUN");
 
-                // Ajouter les critères supplémentaires
                 if (!departure.isEmpty() && !departure.equalsIgnoreCase("TUN")) {
                     depUrl.append("&dep_iata=").append(departure);
                     arrUrl.append("&dep_iata=").append(departure);
@@ -145,7 +143,6 @@ public class RealTimeFlightsController {
                 JSONObject arrJsonResponse = new JSONObject(arrResponse);
                 JSONArray arrFlights = arrJsonResponse.getJSONArray("data");
 
-                // Combiner les vols (éviter les doublons)
                 JSONArray flights = new JSONArray();
                 for (int i = 0; i < depFlights.length(); i++) {
                     flights.put(depFlights.getJSONObject(i));
@@ -165,7 +162,6 @@ public class RealTimeFlightsController {
                     }
                 }
 
-                // Ajouter des données fictives si aucun vol n'est retourné
                 if (flights.length() == 0) {
                     System.out.println("No flights returned from API, adding mock data...");
                     JSONObject mockFlight1 = new JSONObject();
@@ -194,7 +190,6 @@ public class RealTimeFlightsController {
                 }
                 System.out.println("Total flights received: " + flights.length());
 
-                // Filtrer côté client pour s'assurer que TUN est impliqué (départ ou arrivée)
                 JSONArray tunisFlights = new JSONArray();
                 for (int i = 0; i < flights.length(); i++) {
                     JSONObject flight = flights.getJSONObject(i);
@@ -203,28 +198,25 @@ public class RealTimeFlightsController {
                     String depIata = departure.optString("iata", "");
                     String arrIata = arrival.optString("iata", "");
                     if (depIata.equalsIgnoreCase("TUN") || arrIata.equalsIgnoreCase("TUN")) {
-                        // Ajouter des champs nécessaires pour l'affichage et la confirmation
-                        flight.put("flight_id", i + 1); // Integer value
-                        flight.put("flight_number", flight.getJSONObject("flight").optString("iata", "N/A"));
+                        String flightNumber = flight.getJSONObject("flight").optString("iata", "N/A");
+                        flight.put("flight_number", flightNumber);
                         flight.put("departure_airport", depIata);
                         flight.put("arrival_airport", arrIata);
                         flight.put("airline_name", flight.getJSONObject("airline").optString("name", "N/A"));
                         flight.put("departure_time", departure.optString("scheduled", "N/A"));
                         flight.put("arrival_time", arrival.optString("scheduled", "N/A"));
                         flight.put("flight_date", flight.optString("flight_date", "N/A"));
-                        flight.put("price", 200.0); // Prix fictif pour la démo
-                        flight.put("available_seats", 50); // Sièges fictifs
-                        flight.put("flight_duration", 120); // Durée fictive en minutes
+                        flight.put("price", 200.0);
+                        flight.put("available_seats", 50);
+                        flight.put("flight_duration", 120);
                         tunisFlights.put(flight);
                     }
                 }
                 System.out.println("Flights after TUN filter: " + tunisFlights.length());
 
-                // Filtrer par date si nécessaire (désactivé pour éviter un filtrage trop strict)
                 JSONArray filteredFlights = tunisFlights;
                 System.out.println("Flights after date filter: " + filteredFlights.length());
 
-                // Filtrer par nombre de sièges
                 JSONArray finalFlights = new JSONArray();
                 for (int i = 0; i < filteredFlights.length(); i++) {
                     JSONObject flight = filteredFlights.getJSONObject(i);
@@ -234,7 +226,6 @@ public class RealTimeFlightsController {
                 }
                 System.out.println("Final flights after seat filter: " + finalFlights.length());
 
-                // Passer les données au WebView
                 String flightsJson = finalFlights.toString();
                 System.out.println("Flights JSON sent to WebView: " + flightsJson);
                 WebEngine engine = webView.getEngine();
@@ -320,7 +311,7 @@ public class RealTimeFlightsController {
                     JSONObject json = new JSONObject(flightDataJson);
                     System.out.println("JSON parsed: " + json.toString());
 
-                    String[] requiredFields = {"flight_id", "flight_number", "departure_airport", "arrival_airport", "airline_name",
+                    String[] requiredFields = {"flight_number", "departure_airport", "arrival_airport", "airline_name",
                             "departure_time", "arrival_time", "flight_date", "price", "available_seats", "flight_duration"};
                     for (String field : requiredFields) {
                         if (!json.has(field)) {
@@ -328,14 +319,7 @@ public class RealTimeFlightsController {
                         }
                     }
 
-                    int flightId;
-                    try {
-                        flightId = json.getInt("flight_id"); // Get as integer, not string
-                    } catch (Exception e) {
-                        throw new IllegalArgumentException("Invalid flight_id format: " + json.get("flight_id"));
-                    }
-                    System.out.println("Parsed flightId: " + flightId);
-
+                    String flightNumber = json.getString("flight_number");
                     String depTimeStr = json.getString("departure_time");
                     String arrTimeStr = json.getString("arrival_time");
                     Timestamp departureTime = parseTimestamp(depTimeStr);
@@ -356,10 +340,11 @@ public class RealTimeFlightsController {
                     int availableSeats = json.getInt("available_seats");
                     System.out.println("Duration: " + flightDuration + ", Price: " + price + ", Seats: " + availableSeats);
 
+                    // Création initiale de l'objet Flight avec flight_id = 0
                     Flight flight = new Flight(
-                            flightId, // Pass as integer
+                            0, // flight_id sera mis à jour après vérification
                             flightDuration,
-                            json.getString("flight_number"),
+                            flightNumber,
                             availableSeats,
                             json.getString("departure_airport"),
                             json.getString("arrival_airport"),
@@ -370,7 +355,19 @@ public class RealTimeFlightsController {
                             price,
                             "/img.png"
                     );
-                    System.out.println("Flight created with image_url: " + flight);
+                    System.out.println("Flight created with temporary ID: " + flight);
+
+                    ServiceFlight flightService = new ServiceFlight();
+                    Flight existingFlight = flightService.findByFlightNumber(flightNumber);
+                    if (existingFlight == null) {
+                        // Ajouter le vol s'il n'existe pas
+                        flight = flightService.addRealTimeFlight(flight); // Use addRealTimeFlight instead of addFlight
+                        System.out.println("New flight added with ID: " + flight.getFlight_id());
+                    } else {
+                        // Utiliser le vol existant
+                        flight = existingFlight;
+                        System.out.println("Existing flight found with ID: " + flight.getFlight_id());
+                    }
 
                     if (currentClient == null) {
                         System.out.println("No client connected");
