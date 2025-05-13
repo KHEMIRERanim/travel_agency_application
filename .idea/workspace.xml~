@@ -1,0 +1,225 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="AutoImportSettings">
+    <option name="autoReloadType" value="SELECTIVE" />
+  </component>
+  <component name="ChangeListManager">
+    <list default="true" id="33f4042c-3466-44e2-8a3f-cd5ded9ece07" name="Changes" comment="">
+      <change beforePath="$PROJECT_DIR$/src/main/java/controllers/ChercherVolController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/controllers/ChercherVolController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/controllers/RealTimeFlightsController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/controllers/RealTimeFlightsController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/RealTimeFlights.fxml" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/RealTimeFlights.fxml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/real-time-flights.html" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/real-time-flights.html" afterDir="false" />
+    </list>
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="FileTemplateManagerImpl">
+    <option name="RECENT_TEMPLATES">
+      <list>
+        <option value="Interface" />
+        <option value="JavaFXApplication" />
+        <option value="CSS File" />
+        <option value="HTML File" />
+        <option value="Class" />
+        <option value="FxmlFile" />
+      </list>
+    </option>
+  </component>
+  <component name="Git.Settings">
+    <option name="RECENT_BRANCH_BY_REPOSITORY">
+      <map>
+        <entry key="$PROJECT_DIR$" value="test2" />
+      </map>
+    </option>
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+  </component>
+  <component name="GitHubPullRequestSearchHistory">{
+  &quot;lastFilter&quot;: {
+    &quot;state&quot;: &quot;OPEN&quot;,
+    &quot;assignee&quot;: &quot;KHEMIRERanim&quot;
+  }
+}</component>
+  <component name="GithubPullRequestsUISettings">{
+  &quot;selectedUrlAndAccountId&quot;: {
+    &quot;url&quot;: &quot;https://github.com/KHEMIRERanim/travel_agency_application.git&quot;,
+    &quot;accountId&quot;: &quot;4fcaca2b-4e09-45c1-9e27-3af24b810078&quot;
+  }
+}</component>
+  <component name="ProblemsViewState">
+    <option name="selectedTabId" value="CurrentFile" />
+  </component>
+  <component name="ProjectColorInfo">{
+  &quot;associatedIndex&quot;: 2
+}</component>
+  <component name="ProjectId" id="2vu50hIpWKacdVF1PBhf1u5rTHb" />
+  <component name="ProjectLevelVcsManager" settingsEditedManually="true" />
+  <component name="ProjectViewState">
+    <option name="hideEmptyMiddlePackages" value="true" />
+    <option name="showLibraryContents" value="true" />
+  </component>
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;Application.Main.executor&quot;: &quot;Run&quot;,
+    &quot;Application.MainFX.executor&quot;: &quot;Run&quot;,
+    &quot;DefaultHtmlFileTemplate&quot;: &quot;HTML File&quot;,
+    &quot;Maven.WorkshopJDBC--3B2 [javafx:run].executor&quot;: &quot;Run&quot;,
+    &quot;Maven.WorkshopJDBC--3B2 [org.openjfx:javafx-maven-plugin:0.0.8:run].executor&quot;: &quot;Run&quot;,
+    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.git.unshallow&quot;: &quot;true&quot;,
+    &quot;git-widget-placeholder&quot;: &quot;Flight2&quot;,
+    &quot;kotlin-language-version-configured&quot;: &quot;true&quot;,
+    &quot;last_opened_file_path&quot;: &quot;C:/Prosits-Java-prosit11&quot;,
+    &quot;list.type.of.created.stylesheet&quot;: &quot;CSS&quot;,
+    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
+    &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
+    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
+    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
+    &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
+    &quot;project.structure.last.edited&quot;: &quot;Modules&quot;,
+    &quot;project.structure.proportion&quot;: &quot;0.0&quot;,
+    &quot;project.structure.side.proportion&quot;: &quot;0.0&quot;,
+    &quot;run.code.analysis.last.selected.profile&quot;: &quot;pProject Default&quot;,
+    &quot;settings.editor.selected.configurable&quot;: &quot;preferences.pluginManager&quot;,
+    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
+  }
+}</component>
+  <component name="RecentsManager">
+    <key name="CopyFile.RECENT_KEYS">
+      <recent name="C:\Users\INFOKOM\Desktop\travel_agency_application\src\main\resources" />
+      <recent name="C:\Users\INFOKOM\Desktop\travel_agency_application\src\main\java\ImageVol" />
+    </key>
+    <key name="MoveFile.RECENT_KEYS">
+      <recent name="C:\Users\INFOKOM\Desktop\travel_agency_application\src\main\resources\ImageVol" />
+    </key>
+  </component>
+  <component name="RunManager">
+    <configuration default="true" type="KotlinStandaloneScriptRunConfigurationType">
+      <module name="WorkshopJDBCJavaFX--3B2" />
+      <option name="filePath" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="WorkshopJDBC--3B2 [javafx:run]" type="MavenRunConfiguration" factoryName="Maven" temporary="true">
+      <MavenSettings>
+        <option name="myGeneralSettings" />
+        <option name="myRunnerSettings" />
+        <option name="myRunnerParameters">
+          <MavenRunnerParameters>
+            <option name="cmdOptions" />
+            <option name="profiles">
+              <set />
+            </option>
+            <option name="goals">
+              <list>
+                <option value="javafx:run" />
+              </list>
+            </option>
+            <option name="multimoduleDir" />
+            <option name="pomFileName" value="pom.xml" />
+            <option name="profilesMap">
+              <map />
+            </option>
+            <option name="projectsCmdOptionValues">
+              <list />
+            </option>
+            <option name="resolveToWorkspace" value="false" />
+            <option name="workingDirPath" value="$PROJECT_DIR$" />
+          </MavenRunnerParameters>
+        </option>
+      </MavenSettings>
+      <method v="2" />
+    </configuration>
+    <recent_temporary>
+      <list>
+        <item itemvalue="Maven.WorkshopJDBC--3B2 [javafx:run]" />
+        <item itemvalue="Maven.WorkshopJDBC--3B2 [javafx:run]" />
+        <item itemvalue="Maven.WorkshopJDBC--3B2 [javafx:run]" />
+      </list>
+    </recent_temporary>
+  </component>
+  <component name="SharedIndexes">
+    <attachedChunks>
+      <set>
+        <option value="bundled-jdk-9823dce3aa75-125ca727e0f0-intellij.indexing.shared.core-IU-243.23654.117" />
+        <option value="bundled-js-predefined-d6986cc7102b-822845ee3bb5-JavaScript-IU-243.23654.117" />
+      </set>
+    </attachedChunks>
+  </component>
+  <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="Default task">
+      <changelist id="33f4042c-3466-44e2-8a3f-cd5ded9ece07" name="Changes" comment="" />
+      <created>1744981896727</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1744981896727</updated>
+      <workItem from="1744981897745" duration="5433000" />
+      <workItem from="1745585991600" duration="4730000" />
+      <workItem from="1745593233233" duration="11000" />
+      <workItem from="1745701422228" duration="7631000" />
+      <workItem from="1745828590527" duration="13152000" />
+      <workItem from="1745860818173" duration="12310000" />
+      <workItem from="1745929586129" duration="15544000" />
+      <workItem from="1745956685261" duration="14440000" />
+      <workItem from="1746000993678" duration="9467000" />
+      <workItem from="1746016445949" duration="24251000" />
+      <workItem from="1746053065547" duration="2670000" />
+      <workItem from="1746107942928" duration="229000" />
+      <workItem from="1746129232583" duration="6280000" />
+      <workItem from="1746190739128" duration="3714000" />
+      <workItem from="1746308088753" duration="1334000" />
+      <workItem from="1746344907020" duration="64000" />
+      <workItem from="1746349728603" duration="20077000" />
+      <workItem from="1746433439642" duration="6476000" />
+      <workItem from="1746445205853" duration="2931000" />
+      <workItem from="1746529999309" duration="729000" />
+      <workItem from="1746542535963" duration="143000" />
+      <workItem from="1746553851783" duration="280000" />
+      <workItem from="1746568603568" duration="6580000" />
+      <workItem from="1746606109834" duration="120000" />
+      <workItem from="1746611829659" duration="1184000" />
+      <workItem from="1746623562294" duration="8978000" />
+      <workItem from="1746632717054" duration="8224000" />
+      <workItem from="1746658916830" duration="1653000" />
+      <workItem from="1746661041945" duration="2653000" />
+      <workItem from="1746695088349" duration="7825000" />
+      <workItem from="1746718869024" duration="2422000" />
+      <workItem from="1746726549974" duration="18043000" />
+      <workItem from="1746795860012" duration="3138000" />
+      <workItem from="1746819452309" duration="18000000" />
+      <workItem from="1746888976844" duration="12718000" />
+      <workItem from="1746915164345" duration="9542000" />
+      <workItem from="1747001704488" duration="7105000" />
+      <workItem from="1747042899426" duration="206000" />
+      <workItem from="1747043652469" duration="947000" />
+      <workItem from="1747045062705" duration="260000" />
+      <workItem from="1747047263680" duration="5010000" />
+      <workItem from="1747073643823" duration="19018000" />
+      <workItem from="1747128748896" duration="1980000" />
+      <workItem from="1747140533520" duration="1373000" />
+      <workItem from="1747153871729" duration="2025000" />
+    </task>
+    <servers />
+  </component>
+  <component name="TypeScriptGeneratedFilesManager">
+    <option name="version" value="3" />
+  </component>
+  <component name="Vcs.Log.Tabs.Properties">
+    <option name="TAB_STATES">
+      <map>
+        <entry key="MAIN">
+          <value>
+            <State />
+          </value>
+        </entry>
+      </map>
+    </option>
+  </component>
+  <component name="XSLT-Support.FileAssociations.UIState">
+    <expand />
+    <select />
+  </component>
+</project>

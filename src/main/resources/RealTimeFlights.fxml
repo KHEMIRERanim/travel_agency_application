@@ -1,12 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import javafx.scene.control.Button?>
-<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.VBox?>
 <?import javafx.scene.web.WebView?>
 
-<AnchorPane prefHeight="671.0" prefWidth="1026.0" style="-fx-background-color: linear-gradient(from 0% 0% to 100% 100%, #0288d1, #4fc3f7);" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controllers.RealTimeFlightsController">
-    <children>
-        <WebView fx:id="webView" AnchorPane.bottomAnchor="55.0" AnchorPane.leftAnchor="20.0" AnchorPane.rightAnchor="20.0" AnchorPane.topAnchor="20.0" />
-        <Button fx:id="backButton" layoutX="54.0" layoutY="522.0" onAction="#goBack" prefHeight="35.0" prefWidth="150.0" style="-fx-background-color: #FF9E0C; -fx-background-radius: 5; -fx-text-fill: white; -fx-font-size: 14;" text="Back" />
-    </children>
-</AnchorPane>
+<VBox alignment="CENTER" spacing="10" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controllers.RealTimeFlightsController">
+    <Button fx:id="fetchFlightsButton" text="Récupérer les vols en temps réel" onAction="#fetchRealTimeFlights"/>
+    <WebView fx:id="webView" prefHeight="600.0" prefWidth="800.0"/>
+    <Button fx:id="backButton" text="Retour" onAction="#goBack"/>
+</VBox>

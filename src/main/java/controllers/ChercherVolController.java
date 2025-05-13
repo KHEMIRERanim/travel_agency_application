@@ -212,6 +212,11 @@ public class ChercherVolController {
             int totalPassengers = adultCount + childCount;
             if (totalPassengers <= 0) totalPassengers = 1;
 
+            // Récupérer les critères de recherche
+            String departure = departurechercher.getText().trim();
+            String destination = destinationchercher.getText().trim();
+            Date flightDate = flightdatechercher.getValue() != null ? Date.valueOf(flightdatechercher.getValue()) : null;
+
             java.net.URL fxmlLocation = getClass().getResource("/RealTimeFlights.fxml");
             if (fxmlLocation == null) {
                 showAlert(Alert.AlertType.ERROR, "Erreur", "Fichier FXML non trouvé",
@@ -226,6 +231,8 @@ public class ChercherVolController {
             controller.setClient(currentClient);
             controller.setSourceController(this);
             controller.setRequiredSeats(totalPassengers);
+            // Passer les critères de recherche
+            controller.setSearchCriteria(departure, destination, flightDate);
 
             if (isEmbeddedInDashboard && dashboardController != null) {
                 controller.setDashboardController(dashboardController);

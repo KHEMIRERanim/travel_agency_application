@@ -3,440 +3,116 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Vols en Temps Réel - Tunisie</title>
+  <title>Vols en Temps Réel - Tunisie (TUN)</title>
   <style>
     body {
       font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background-color: #f0f4f8;
       margin: 0;
       padding: 20px;
-      background-color: #f4f6f9;
+      color: #333;
     }
     h1 {
-      color: #0277bd;
       text-align: center;
+      color: #2c3e50;
       margin-bottom: 30px;
+      font-size: 2.5em;
+      text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.1);
     }
-    #map {
-      height: 400px;
-      max-width: 1100px;
-      margin: 40px auto;
-      border-radius: 15px;
-      box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+    #flight-list {
+      max-width: 900px;
+      margin: 0 auto;
     }
     .flight-card {
-      border: 1px solid #ddd;
+      background-color: #ffffff;
+      border-radius: 10px;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
       padding: 20px;
-      margin: 15px 0;
-      border-radius: 8px;
-      background-color: #fff;
-      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-      animation: fadeIn 0.5s ease-in-out;
-      display: flex;
-      flex-direction: column;
-      max-width: 1100px;
-      margin-left: auto;
-      margin-right: auto;
+      margin-bottom: 20px;
+      transition: transform 0.2s, box-shadow 0.2s;
     }
-    .flight-header {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      border-bottom: 1px solid #eee;
-      padding-bottom: 10px;
-      margin-bottom: 15px;
+    .flight-card:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
     }
-    .flight-info {
-      display: flex;
-      justify-content: space-between;
-      flex-wrap: wrap;
+    .flight-card p {
+      margin: 5px 0;
+      font-size: 1.1em;
+      color: #555;
     }
-    .flight-info-column {
-      flex: 1;
-      min-width: 200px;
-      margin: 0 10px;
+    .flight-card p strong {
+      color: #2c3e50;
     }
-    .flight-info-item {
-      margin-bottom: 12px;
+    .confirm-btn {
+      background-color: #3498db;
+      color: white;
+      border: none;
+      padding: 10px 20px;
+      border-radius: 5px;
+      cursor: pointer;
+      font-size: 1em;
+      transition: background-color 0.3s;
+      display: block;
+      margin: 10px 0 0 auto;
     }
-    .flight-info-label {
-      font-weight: bold;
-      color: #616161;
-      margin-bottom: 3px;
+    .confirm-btn:hover {
+      background-color: #2980b9;
     }
-    .flight-info-value {
-      color: #212121;
-    }
-    .flight-actions {
-      display: flex;
-      justify-content: flex-end;
+    .no-flights {
+      text-align: center;
+      color: #e74c3c;
+      font-size: 1.2em;
       margin-top: 20px;
     }
-    @keyframes fadeIn {
-      from { opacity: 0; transform: translateY(10px); }
-      to { opacity: 1; transform: translateY(0); }
-    }
-    .status {
-      padding: 6px 12px;
-      border-radius: 20px;
-      color: white;
-      font-size: 14px;
-      font-weight: bold;
-      text-transform: uppercase;
-    }
-    .active { background-color: #4CAF50; }
-    .landed { background-color: #2196F3; }
-    .scheduled { background-color: #9E9E9E; }
-    .cancelled { background-color: #F44336; }
-    .delayed { background-color: #FF9800; }
-    .loading, .error {
-      text-align: center;
-      padding: 20px;
-      color: #757575;
-      font-size: 18px;
-    }
-    .error { color: #D32F2F; }
-    .confirm-button {
-      background-color: #FF9E0C;
-      color: white;
-      padding: 10px 20px;
-      border: none;
-      border-radius: 5px;
-      cursor: pointer;
-      font-weight: bold;
-      font-size: 16px;
-      transition: background-color 0.2s;
-    }
-    .confirm-button:hover {
-      background-color: #e68a00;
-    }
-    .confirm-button:disabled {
-      background-color: #BDBDBD;
-      cursor: not-allowed;
-    }
-    .view-details-button {
-      background-color: #2196F3;
-      color: white;
-      padding: 10px 20px;
-      border: none;
-      border-radius: 5px;
-      cursor: pointer;
-      font-weight: bold;
-      font-size: 16px;
-      margin-right: 10px;
-      transition: background-color 0.2s;
-    }
-    .view-details-button:hover {
-      background-color: #0b7dda;
-    }
-    .price-tag {
-      background-color: #43a047;
-      color: white;
-      padding: 8px 16px;
-      border-radius: 20px;
-      font-weight: bold;
-      font-size: 18px;
-    }
-    .seats-tag {
-      background-color: #f5f5f5;
-      color: #616161;
-      padding: 8px 16px;
-      border-radius: 20px;
-      font-weight: bold;
-      font-size: 14px;
-      margin-right: 10px;
-    }
-    .loading-spinner {
-      border: 4px solid rgba(0, 0, 0, 0.1);
-      width: 36px;
-      height: 36px;
-      border-radius: 50%;
-      border-left-color: #09f;
-      animation: spin 1s linear infinite;
-      margin: 20px auto;
-    }
-    @keyframes spin {
-      0% { transform: rotate(0deg); }
-      100% { transform: rotate(360deg); }
+    hr {
+      border: 0;
+      border-top: 1px solid #e0e0e0;
+      margin: 10px 0;
     }
   </style>
-  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
 </head>
 <body>
 <h1>Vols en Temps Réel - Tunisie (TUN)</h1>
-<div id="map"></div>
-<div id="flights-container"><div class="loading">Chargement des vols...<div class="loading-spinner"></div></div></div>
-<!-- Bouton statique pour tester -->
-<button onclick='console.log("Static test button clicked"); confirmFlight({flight_id:"TEST123",flight_number:"TEST123",departure:"Tunis",arrival:"Paris",airline:"TestAir",departure_time:"2025-05-12T10:00:00",arrival_time:"2025-05-12T12:30:00",flight_date:"2025-05-12",price:200,available_seats:50,flight_duration:150})'>Static Test Confirm</button>
 
-<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+<div id="flight-list">
+  <p>Chargement des vols...</p>
+</div>
+
 <script>
-  const API_KEY = "b54ed24b5ede2e30cbeeb4202c6b5cb4";
-  let map = null;
-  let markers = [];
-  let polylines = [];
+  function displayFlights(flightsJson) {
+    const flights = JSON.parse(flightsJson);
+    const flightList = document.getElementById("flight-list");
+    flightList.innerHTML = ""; // Clear previous content
 
-  function initMap() {
-    map = L.map('map').setView([36.8065, 10.1815], 6);
-    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-      attribution: '© <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
-    }).addTo(map);
-  }
-
-  function clearMapMarkers() {
-    markers.forEach(marker => map.removeLayer(marker));
-    polylines.forEach(polyline => map.removeLayer(polyline));
-    markers = [];
-    polylines = [];
-  }
-
-  function addFlightToMap(flight) {
-    const airportCoords = {
-      'TUN': [36.8510, 10.2272],
-      'CDG': [49.0097, 2.5479],
-      'IST': [41.0082, 28.9784],
-      'LHR': [51.4700, -0.4543],
-      'JFK': [40.6413, -73.7781],
-      'FCO': [41.8003, 12.2389],
-      'FRA': [50.0379, 8.5622],
-      'BCN': [41.2971, 2.0784],
-      'MRS': [43.4360, 5.2146],
-      'LYS': [45.7234, 5.0887],
-      'MXP': [45.6286, 8.7236],
-      'BRU': [50.9014, 4.4844],
-      'AMS': [52.3105, 4.7683],
-      'CAI': [30.1119, 31.3998],
-      'RUH': [24.9603, 46.7028],
-      'DXB': [25.2532, 55.3657],
-      'DOH': [25.2609, 51.6138],
-      'CMN': [33.3677, -7.5900],
-      'ALG': [36.6910, 3.2142],
-      'MIR': [35.7580, 10.7554],
-      'NBE': [36.0757, 10.4387],
-      'TOE': [33.9397, 8.1108],
-      'DJE': [33.8075, 10.7755],
-      'SFX': [34.7179, 10.6910]
-    };
-
-    const defCoords = [36.8510, 10.2272];
-    const depIata = flight.departure.iata || 'TUN';
-    const arrIata = flight.arrival.iata || 'TUN';
-    const depCoords = airportCoords[depIata] || defCoords;
-    const arrCoords = airportCoords[arrIata] || defCoords;
-
-    const depMarker = L.marker(depCoords).addTo(map);
-    depMarker.bindPopup(`<b>${flight.departure.airport}</b> (${depIata})<br>Départ: ${formatDateTime(flight.departure.scheduled)}`);
-    markers.push(depMarker);
-
-    const arrMarker = L.marker(arrCoords).addTo(map);
-    arrMarker.bindPopup(`<b>${flight.arrival.airport}</b> (${arrIata})<br>Arrivée: ${formatDateTime(flight.arrival.scheduled)}`);
-    markers.push(arrMarker);
-
-    const flightPath = L.polyline([depCoords, arrCoords], {
-      color: getStatusColor(flight.flight_status),
-      weight: 3,
-      dashArray: '5, 10',
-      opacity: 0.7
-    }).addTo(map);
-
-    flightPath.bindPopup(`<b>${flight.airline.name}</b><br>Vol ${flight.flight.number}<br>Statut: ${flight.flight_status}`);
-    polylines.push(flightPath);
-  }
-
-  function getStatusColor(status) {
-    switch(status.toLowerCase()) {
-      case 'active': return '#4CAF50';
-      case 'landed': return '#2196F3';
-      case 'scheduled': return '#9E9E9E';
-      case 'cancelled': return '#F44336';
-      case 'delayed': return '#FF9800';
-      default: return '#757575';
-    }
-  }
-
-  function formatDateTime(dateString) {
-    const date = new Date(dateString);
-    return date.toLocaleString('fr-FR', {
-      year: 'numeric',
-      month: '2-digit',
-      day: '2-digit',
-      hour: '2-digit',
-      minute: '2-digit'
-    });
-  }
-
-  function calculateDuration(departure, arrival) {
-    const depTime = new Date(departure);
-    const arrTime = new Date(arrival);
-    const diffMinutes = Math.round((arrTime - depTime) / 60000);
-    const hours = Math.floor(diffMinutes / 60);
-    const minutes = diffMinutes % 60;
-    return `${hours}h ${minutes.toString().padStart(2, '0')}m`;
-  }
-
-  function displayFlights(flights) {
-    const container = document.getElementById('flights-container');
-    container.innerHTML = '';
-
-    if (!flights || flights.length === 0) {
-      container.innerHTML = '<div class="error">Aucun vol trouvé. Veuillez réessayer plus tard.</div>';
+    if (flights.length === 0) {
+      flightList.innerHTML = '<p class="no-flights">Aucun vol trouvé.</p>';
       return;
     }
 
-    clearMapMarkers();
-
-    window.flightData = []; // Réinitialiser le tableau global
-
-    flights.forEach((flight, index) => {
-      if (!flight.departure || !flight.arrival || !flight.flight) {
-        console.warn("Skipping invalid flight data:", flight);
-        return;
-      }
-
-      const flightCard = document.createElement('div');
-      flightCard.className = 'flight-card';
-      flightCard.style.animationDelay = `${index * 0.1}s`;
-
-      const statusClass = flight.flight_status.toLowerCase();
-      const duration = calculateDuration(flight.departure.scheduled, flight.arrival.scheduled);
-
-      const randomPrice = Math.floor(Math.random() * 400) + 100;
-      const randomSeats = Math.floor(Math.random() * 30) + 5;
-
-      const flightData = {
-        flight_id: flight.flight.iata || flight.flight.number,
-        airline: flight.airline.name || 'Unknown Airline',
-        flight_number: flight.flight.number || 'N/A',
-        departure: flight.departure.airport || 'Unknown Departure',
-        arrival: flight.arrival.airport || 'Unknown Arrival',
-        departure_time: flight.departure.scheduled,
-        arrival_time: flight.arrival.scheduled,
-        flight_status: flight.flight_status || 'scheduled',
-        price: randomPrice,
-        available_seats: randomSeats,
-        flight_date: flight.departure.scheduled.split('T')[0],
-        flight_duration: Math.round((new Date(flight.arrival.scheduled) - new Date(flight.departure.scheduled)) / 60000)
-      };
-
-      const isConfirmable = true; // Forcer à true pour tester
-      console.log(`Flight ${flight.flight.number}: status=${flight.flight_status}, isConfirmable=${isConfirmable}`);
-
-      // Stocker flightData dans un tableau global
-      window.flightData[index] = flightData;
-
-      flightCard.innerHTML = `
-        <div class="flight-header">
-          <h3>${flight.airline.name} - ${flight.flight.number}</h3>
-          <span class="status ${statusClass}">${flight.flight_status}</span>
-        </div>
-        <div class="flight-info">
-          <div class="flight-info-column">
-            <div class="flight-info-item">
-              <div class="flight-info-label">Départ</div>
-              <div class="flight-info-value">${flight.departure.airport} (${flight.departure.iata})</div>
-              <div class="flight-info-value">${formatDateTime(flight.departure.scheduled)}</div>
-            </div>
-            <div class="flight-info-item">
-              <div class="flight-info-label">Durée</div>
-              <div class="flight-info-value">${duration}</div>
-            </div>
-          </div>
-          <div class="flight-info-column">
-            <div class="flight-info-item">
-              <div class="flight-info-label">Arrivée</div>
-              <div class="flight-info-value">${flight.arrival.airport} (${flight.arrival.iata})</div>
-              <div class="flight-info-value">${formatDateTime(flight.arrival.scheduled)}</div>
-            </div>
-            <div class="flight-info-item">
-              <div class="flight-info-label">Informations</div>
-              <div class="flight-info-value">
-                <span class="price-tag">$${randomPrice}</span>
-                <span class="seats-tag">${randomSeats} sièges disponibles</span>
-              </div>
-            </div>
-          </div>
-        </div>
-        <div class="flight-actions">
-          <button class="confirm-button" ${isConfirmable ? '' : 'disabled'} onclick='console.log("Dynamic button clicked for index: ${index}"); handleConfirmClick(${index})'>
-            Confirmer la réservation
-          </button>
-        </div>
-      `;
-
-      container.appendChild(flightCard);
-      addFlightToMap(flight);
+    flights.forEach(flight => {
+      const flightDiv = document.createElement("div");
+      flightDiv.className = "flight-card";
+      flightDiv.innerHTML = `
+                    <p><strong>Vol:</strong> ${flight.flight_number} - ${flight.airline_name}</p>
+                    <p><strong>Départ:</strong> ${flight.departure_airport} à ${flight.departure_time}</p>
+                    <p><strong>  ${flight.arrival_airport} à ${flight.arrival_time}</p>
+                    <p><strong>Arrivée:</strong> ${flight.arrival_airport} à ${flight.arrival_time}</p>
+                    <p><strong>Date:</strong> ${flight.flight_date}</p>
+                    <p><strong>Prix:</strong> $${flight.price}</p>
+                    <p><strong>Sièges disponibles:</strong> ${flight.available_seats}</p>
+                    <button class="confirm-btn" onclick='confirmFlight(${JSON.stringify(flight)})'>Confirmer</button>
+                    <hr>`;
+      flightList.appendChild(flightDiv);
     });
-
-    if (markers.length > 0) {
-      const group = new L.featureGroup(markers);
-      map.fitBounds(group.getBounds(), { padding: [30, 30] });
-    }
-  }
-
-  function handleConfirmClick(index) {
-    console.log("handleConfirmClick called for index:", index);
-    try {
-      const flightData = window.flightData[index];
-      if (!flightData) {
-        throw new Error("Flight data not found for index: " + index);
-      }
-      confirmFlight(flightData);
-    } catch (error) {
-      console.error("Error in handleConfirmClick:", error.message, error.stack);
-      alert("Erreur lors du clic: " + error.message);
-    }
   }
 
   function confirmFlight(flightData) {
-    console.log("confirmFlight called with data:", flightData);
-    try {
-      if (!flightData) {
-        throw new Error("Flight data is undefined or null");
-      }
-      console.log("Validating flight data:", Object.keys(flightData));
-      const jsonString = JSON.stringify(flightData);
-      console.log("JSON stringified:", jsonString);
-      if (!window.javafxBridge) {
-        console.error("JavaFX bridge not available");
-        throw new Error("JavaFX bridge not available");
-      }
-      console.log("JavaFX bridge exists, calling confirmFlight...");
-      window.javafxBridge.confirmFlight(jsonString);
-    } catch (error) {
-      console.error("Error in confirmFlight:", error.message, error.stack);
-      alert("Erreur JavaScript: " + error.message);
+    if (window.javafxBridge) {
+      window.javafxBridge.confirmFlight(JSON.stringify(flightData));
+    } else {
+      alert("Erreur: JavaFX Bridge non disponible.");
     }
   }
-
-  function showLoading() {
-    document.getElementById('flights-container').innerHTML = '<div class="loading">Chargement des vols...<div class="loading-spinner"></div></div>';
-  }
-
-  function showError(message) {
-    document.getElementById('flights-container').innerHTML = `<div class="error">Erreur : ${message}</div>`;
-  }
-
-  async function fetchFlights() {
-    showLoading();
-    const mockFlights = [
-      {
-        flight: { iata: "TU123", number: "123" },
-        airline: { name: "Tunisair" },
-        departure: { airport: "Tunis-Carthage", iata: "TUN", scheduled: "2025-05-12T10:00:00+00:00" },
-        arrival: { airport: "Paris CDG", iata: "CDG", scheduled: "2025-05-12T12:30:00+00:00" },
-        flight_status: "scheduled"
-      }
-    ];
-    console.log("Using mock flights:", mockFlights);
-    displayFlights(mockFlights);
-  }
-
-  document.addEventListener('DOMContentLoaded', () => {
-    initMap();
-    fetchFlights();
-  });
-
-  // Commenté pour éviter les interférences pendant les tests
-  // setInterval(fetchFlights, 30000);
 </script>
 </body>
 </html>
