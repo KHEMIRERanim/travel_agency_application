@@ -116,9 +116,9 @@ public class RealTimeFlightsController {
         Platform.runLater(() -> {
             try {
                 // Faire deux appels API : un pour les départs de TUN, un pour les arrivées à TUN
-                StringBuilder depUrl = new StringBuilder(API_URL); // Corrected to API_URL
+                StringBuilder depUrl = new StringBuilder(API_URL);
                 depUrl.append("&dep_iata=TUN");
-                StringBuilder arrUrl = new StringBuilder(API_URL); // Corrected to API_URL
+                StringBuilder arrUrl = new StringBuilder(API_URL);
                 arrUrl.append("&arr_iata=TUN");
 
                 // Ajouter les critères supplémentaires
@@ -204,7 +204,7 @@ public class RealTimeFlightsController {
                     String arrIata = arrival.optString("iata", "");
                     if (depIata.equalsIgnoreCase("TUN") || arrIata.equalsIgnoreCase("TUN")) {
                         // Ajouter des champs nécessaires pour l'affichage et la confirmation
-                        flight.put("flight_id", i + 1); // ID fictif pour la démo
+                        flight.put("flight_id", i + 1); // Integer value
                         flight.put("flight_number", flight.getJSONObject("flight").optString("iata", "N/A"));
                         flight.put("departure_airport", depIata);
                         flight.put("arrival_airport", arrIata);
@@ -330,9 +330,9 @@ public class RealTimeFlightsController {
 
                     int flightId;
                     try {
-                        flightId = Integer.parseInt(json.getString("flight_id"));
-                    } catch (NumberFormatException e) {
-                        throw new IllegalArgumentException("Invalid flight_id format: " + json.getString("flight_id"));
+                        flightId = json.getInt("flight_id"); // Get as integer, not string
+                    } catch (Exception e) {
+                        throw new IllegalArgumentException("Invalid flight_id format: " + json.get("flight_id"));
                     }
                     System.out.println("Parsed flightId: " + flightId);
 
@@ -357,7 +357,7 @@ public class RealTimeFlightsController {
                     System.out.println("Duration: " + flightDuration + ", Price: " + price + ", Seats: " + availableSeats);
 
                     Flight flight = new Flight(
-                            flightId,
+                            flightId, // Pass as integer
                             flightDuration,
                             json.getString("flight_number"),
                             availableSeats,
