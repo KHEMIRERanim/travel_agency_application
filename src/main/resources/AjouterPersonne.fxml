@@ -10,7 +10,6 @@
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
-<?import javafx.scene.layout.GridPane?>
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.paint.Color?>
@@ -27,21 +26,27 @@
             </DropShadow>
          </effect>
          <children>
-            <VBox alignment="CENTER" layoutX="50.0" layoutY="20.0" prefHeight="610.0" prefWidth="350.0" spacing="15.0">
+            <VBox alignment="CENTER" layoutX="40.0" layoutY="10.0" prefHeight="630.0" prefWidth="370.0" spacing="10.0">
                <children>
                   <ImageView fitHeight="60.0" fitWidth="150.0" pickOnBounds="true" preserveRatio="true">
                      <image>
                         <Image url="/images/travellian_logo.png" />
                      </image>
+                     <VBox.margin>
+                        <Insets bottom="5.0" />
+                     </VBox.margin>
                   </ImageView>
                   <Label text="Créer votre compte" textAlignment="CENTER">
                      <font>
                         <Font name="System Bold" size="18.0" />
                      </font>
+                     <VBox.margin>
+                        <Insets bottom="10.0" />
+                     </VBox.margin>
                   </Label>
                   <VBox alignment="CENTER" spacing="10.0">
                      <children>
-                        <ImageView fx:id="iv_profilePicture" fitHeight="100.0" fitWidth="100.0" pickOnBounds="true" preserveRatio="true">
+                        <ImageView fx:id="iv_profilePicture" fitHeight="85.0" fitWidth="85.0" pickOnBounds="true" preserveRatio="true">
                            <image>
                               <Image url="/images/default_profile.png" />
                            </image>
@@ -52,155 +57,157 @@
                            </font>
                         </Button>
                      </children>
+                     <VBox.margin>
+                        <Insets bottom="15.0" />
+                     </VBox.margin>
                   </VBox>
-                  <GridPane hgap="10.0" vgap="10.0">
-                     <columnConstraints>
-                        <javafx.scene.layout.ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="160.0" />
-                        <javafx.scene.layout.ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="160.0" />
-                     </columnConstraints>
-                     <rowConstraints>
-                        <javafx.scene.layout.RowConstraints minHeight="10.0" prefHeight="70.0" vgrow="SOMETIMES" />
-                        <javafx.scene.layout.RowConstraints minHeight="10.0" prefHeight="70.0" vgrow="SOMETIMES" />
-                        <javafx.scene.layout.RowConstraints minHeight="10.0" prefHeight="70.0" vgrow="SOMETIMES" />
-                        <javafx.scene.layout.RowConstraints minHeight="10.0" prefHeight="70.0" vgrow="SOMETIMES" />
-                        <javafx.scene.layout.RowConstraints minHeight="10.0" prefHeight="70.0" vgrow="SOMETIMES" />
-                     </rowConstraints>
-                     <children>
-                        <VBox spacing="5.0">
-                           <children>
-                              <Label text="Nom">
-                                 <font>
-                                    <Font size="12.0" />
-                                 </font>
-                              </Label>
-                              <TextField fx:id="tf_nom" prefHeight="40.0" promptText="Entrez votre nom" style="-fx-background-radius: 5;">
-                                 <font>
-                                    <Font size="14.0" />
-                                 </font>
-                              </TextField>
-                           </children>
-                        </VBox>
-                        <VBox spacing="5.0" GridPane.columnIndex="1">
-                           <children>
-                              <Label text="Prénom">
-                                 <font>
-                                    <Font size="12.0" />
-                                 </font>
-                              </Label>
-                              <TextField fx:id="tf_prenom" prefHeight="40.0" promptText="Entrez votre prénom" style="-fx-background-radius: 5;">
-                                 <font>
-                                    <Font size="14.0" />
-                                 </font>
-                              </TextField>
-                           </children>
-                        </VBox>
-                        <VBox spacing="5.0" GridPane.rowIndex="1">
-                           <children>
-                              <Label text="Email">
-                                 <font>
-                                    <Font size="12.0" />
-                                 </font>
-                              </Label>
-                              <TextField fx:id="tf_email" prefHeight="40.0" promptText="Entrez votre email" style="-fx-background-radius: 5;">
-                                 <font>
-                                    <Font size="14.0" />
-                                 </font>
-                              </TextField>
-                           </children>
-                        </VBox>
-                        <VBox spacing="5.0" GridPane.columnIndex="0" GridPane.rowIndex="2">
-                           <children>
-                              <Label text="Numéro de téléphone">
-                                 <font>
-                                    <Font size="12.0" />
-                                 </font>
-                              </Label>
-                              <TextField fx:id="tf_numero" prefHeight="40.0" promptText="Entrez votre téléphone" style="-fx-background-radius: 5;">
-                                 <font>
-                                    <Font size="14.0" />
-                                 </font>
-                              </TextField>
-                           </children>
-                        </VBox>
-                        <VBox spacing="5.0" GridPane.columnIndex="1" GridPane.rowIndex="2">
-                           <children>
-                              <Label text="Date de naissance">
-                                 <font>
-                                    <Font size="12.0" />
-                                 </font>
-                              </Label>
-                              <TextField fx:id="tf_datenaissance" prefHeight="40.0" promptText="jj/mm/aaaa" style="-fx-background-radius: 5;">
-                                 <font>
-                                    <Font size="14.0" />
-                                 </font>
-                              </TextField>
-                           </children>
-                        </VBox>
-                        <VBox spacing="5.0" GridPane.columnIndex="0" GridPane.rowIndex="3">
-                           <children>
-                              <Label text="Mot de passe">
-                                 <font>
-                                    <Font size="12.0" />
-                                 </font>
-                              </Label>
-                              <HBox spacing="0">
-                                 <children>
-                                    <PasswordField fx:id="tf_mdp" prefHeight="40.0" promptText="Entrez un mot de passe" style="-fx-background-radius: 5;" />
-                                    <TextField fx:id="tf_mdp_visible" prefHeight="40.0" promptText="Entrez un mot de passe" style="-fx-background-radius: 5;" visible="false" managed="false" />
-                                    <Button fx:id="btn_toggle_mdp" mnemonicParsing="false" prefHeight="40.0" prefWidth="40.0" style="-fx-background-radius: 5;" onAction="#toggleMdpVisibility">
-                                       <graphic>
-                                          <ImageView fitHeight="20.0" fitWidth="20.0">
-                                             <image>
-                                                <Image url="/images/eye.png" />
-                                             </image>
-                                          </ImageView>
-                                       </graphic>
-                                    </Button>
-                                 </children>
-                              </HBox>
-                           </children>
-                        </VBox>
-                        <VBox spacing="5.0" GridPane.columnIndex="1" GridPane.rowIndex="3">
-                           <children>
-                              <Label text="Confirmer mot de passe">
-                                 <font>
-                                    <Font size="12.0" />
-                                 </font>
-                              </Label>
-                              <HBox spacing="0">
-                                 <children>
-                                    <PasswordField fx:id="tf_mdp_confirm" prefHeight="40.0" promptText="Confirmez le mot de passe" style="-fx-background-radius: 5;" />
-                                    <TextField fx:id="tf_mdp_confirm_visible" prefHeight="40.0" promptText="Confirmez le mot de passe" style="-fx-background-radius: 5;" visible="false" managed="false" />
-                                    <Button fx:id="btn_toggle_mdp_confirm" mnemonicParsing="false" prefHeight="40.0" prefWidth="40.0" style="-fx-background-radius: 5;" onAction="#toggleMdpConfirmVisibility">
-                                       <graphic>
-                                          <ImageView fitHeight="20.0" fitWidth="20.0">
-                                             <image>
-                                                <Image url="/images/eye.png" />
-                                             </image>
-                                          </ImageView>
-                                       </graphic>
-                                    </Button>
-                                 </children>
-                              </HBox>
-                           </children>
-                        </VBox>
-                        <VBox spacing="5.0" GridPane.columnIndex="1" GridPane.rowIndex="4">
-                           <children>
-                              <Label text="Genre">
-                                 <font>
-                                    <Font size="12.0" />
-                                 </font>
-                              </Label>
-                              <ComboBox fx:id="cb_gender" prefHeight="40.0" promptText="Sélectionnez le genre" styleClass="combo-box"/>
-                           </children>
-                        </VBox>
-                     </children>
-                  </GridPane>
+
+                  <!-- Nom et Prénom -->
+                  <HBox spacing="15.0">
+                     <VBox spacing="5.0" HBox.hgrow="ALWAYS">
+                        <Label text="Nom" style="-fx-padding: 0 0 5 2;">
+                           <font>
+                              <Font size="12.0" />
+                           </font>
+                        </Label>
+                        <TextField fx:id="tf_nom" prefHeight="40.0" promptText="Entrez votre nom" style="-fx-background-radius: 5;">
+                           <font>
+                              <Font size="14.0" />
+                           </font>
+                        </TextField>
+                     </VBox>
+                     <VBox spacing="5.0" HBox.hgrow="ALWAYS">
+                        <Label text="Prénom" style="-fx-padding: 0 0 5 2;">
+                           <font>
+                              <Font size="12.0" />
+                           </font>
+                        </Label>
+                        <TextField fx:id="tf_prenom" prefHeight="40.0" promptText="Entrez votre prénom" style="-fx-background-radius: 5;">
+                           <font>
+                              <Font size="14.0" />
+                           </font>
+                        </TextField>
+                     </VBox>
+                     <VBox.margin>
+                        <Insets bottom="10.0" />
+                     </VBox.margin>
+                  </HBox>
+
+                  <!-- Email -->
+                  <VBox spacing="5.0">
+                     <Label text="Email" style="-fx-padding: 0 0 5 2;">
+                        <font>
+                           <Font size="12.0" />
+                        </font>
+                     </Label>
+                     <TextField fx:id="tf_email" prefHeight="40.0" promptText="Entrez votre email" style="-fx-background-radius: 5;">
+                        <font>
+                           <Font size="14.0" />
+                        </font>
+                     </TextField>
+                     <VBox.margin>
+                        <Insets bottom="10.0" />
+                     </VBox.margin>
+                  </VBox>
+
+                  <!-- Téléphone et Date de naissance -->
+                  <HBox spacing="15.0">
+                     <VBox spacing="5.0" HBox.hgrow="ALWAYS">
+                        <Label text="Numéro de téléphone" style="-fx-padding: 0 0 5 2;">
+                           <font>
+                              <Font size="12.0" />
+                           </font>
+                        </Label>
+                        <TextField fx:id="tf_numero" prefHeight="40.0" promptText="Entrez votre téléphone" style="-fx-background-radius: 5;">
+                           <font>
+                              <Font size="14.0" />
+                           </font>
+                        </TextField>
+                     </VBox>
+                     <VBox spacing="5.0" HBox.hgrow="ALWAYS">
+                        <Label text="Date de naissance" style="-fx-padding: 0 0 5 2;">
+                           <font>
+                              <Font size="12.0" />
+                           </font>
+                        </Label>
+                        <TextField fx:id="tf_datenaissance" prefHeight="40.0" promptText="jj/mm/aaaa" style="-fx-background-radius: 5;">
+                           <font>
+                              <Font size="14.0" />
+                           </font>
+                        </TextField>
+                     </VBox>
+                     <VBox.margin>
+                        <Insets bottom="10.0" />
+                     </VBox.margin>
+                  </HBox>
+
+                  <!-- Mot de passe et Confirmation -->
+                  <HBox spacing="15.0">
+                     <VBox spacing="5.0" HBox.hgrow="ALWAYS">
+                        <Label text="Mot de passe" style="-fx-padding: 0 0 5 2;">
+                           <font>
+                              <Font size="12.0" />
+                           </font>
+                        </Label>
+                        <HBox spacing="0">
+                           <PasswordField fx:id="tf_mdp" HBox.hgrow="ALWAYS" prefHeight="40.0" promptText="Entrez un mot de passe" style="-fx-background-radius: 5 0 0 5;" />
+                           <TextField fx:id="tf_mdp_visible" HBox.hgrow="ALWAYS" prefHeight="40.0" promptText="Entrez un mot de passe" style="-fx-background-radius: 5 0 0 5;" visible="false" managed="false" />
+                           <Button fx:id="btn_toggle_mdp" mnemonicParsing="false" prefHeight="40.0" prefWidth="40.0" style="-fx-background-radius: 0 5 5 0;" onAction="#toggleMdpVisibility">
+                              <graphic>
+                                 <ImageView fitHeight="20.0" fitWidth="20.0">
+                                    <image>
+                                       <Image url="/images/eye.png" />
+                                    </image>
+                                 </ImageView>
+                              </graphic>
+                           </Button>
+                        </HBox>
+                     </VBox>
+                     <VBox spacing="5.0" HBox.hgrow="ALWAYS">
+                        <Label text="Confirmer mot de passe" style="-fx-padding: 0 0 5 2;">
+                           <font>
+                              <Font size="12.0" />
+                           </font>
+                        </Label>
+                        <HBox spacing="0">
+                           <PasswordField fx:id="tf_mdp_confirm" HBox.hgrow="ALWAYS" prefHeight="40.0" promptText="Confirmez" style="-fx-background-radius: 5 0 0 5;" />
+                           <TextField fx:id="tf_mdp_confirm_visible" HBox.hgrow="ALWAYS" prefHeight="40.0" promptText="Confirmez" style="-fx-background-radius: 5 0 0 5;" visible="false" managed="false" />
+                           <Button fx:id="btn_toggle_mdp_confirm" mnemonicParsing="false" prefHeight="40.0" prefWidth="40.0" style="-fx-background-radius: 0 5 5 0;" onAction="#toggleMdpConfirmVisibility">
+                              <graphic>
+                                 <ImageView fitHeight="20.0" fitWidth="20.0">
+                                    <image>
+                                       <Image url="/images/eye.png" />
+                                    </image>
+                                 </ImageView>
+                              </graphic>
+                           </Button>
+                        </HBox>
+                     </VBox>
+                     <VBox.margin>
+                        <Insets bottom="10.0" />
+                     </VBox.margin>
+                  </HBox>
+
+                  <!-- Genre -->
+                  <VBox spacing="5.0">
+                     <Label text="Genre" style="-fx-padding: 0 0 5 2;">
+                        <font>
+                           <Font size="12.0" />
+                        </font>
+                     </Label>
+                     <ComboBox fx:id="cb_gender" prefHeight="40.0" prefWidth="180.0" promptText="Sélectionnez le genre" styleClass="combo-box"/>
+                     <VBox.margin>
+                        <Insets bottom="5.0" />
+                     </VBox.margin>
+                  </VBox>
 
                   <Label fx:id="passwordRequirements" text="Le mot de passe doit contenir au moins: 1 majuscule, 1 chiffre, 1 caractère spécial" textFill="#868686" wrapText="true">
                      <font>
                         <Font size="12.0" />
                      </font>
+                     <VBox.margin>
+                        <Insets top="5.0" bottom="15.0" />
+                     </VBox.margin>
                   </Label>
 
                   <Button mnemonicParsing="false" onAction="#AjouterPersonne" prefHeight="45.0" prefWidth="350.0" style="-fx-background-color: #2a6ec1; -fx-background-radius: 5;" text="S'INSCRIRE" textFill="WHITE">
@@ -229,20 +236,23 @@
                            </font>
                         </Button>
                      </children>
+                     <VBox.margin>
+                        <Insets top="10.0" />
+                     </VBox.margin>
                   </HBox>
                </children>
             </VBox>
          </children>
       </AnchorPane>
-      <AnchorPane prefHeight="600.0" prefWidth="450.0">
+      <AnchorPane prefHeight="650.0" prefWidth="450.0">
          <children>
-            <ImageView fitHeight="650.0" fitWidth="450.0" pickOnBounds="true" preserveRatio="false">
+            <ImageView fitHeight="783.0" fitWidth="450.0" pickOnBounds="true" preserveRatio="false">
                <image>
                   <Image url="/images/atravel_signup_illustration.png" />
                </image>
             </ImageView>
 
-            <VBox alignment="CENTER" layoutX="50.0" prefHeight="600.0" prefWidth="350.0" spacing="20.0">
+            <VBox alignment="CENTER" layoutX="50.0" prefHeight="750.0" prefWidth="350.0" spacing="20.0">
                <children>
                   <Label text="Bienvenue chez Travellian" textFill="WHITE">
                      <font>
