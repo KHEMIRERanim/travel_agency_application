@@ -10,7 +10,7 @@ public class Publication {
     private int likeCount;
     private String typePublication;
 
-    // Constructors
+    
     public Publication(int id_publication, int client_id, String titre, String contenu, String date_publication, boolean active, int likeCount, String typePublication) {
         this.id_publication = id_publication;
         this.client_id = client_id;
