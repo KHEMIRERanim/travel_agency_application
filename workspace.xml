@@ -1,0 +1,411 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="AutoImportSettings">
+    <option name="autoReloadType" value="SELECTIVE" />
+  </component>
+  <component name="ChangeListManager">
+    <list default="true" id="d0671891-1f94-4e2e-aec5-6426b04a94d8" name="Changes" comment="map basique" />
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="FileTemplateManagerImpl">
+    <option name="RECENT_TEMPLATES">
+      <list>
+        <option value="Interface" />
+        <option value="FxmlFile" />
+        <option value="Class" />
+      </list>
+    </option>
+  </component>
+  <component name="Git.Settings">
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+  </component>
+  <component name="GitHubPullRequestSearchHistory">{
+  &quot;history&quot;: [
+    {
+      &quot;state&quot;: &quot;OPEN&quot;
+    },
+    {
+      &quot;author&quot;: &quot;shaima-med-png&quot;
+    }
+  ],
+  &quot;lastFilter&quot;: {}
+}</component>
+  <component name="GithubPullRequestsUISettings">{
+  &quot;selectedUrlAndAccountId&quot;: {
+    &quot;url&quot;: &quot;https://github.com/KHEMIRERanim/travel_agency_application.git&quot;,
+    &quot;accountId&quot;: &quot;fbd629dd-c70d-4f9f-a076-6a1feadb5016&quot;
+  }
+}</component>
+  <component name="HighlightingSettingsPerFile">
+    <setting file="file://$PROJECT_DIR$/src/main/java/controllers/AjoutHotelController.java" root0="SKIP_INSPECTION" />
+    <setting file="file://$PROJECT_DIR$/src/main/java/controllers/homeController.java" root0="SKIP_INSPECTION" />
+  </component>
+  <component name="ProjectColorInfo">{
+  &quot;associatedIndex&quot;: 5
+}</component>
+  <component name="ProjectId" id="2wcjQJJw03hQhg9HhYnYjVoh67Q" />
+  <component name="ProjectLevelVcsManager" settingsEditedManually="true">
+    <ConfirmationsSetting value="1" id="Add" />
+  </component>
+  <component name="ProjectViewState">
+    <option name="hideEmptyMiddlePackages" value="true" />
+    <option name="showLibraryContents" value="true" />
+  </component>
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "Application.Main.executor": "Run",
+    "Maven.WorkshopJDBCJavaFX--3B2 [org.openjfx:javafx-maven-plugin:0.0.8:run].executor": "Run",
+    "Maven.hoteldemo [clean,install].executor": "Run",
+    "Maven.hoteldemo [javafx:run].executor": "Run",
+    "Maven.hoteldemo [org.openjfx:javafx-maven-plugin:0.0.8:run].executor": "Run",
+    "RunOnceActivity.OpenProjectViewOnStart": "true",
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "RunOnceActivity.git.unshallow": "true",
+    "SHARE_PROJECT_CONFIGURATION_FILES": "true",
+    "git-widget-placeholder": "main",
+    "ignore.virus.scanning.warn.message": "true",
+    "kotlin-language-version-configured": "true",
+    "last_directory_selection": "C:/Users/user/OneDrive/Desktop/Java/hoteldemo/src/main/java",
+    "last_opened_file_path": "C:/Users/user/OneDrive/Desktop/Java/travel_agency_application",
+    "node.js.detected.package.eslint": "true",
+    "node.js.detected.package.tslint": "true",
+    "node.js.selected.package.eslint": "(autodetect)",
+    "node.js.selected.package.tslint": "(autodetect)",
+    "nodejs_package_manager_path": "npm",
+    "onboarding.tips.debug.path": "C:/Users/user/IdeaProjects/hoteldemo/src/main/java/org/example/Main.java",
+    "project.structure.last.edited": "Problems",
+    "project.structure.proportion": "0.15",
+    "project.structure.side.proportion": "0.2",
+    "settings.editor.selected.configurable": "reference.settings.project.maven.repository.indices",
+    "vue.rearranger.settings.migration": "true"
+  }
+}]]></component>
+  <component name="RecentsManager">
+    <key name="CopyFile.RECENT_KEYS">
+      <recent name="C:\Users\shaima\Desktop\Tma7rith\projet\hoteldemo\src\main\resources" />
+      <recent name="C:\Users\shaima\Desktop\Tma7rith\projet\hoteldemo\src\main\resources\images" />
+      <recent name="C:\Users\user\IdeaProjects\hoteldemo\src\main" />
+      <recent name="C:\Users\user\IdeaProjects\hoteldemo\src\main\resources" />
+      <recent name="C:\Users\user\IdeaProjects\hoteldemo\src\main\images" />
+    </key>
+    <key name="MoveFile.RECENT_KEYS">
+      <recent name="C:\Users\shaima\Desktop\projet\hoteldemo\src\main\images" />
+    </key>
+    <key name="CopyClassDialog.RECENTS_KEY">
+      <recent name="controllers" />
+      <recent name="services" />
+      <recent name="entities" />
+      <recent name="utils" />
+    </key>
+  </component>
+  <component name="RunManager">
+    <configuration name="hoteldemo [javafx:run]" type="MavenRunConfiguration" factoryName="Maven" temporary="true">
+      <MavenSettings>
+        <option name="myGeneralSettings" />
+        <option name="myRunnerSettings">
+          <MavenRunnerSettings>
+            <option name="delegateBuildToMaven" value="false" />
+            <option name="environmentProperties">
+              <map />
+            </option>
+            <option name="jreName" value="jbr-17" />
+            <option name="mavenProperties">
+              <map />
+            </option>
+            <option name="passParentEnv" value="true" />
+            <option name="runMavenInBackground" value="true" />
+            <option name="skipTests" value="false" />
+            <option name="vmOptions" value="" />
+          </MavenRunnerSettings>
+        </option>
+        <option name="myRunnerParameters">
+          <MavenRunnerParameters>
+            <option name="cmdOptions" />
+            <option name="profiles">
+              <set />
+            </option>
+            <option name="goals">
+              <list>
+                <option value="javafx:run" />
+              </list>
+            </option>
+            <option name="multimoduleDir" />
+            <option name="pomFileName" value="pom.xml" />
+            <option name="profilesMap">
+              <map />
+            </option>
+            <option name="projectsCmdOptionValues">
+              <list />
+            </option>
+            <option name="resolveToWorkspace" value="false" />
+            <option name="workingDirPath" value="$PROJECT_DIR$" />
+          </MavenRunnerParameters>
+        </option>
+      </MavenSettings>
+      <method v="2" />
+    </configuration>
+    <recent_temporary>
+      <list>
+        <item itemvalue="Maven.hoteldemo [javafx:run]" />
+      </list>
+    </recent_temporary>
+  </component>
+  <component name="SharedIndexes">
+    <attachedChunks>
+      <set>
+        <option value="bundled-jdk-9823dce3aa75-125ca727e0f0-intellij.indexing.shared.core-IU-243.23654.153" />
+        <option value="bundled-js-predefined-d6986cc7102b-822845ee3bb5-JavaScript-IU-243.23654.153" />
+      </set>
+    </attachedChunks>
+  </component>
+  <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="Default task">
+      <changelist id="d0671891-1f94-4e2e-aec5-6426b04a94d8" name="Changes" comment="" />
+      <created>1746347739973</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1746347739973</updated>
+      <workItem from="1746347741110" duration="7914000" />
+      <workItem from="1746368634570" duration="1739000" />
+      <workItem from="1746468023096" duration="3000" />
+      <workItem from="1746468032995" duration="576000" />
+      <workItem from="1746468932403" duration="10259000" />
+      <workItem from="1746540404712" duration="7461000" />
+      <workItem from="1746637797510" duration="1015000" />
+      <workItem from="1746638843310" duration="14052000" />
+      <workItem from="1746653813968" duration="519000" />
+      <workItem from="1746656337980" duration="1782000" />
+      <workItem from="1746658188611" duration="853000" />
+      <workItem from="1746659091295" duration="2824000" />
+      <workItem from="1746687255967" duration="5606000" />
+      <workItem from="1746704166135" duration="5790000" />
+      <workItem from="1746728947200" duration="9761000" />
+      <workItem from="1746791703360" duration="8527000" />
+      <workItem from="1746825151815" duration="3539000" />
+      <workItem from="1746864055545" duration="2195000" />
+    </task>
+    <task id="LOCAL-00001" summary="fix: images">
+      <option name="closed" value="true" />
+      <created>1746468970092</created>
+      <option name="number" value="00001" />
+      <option name="presentableId" value="LOCAL-00001" />
+      <option name="project" value="LOCAL" />
+      <updated>1746468970092</updated>
+    </task>
+    <task id="LOCAL-00002" summary="feat: ajout hotel basique">
+      <option name="closed" value="true" />
+      <created>1746475097586</created>
+      <option name="number" value="00002" />
+      <option name="presentableId" value="LOCAL-00002" />
+      <option name="project" value="LOCAL" />
+      <updated>1746475097587</updated>
+    </task>
+    <task id="LOCAL-00003" summary="feat: attributs hotel">
+      <option name="closed" value="true" />
+      <created>1746475838960</created>
+      <option name="number" value="00003" />
+      <option name="presentableId" value="LOCAL-00003" />
+      <option name="project" value="LOCAL" />
+      <updated>1746475838960</updated>
+    </task>
+    <task id="LOCAL-00004" summary="feat: carousel hotels">
+      <option name="closed" value="true" />
+      <created>1746479042200</created>
+      <option name="number" value="00004" />
+      <option name="presentableId" value="LOCAL-00004" />
+      <option name="project" value="LOCAL" />
+      <updated>1746479042200</updated>
+    </task>
+    <task id="LOCAL-00005" summary="fix: css">
+      <option name="closed" value="true" />
+      <created>1746479478988</created>
+      <option name="number" value="00005" />
+      <option name="presentableId" value="LOCAL-00005" />
+      <option name="project" value="LOCAL" />
+      <updated>1746479478988</updated>
+    </task>
+    <task id="LOCAL-00006" summary="feat: modifier hotel">
+      <option name="closed" value="true" />
+      <created>1746480075085</created>
+      <option name="number" value="00006" />
+      <option name="presentableId" value="LOCAL-00006" />
+      <option name="project" value="LOCAL" />
+      <updated>1746480075085</updated>
+    </task>
+    <task id="LOCAL-00007" summary="feat: image hotel">
+      <option name="closed" value="true" />
+      <created>1746482442015</created>
+      <option name="number" value="00007" />
+      <option name="presentableId" value="LOCAL-00007" />
+      <option name="project" value="LOCAL" />
+      <updated>1746482442015</updated>
+    </task>
+    <task id="LOCAL-00008" summary="rounded images">
+      <option name="closed" value="true" />
+      <created>1746541220458</created>
+      <option name="number" value="00008" />
+      <option name="presentableId" value="LOCAL-00008" />
+      <option name="project" value="LOCAL" />
+      <updated>1746541220458</updated>
+    </task>
+    <task id="LOCAL-00009" summary="refresh hotels">
+      <option name="closed" value="true" />
+      <created>1746541723960</created>
+      <option name="number" value="00009" />
+      <option name="presentableId" value="LOCAL-00009" />
+      <option name="project" value="LOCAL" />
+      <updated>1746541723960</updated>
+    </task>
+    <task id="LOCAL-00010" summary="fix: image edit">
+      <option name="closed" value="true" />
+      <created>1746543199165</created>
+      <option name="number" value="00010" />
+      <option name="presentableId" value="LOCAL-00010" />
+      <option name="project" value="LOCAL" />
+      <updated>1746543199165</updated>
+    </task>
+    <task id="LOCAL-00011" summary="delete hotel + branding">
+      <option name="closed" value="true" />
+      <created>1746546833410</created>
+      <option name="number" value="00011" />
+      <option name="presentableId" value="LOCAL-00011" />
+      <option name="project" value="LOCAL" />
+      <updated>1746546833410</updated>
+    </task>
+    <task id="LOCAL-00012" summary="note Hotels">
+      <option name="closed" value="true" />
+      <created>1746548017843</created>
+      <option name="number" value="00012" />
+      <option name="presentableId" value="LOCAL-00012" />
+      <option name="project" value="LOCAL" />
+      <updated>1746548017843</updated>
+    </task>
+    <task id="LOCAL-00013" summary="fix AjoutHotelController">
+      <option name="closed" value="true" />
+      <created>1746548423131</created>
+      <option name="number" value="00013" />
+      <option name="presentableId" value="LOCAL-00013" />
+      <option name="project" value="LOCAL" />
+      <updated>1746548423131</updated>
+    </task>
+    <task id="LOCAL-00014" summary="fix integration">
+      <option name="closed" value="true" />
+      <created>1746641403638</created>
+      <option name="number" value="00014" />
+      <option name="presentableId" value="LOCAL-00014" />
+      <option name="project" value="LOCAL" />
+      <updated>1746641403638</updated>
+    </task>
+    <task id="LOCAL-00015" summary="fix liste hotels">
+      <option name="closed" value="true" />
+      <created>1746642940830</created>
+      <option name="number" value="00015" />
+      <option name="presentableId" value="LOCAL-00015" />
+      <option name="project" value="LOCAL" />
+      <updated>1746642940830</updated>
+    </task>
+    <task id="LOCAL-00016" summary="fix liste hotels 2">
+      <option name="closed" value="true" />
+      <created>1746643500308</created>
+      <option name="number" value="00016" />
+      <option name="presentableId" value="LOCAL-00016" />
+      <option name="project" value="LOCAL" />
+      <updated>1746643500308</updated>
+    </task>
+    <task id="LOCAL-00017" summary="fix liste hotels 3">
+      <option name="closed" value="true" />
+      <created>1746644762657</created>
+      <option name="number" value="00017" />
+      <option name="presentableId" value="LOCAL-00017" />
+      <option name="project" value="LOCAL" />
+      <updated>1746644762657</updated>
+    </task>
+    <task id="LOCAL-00018" summary="fix ajouter hotel button">
+      <option name="closed" value="true" />
+      <created>1746645011508</created>
+      <option name="number" value="00018" />
+      <option name="presentableId" value="LOCAL-00018" />
+      <option name="project" value="LOCAL" />
+      <updated>1746645011508</updated>
+    </task>
+    <task id="LOCAL-00019" summary="fix ajouter hotel button">
+      <option name="closed" value="true" />
+      <created>1746645890551</created>
+      <option name="number" value="00019" />
+      <option name="presentableId" value="LOCAL-00019" />
+      <option name="project" value="LOCAL" />
+      <updated>1746645890551</updated>
+    </task>
+    <task id="LOCAL-00020" summary="feat reservation hotels">
+      <option name="closed" value="true" />
+      <created>1746650768903</created>
+      <option name="number" value="00020" />
+      <option name="presentableId" value="LOCAL-00020" />
+      <option name="project" value="LOCAL" />
+      <updated>1746650768903</updated>
+    </task>
+    <task id="LOCAL-00021" summary="map basique">
+      <option name="closed" value="true" />
+      <created>1746652262382</created>
+      <option name="number" value="00021" />
+      <option name="presentableId" value="LOCAL-00021" />
+      <option name="project" value="LOCAL" />
+      <updated>1746652262382</updated>
+    </task>
+    <option name="localTasksCounter" value="22" />
+    <servers />
+  </component>
+  <component name="TypeScriptGeneratedFilesManager">
+    <option name="version" value="3" />
+  </component>
+  <component name="Vcs.Log.Tabs.Properties">
+    <option name="TAB_STATES">
+      <map>
+        <entry key="MAIN">
+          <value>
+            <State />
+          </value>
+        </entry>
+      </map>
+    </option>
+  </component>
+  <component name="VcsManagerConfiguration">
+    <option name="CHECK_CODE_SMELLS_BEFORE_PROJECT_COMMIT" value="false" />
+    <MESSAGE value="fix: images" />
+    <MESSAGE value="feat: ajout hotel basique" />
+    <MESSAGE value="feat: attributs hotel" />
+    <MESSAGE value="feat: carousel hotels" />
+    <MESSAGE value="fix: css" />
+    <MESSAGE value="feat: modifier hotel" />
+    <MESSAGE value="feat: image hotel" />
+    <MESSAGE value="rounded images" />
+    <MESSAGE value="refresh hotels" />
+    <MESSAGE value="fix: image edit" />
+    <MESSAGE value="delete hotel + branding" />
+    <MESSAGE value="note Hotels" />
+    <MESSAGE value="fix AjoutHotelController" />
+    <MESSAGE value="fix integration" />
+    <MESSAGE value="fix liste hotels" />
+    <MESSAGE value="fix liste hotels 2" />
+    <MESSAGE value="fix liste hotels 3" />
+    <MESSAGE value="fix ajouter hotel button" />
+    <MESSAGE value="feat reservation hotels" />
+    <MESSAGE value="map basique" />
+    <option name="LAST_COMMIT_MESSAGE" value="map basique" />
+  </component>
+  <component name="XDebuggerManager">
+    <breakpoint-manager>
+      <breakpoints>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/src/main/java/test/Main.java</url>
+          <line>13</line>
+          <option name="timeStamp" value="1" />
+        </line-breakpoint>
+      </breakpoints>
+    </breakpoint-manager>
+  </component>
+</project>
