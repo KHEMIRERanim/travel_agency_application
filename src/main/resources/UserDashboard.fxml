@@ -14,7 +14,7 @@
 <?import javafx.scene.effect.DropShadow?>
 <?import java.net.URL?>
 
-<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="700.0" prefWidth="1000.0" style="-fx-background-color: #f4f6f9;" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controllers.UserDashboardController">
+<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="700.0" prefWidth="1000.0" style="-fx-background-color: #f4f6f9;" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controllers.UserDashboardController">
     <stylesheets>
         <URL value="@/styles/admin-common.css" />
         <URL value="@/styles/tableview.css" />
@@ -84,7 +84,6 @@
                     </font>
                 </Button>
 
-                <!-- Submenu for Reservations - Hidden by default -->
                 <VBox fx:id="reservationsSubMenu" prefHeight="150.0" prefWidth="240.0" style="-fx-background-color: #17316f;" visible="false" managed="false">
                     <Button fx:id="flightBtn" alignment="BASELINE_LEFT" graphicTextGap="15.0" mnemonicParsing="false" onAction="#reserveFlight" prefHeight="50.0" prefWidth="240.0" style="-fx-background-color: transparent; -fx-text-fill: white;" text="Réserver un vol">
                         <graphic>
@@ -151,7 +150,7 @@
                     </font>
                 </Button>
 
-                <Button fx:id="tripBtn" alignment="BASELINE_LEFT" graphicTextGap="15.0" mnemonicParsing="false" onAction="#planTrip" prefHeight="50.0" prefWidth="240.0" style="-fx-background-color: transparent; -fx-text-fill: white;" text="Mes Réservations">
+                <Button fx:id="tripBtn" alignment="BASELINE_LEFT" graphicTextGap="15.0" mnemonicParsing="false" onAction="#showReservations" prefHeight="50.0" prefWidth="240.0" style="-fx-background-color: transparent; -fx-text-fill: white;" text="Mes Réservations">
                     <graphic>
                         <ImageView fitHeight="20.0" fitWidth="20.0" pickOnBounds="true" preserveRatio="true">
                             <image>
@@ -167,7 +166,39 @@
                     </font>
                 </Button>
 
-                <Pane prefHeight="320.0" prefWidth="240.0" VBox.vgrow="ALWAYS" />
+                <Button fx:id="publicationsBtn" alignment="BASELINE_LEFT" graphicTextGap="15.0" mnemonicParsing="false" onAction="#showPublications" prefHeight="50.0" prefWidth="240.0" style="-fx-background-color: transparent; -fx-text-fill: white;" text="Mes Publications">
+                    <graphic>
+                        <ImageView fitHeight="20.0" fitWidth="20.0" pickOnBounds="true" preserveRatio="true">
+                            <image>
+                                <Image url="@/images/publications_icon.png" />
+                            </image>
+                        </ImageView>
+                    </graphic>
+                    <padding>
+                        <Insets left="20.0" />
+                    </padding>
+                    <font>
+                        <Font size="14.0" />
+                    </font>
+                </Button>
+
+                <Button fx:id="commentairesBtn" alignment="BASELINE_LEFT" graphicTextGap="15.0" mnemonicParsing="false" onAction="#showCommentaires" prefHeight="50.0" prefWidth="240.0" style="-fx-background-color: transparent; -fx-text-fill: white;" text="Mes Commentaires">
+                    <graphic>
+                        <ImageView fitHeight="20.0" fitWidth="20.0" pickOnBounds="true" preserveRatio="true">
+                            <image>
+                                <Image url="@/images/publications_icon.png" />
+                            </image>
+                        </ImageView>
+                    </graphic>
+                    <padding>
+                        <Insets left="20.0" />
+                    </padding>
+                    <font>
+                        <Font size="14.0" />
+                    </font>
+                </Button>
+
+                <Pane prefHeight="220.0" prefWidth="240.0" VBox.vgrow="ALWAYS" />
 
                 <Button fx:id="logoutBtn" alignment="BASELINE_LEFT" graphicTextGap="15.0" mnemonicParsing="false" onAction="#logout" prefHeight="50.0" prefWidth="240.0" style="-fx-background-color: #17316f; -fx-text-fill: white;" text="Déconnexion">
                     <graphic>

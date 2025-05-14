@@ -1,0 +1,94 @@
+    /* Main VBox */
+.edit-vbox {
+    -fx-background-color: #f4f6f9;
+    -fx-alignment: center;
+}
+
+/* Page Title */
+.page-title {
+    -fx-font-size: 28px;
+    -fx-font-weight: bold;
+    -fx-text-fill: #1e3a8a;
+    -fx-font-family: "Segoe UI";
+    -fx-padding: 0 0 20 0;
+}
+
+/* Form Labels */
+.form-label {
+    -fx-font-size: 16px;
+    -fx-text-fill: #1e3a8a;
+    -fx-font-family: "Segoe UI";
+    -fx-font-weight: bold;
+}
+
+/* Form Fields */
+.form-field {
+    -fx-background-color: #ffffff;
+    -fx-border-color: #d1d5db;
+    -fx-border-radius: 5;
+    -fx-background-radius: 5;
+    -fx-padding: 10;
+    -fx-font-size: 14px;
+    -fx-font-family: "Segoe UI";
+    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.1), 5, 0, 0, 2);
+    -fx-transition: all 0.3s ease;
+}
+
+.form-field:focused {
+    -fx-border-color: #3b82f6;
+    -fx-border-width: 2;
+    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.2), 10, 0, 0, 3);
+}
+
+/* Error Field */
+.error-field {
+    -fx-border-color: #ef4444;
+    -fx-border-width: 2;
+}
+
+/* Checkbox */
+.form-checkbox {
+    -fx-font-size: 14px;
+    -fx-text-fill: #374151;
+    -fx-font-family: "Segoe UI";
+    -fx-padding: 10 0;
+}
+
+/* Buttons */
+.save-button, .cancel-button {
+    -fx-font-size: 16px;
+    -fx-text-fill: white;
+    -fx-padding: 10 20;
+    -fx-background-radius: 8;
+    -fx-border-radius: 8;
+    -fx-font-family: "Segoe UI";
+    -fx-cursor: hand;
+    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.2), 5, 0, 0, 2);
+    -fx-transition: all 0.2s ease;
+}
+
+.save-button {
+    -fx-background-color: linear-gradient(to right, #1e3a8a, #3b82f6);
+}
+
+.save-button:hover {
+    -fx-background-color: linear-gradient(to right, #1e40af, #2563eb);
+    -fx-scale-x: 1.05;
+    -fx-scale-y: 1.05;
+}
+
+.save-button:disabled {
+    -fx-background-color: #9ca3af;
+    -fx-opacity: 0.6;
+    -fx-cursor: default;
+}
+
+.cancel-button {
+    -fx-background-color: #6b7280;
+}
+
+.cancel-button:hover {
+    -fx-background-color: #4b5563;
+    -fx-scale-x: 1.05;
+    -fx-scale-y: 1.05;
+}

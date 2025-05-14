@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ScrollPane?>
+<?import javafx.scene.layout.VBox?>
+<?import java.net.URL?>
+
+<VBox alignment="CENTER" spacing="20.0" styleClass="main-vbox" prefHeight="500.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controllers.ShowCommentairesController">
+    <stylesheets>
+        <URL value="@/styles/publications.css" />
+    </stylesheets>
+    <padding>
+        <Insets bottom="30.0" left="30.0" right="30.0" top="30.0" />
+    </padding>
+    <children>
+        <Label fx:id="titleLabel" text="Commentaires pour la Publication" styleClass="form-title" wrapText="true" />
+        <ScrollPane fitToWidth="true" styleClass="main-scroll">
+            <content>
+                <VBox fx:id="commentairesVBox" spacing="15.0" alignment="TOP_CENTER" styleClass="form-vbox">
+                    <padding>
+                        <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
+                    </padding>
+                </VBox>
+            </content>
+        </ScrollPane>
+    </children>
+</VBox>

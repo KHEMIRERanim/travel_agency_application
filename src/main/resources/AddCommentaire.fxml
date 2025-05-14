@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TextArea?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
+<?import java.net.URL?>
+<?import org.controlsfx.control.Rating?>
+
+<VBox alignment="CENTER" spacing="20.0" styleClass="main-vbox" prefHeight="500.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controllers.AddCommentaireController">
+    <stylesheets>
+        <URL value="@/styles/publications.css" />
+    </stylesheets>
+    <padding>
+        <Insets bottom="30.0" left="30.0" right="30.0" top="30.0" />
+    </padding>
+    <children>
+        <Label fx:id="titleLabel" text="Ajouter un Commentaire" styleClass="form-title" />
+        <VBox fx:id="formVBox" spacing="20.0" alignment="CENTER" styleClass="form-vbox">
+            <padding>
+                <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
+            </padding>
+            <children>
+                <Label text="Votre Note :" styleClass="form-label" />
+                <Rating fx:id="ratingControl" max="5" rating="0" styleClass="rating" />
+                <Label text="Votre Commentaire :" styleClass="form-label" />
+                <TextArea fx:id="commentaireField" promptText="Entrez votre commentaire" prefRowCount="6" wrapText="true" prefWidth="520.0" styleClass="form-textarea" />
+                <HBox spacing="15.0" alignment="CENTER_RIGHT">
+                    <Button fx:id="cancelBtn" text="Annuler" styleClass="form-button cancel-button" onAction="#cancel" />
+                    <Button fx:id="saveBtn" text="Enregistrer" styleClass="form-button save-button" onAction="#saveCommentaire" disable="true" />
+                </HBox>
+            </children>
+        </VBox>
+    </children>
+</VBox>

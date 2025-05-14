@@ -1,0 +1,525 @@
+/* Layout and ScrollPane */
+.main-scroll {
+    -fx-background-color: #f5f7fa;
+    -fx-border-color: transparent;
+}
+
+.main-vbox {
+    -fx-background-color: #f5f7fa;
+    -fx-padding: 20;
+}
+
+/* Publication Card */
+.publication-card {
+    -fx-background-color: white;
+    -fx-background-radius: 12;
+    -fx-border-radius: 12;
+    -fx-border-color: #e5e7eb;
+    -fx-border-width: 1;
+    -fx-padding: 20;
+    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.15), 12, 0, 0, 3);
+    -fx-transition: all 0.3s ease;
+}
+
+.publication-card:hover {
+    -fx-scale-x: 1.03;
+    -fx-scale-y: 1.03;
+    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.25), 16, 0, 0, 5);
+}
+
+/* Form VBox */
+.form-vbox {
+    -fx-background-color: white;
+    -fx-background-radius: 12;
+    -fx-border-radius: 12;
+    -fx-border-color: #e5e7eb;
+    -fx-border-width: 1;
+    -fx-padding: 20;
+    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.15), 12, 0, 0, 3);
+    -fx-max-width: 720;
+}
+
+/* Titles */
+.publication-title {
+    -fx-font-size: 20px;
+    -fx-font-weight: bold;
+    -fx-text-fill: linear-gradient(to right, #1e3a8a, #3b82f6);
+    -fx-font-family: "Segoe UI";
+    -fx-padding: 0 0 10 0;
+}
+
+/* Publication Type */
+.publication-type {
+    -fx-font-size: 14px;
+    -fx-text-fill: #4b5563;
+    -fx-font-family: "Segoe UI";
+    -fx-font-weight: bold;
+}
+
+/* Content */
+.publication-content {
+    -fx-font-size: 14px;
+    -fx-text-fill: #374151;
+    -fx-font-family: "Segoe UI";
+    -fx-max-height: 60px;
+    -fx-overflow: hidden;
+}
+
+/* Date and Status */
+.publication-date, .publication-status {
+    -fx-font-size: 12px;
+    -fx-text-fill: #6b7280;
+    -fx-font-family: "Segoe UI";
+    -fx-font-style: italic;
+}
+
+.status-active {
+    -fx-text-fill: #16a34a;
+    -fx-font-weight: bold;
+}
+
+.status-inactive {
+    -fx-text-fill: #dc2626;
+    -fx-font-weight: bold;
+}
+
+/* Form Labels */
+.dialog-label {
+    -fx-font-size: 14px;
+    -fx-font-weight: bold;
+    -fx-text-fill: #1e3a8a;
+    -fx-font-family: "Segoe UI";
+    -fx-padding: 5 0 5 0;
+}
+
+/* Like Count Label */
+.like-count-label {
+    -fx-font-size: 14px;
+    -fx-text-fill: #374151;
+    -fx-font-family: "Segoe UI";
+}
+
+/* Text Fields and Areas */
+.text-field, .text-area, .search-field {
+    -fx-background-color: #f9fafb;
+    -fx-border-color: #d1d5db;
+    -fx-border-radius: 8;
+    -fx-padding: 10;
+    -fx-font-family: "Segoe UI";
+    -fx-font-size: 14px;
+    -fx-transition: all 0.2s ease;
+}
+
+.text-field:focused, .text-area:focused, .search-field:focused {
+    -fx-border-color: #3b82f6;
+    -fx-border-width: 2;
+    -fx-effect: dropshadow(gaussian, rgba(59,130,246,0.3), 8, 0, 0, 2);
+}
+
+.text-area {
+    -fx-pref-row-count: 5;
+    -fx-wrap-text: true;
+}
+
+/* ComboBox */
+.type-combo, .sort-combo {
+    -fx-background-color: #f9fafb;
+    -fx-border-color: #d1d5db;
+    -fx-border-radius: 8;
+    -fx-padding: 10;
+    -fx-font-family: "Segoe UI";
+    -fx-font-size: 14px;
+}
+
+.type-combo:focused, .sort-combo:focused {
+    -fx-border-color: #3b82f6;
+    -fx-border-width: 2;
+    -fx-effect: dropshadow(gaussian, rgba(59,130,246,0.3), 8, 0, 0, 2);
+}
+
+/* Error Styling */
+.error-field {
+    -fx-border-color: #ef4444;
+    -fx-border-width: 2;
+    -fx-effect: dropshadow(gaussian, rgba(239,68,68,0.3), 8, 0, 0, 2);
+}
+
+/* Buttons */
+.action-button {
+    -fx-background-color: linear-gradient(to right, #3b82f6, #1e40af);
+    -fx-text-fill: white;
+    -fx-font-size: 14px;
+    -fx-padding: 10 20;
+    -fx-background-radius: 10;
+    -fx-border-radius: 10;
+    -fx-font-family: "Segoe UI";
+    -fx-cursor: hand;
+    -fx-transition: all 0.3s ease;
+}
+
+.action-button:hover {
+    -fx-background-color: linear-gradient(to right, #2563eb, #1e3a8a);
+    -fx-scale-x: 1.05;
+    -fx-scale-y: 1.05;
+    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.2), 8, 0, 0, 3);
+}
+
+.action-button:disabled {
+    -fx-background-color: #9ca3af;
+    -fx-opacity: 0.7;
+}
+
+.delete-button {
+    -fx-background-color: linear-gradient(to right, #ef4444, #b91c1c);
+}
+
+.delete-button:hover {
+    -fx-background-color: linear-gradient(to right, #dc2626, #991b1b);
+    -fx-scale-x: 1.05;
+    -fx-scale-y: 1.05;
+    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.2), 8, 0, 0, 3);
+}
+
+.like-button {
+    -fx-background-color: linear-gradient(to right, #22c55e, #16a34a);
+    -fx-padding: 8 16;
+}
+
+.like-button:hover {
+    -fx-background-color: linear-gradient(to right, #16a34a, #15803d);
+}
+
+.dislike-button {
+    -fx-background-color: linear-gradient(to right, #f97316, #ea580c);
+    -fx-padding: 8 16;
+}
+
+.dislike-button:hover {
+    -fx-background-color: linear-gradient(to right, #ea580c, #c2410c);
+}
+
+/* Toggle Button */
+.toggle-button {
+    -fx-background-color: #9ca3af;
+    -fx-text-fill: white;
+    -fx-font-size: 12px;
+    -fx-padding: 8 16;
+    -fx-background-radius: 10;
+    -fx-border-radius: 10;
+}
+
+.toggle-button.active {
+    -fx-background-color: #16a34a;
+}
+
+.toggle-button.inactive {
+    -fx-background-color: #dc2626;
+}
+
+/* Add Button */
+.add-button {
+    -fx-background-color: linear-gradient(to right, #1e3a8a, #3b82f6);
+    -fx-text-fill: white;
+    -fx-font-size: 16px;
+    -fx-padding: 12 24;
+    -fx-background-radius: 12;
+    -fx-border-radius: 12;
+    -fx-font-family: "Segoe UI";
+    -fx-cursor: hand;
+    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.2), 8, 0, 0, 3);
+    -fx-alignment: center-right;
+}
+
+.add-button:hover {
+    -fx-background-color: linear-gradient(to right, #1e40af, #2563eb);
+    -fx-scale-x: 1.05;
+    -fx-scale-y: 1.05;
+    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.3), 12, 0, 0, 5);
+}
+
+/* Checkbox */
+.form-checkbox {
+    -fx-font-size: 14px;
+    -fx-text-fill: #374151;
+    -fx-font-family: "Segoe UI";
+}
+
+/* Notifications */
+.notification {
+    -fx-background-color: white;
+    -fx-border-color: #e5e7eb;
+    -fx-border-radius: 8;
+    -fx-padding: 12;
+    -fx-font-family: "Segoe UI";
+    -fx-font-size: 14px;
+    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.2), 10, 0, 0, 3);
+}
+
+.notification .title {
+    -fx-font-weight: bold;
+    -fx-text-fill: #1e3a8a;
+    -fx-font-size: 16px;
+}
+
+.notification .content {
+    -fx-text-fill: #374151;
+}
+
+.notification .action {
+    -fx-background-color: #3b82f6;
+    -fx-text-fill: white;
+    -fx-font-size: 12px;
+    -fx-padding: 6 12;
+    -fx-border-radius: 6;
+}
+
+.notification .action:hover {
+    -fx-background-color: #2563eb;
+}/* Main container */
+.main-vbox {
+    -fx-background-color: linear-gradient(to bottom, #f4f6f9, #e5e7eb);
+    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.05), 10, 0, 0, 2);
+}
+
+/* Scroll pane */
+.main-scroll {
+    -fx-background-color: transparent;
+    -fx-background: transparent;
+}
+
+/* Publication and comment cards */
+.publication-card, .comment-card {
+    -fx-background-color: white;
+    -fx-background-radius: 12;
+    -fx-padding: 20;
+    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.15), 15, 0, 0, 3);
+    -fx-transition: all 0.3s ease;
+}
+
+.publication-card:hover, .comment-card:hover {
+    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.25), 20, 0, 0, 5);
+    -fx-scale-y: 1.02;
+    -fx-scale-x: 1.02;
+}
+
+/* Form container */
+.form-vbox {
+    -fx-background-color: white;
+    -fx-background-radius: 12;
+    -fx-padding: 25;
+    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.2), 15, 0, 0, 3);
+    -fx-border-color: #e5e7eb;
+    -fx-border-width: 1;
+    -fx-border-radius: 12;
+}
+
+/* Titles */
+.publication-title, .form-title {
+    -fx-font-size: 20px;
+    -fx-font-weight: bold;
+    -fx-text-fill: #1e3a8a;
+    -fx-font-family: 'Segoe UI';
+}
+
+/* Labels */
+.publication-type, .comment-rating, .form-label {
+    -fx-font-size: 14px;
+    -fx-text-fill: #4b5563;
+    -fx-font-family: 'Segoe UI';
+    -fx-font-weight: bold;
+}
+
+.publication-content, .comment-content {
+    -fx-font-size: 14px;
+    -fx-text-fill: #4b5563;
+    -fx-font-family: 'Segoe UI';
+}
+
+.publication-date, .comment-date {
+    -fx-font-size: 12px;
+    -fx-text-fill: #6b7280;
+    -fx-font-family: 'Segoe UI';
+}
+
+/* Status */
+.publication-status {
+    -fx-font-size: 12px;
+    -fx-font-family: 'Segoe UI';
+}
+
+.status-active {
+    -fx-text-fill: #10b981;
+}
+
+.status-inactive {
+    -fx-text-fill: #ef4444;
+}
+
+/* Like count */
+.like-count-label {
+    -fx-font-size: 14px;
+    -fx-text-fill: #4b5563;
+    -fx-font-family: 'Segoe UI';
+}
+
+/* Buttons */
+.action-button {
+    -fx-background-color: #3b82f6;
+    -fx-text-fill: white;
+    -fx-font-size: 12px;
+    -fx-font-family: 'Segoe UI';
+    -fx-background-radius: 8;
+    -fx-padding: 8 16;
+    -fx-cursor: hand;
+    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.1), 5, 0, 0, 1);
+}
+
+.action-button:hover {
+    -fx-background-color: #2563eb;
+    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.2), 10, 0, 0, 2);
+}
+
+.delete-button {
+    -fx-background-color: #ef4444;
+}
+
+.delete-button:hover {
+    -fx-background-color: #dc2626;
+}
+
+.like-button {
+    -fx-background-color: #10b981;
+}
+
+.like-button:hover {
+    -fx-background-color: #059669;
+}
+
+.dislike-button {
+    -fx-background-color: #f59e0b;
+}
+
+.dislike-button:hover {
+    -fx-background-color: #d97706;
+}
+
+.toggle-button.active {
+    -fx-background-color: #10b981;
+}
+
+.toggle-button.active:hover {
+    -fx-background-color: #059669;
+}
+
+.toggle-button.inactive {
+    -fx-background-color: #6b7280;
+}
+
+.toggle-button.inactive:hover {
+    -fx-background-color: #4b5563;
+}
+
+.comment-button {
+    -fx-background-color: #8b5cf6;
+}
+
+.comment-button:hover {
+    -fx-background-color: #7c3aed;
+}
+
+/* Form buttons */
+.form-button {
+    -fx-font-size: 14px;
+    -fx-font-family: 'Segoe UI';
+    -fx-background-radius: 8;
+    -fx-padding: 10 20;
+    -fx-cursor: hand;
+    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.1), 5, 0, 0, 1);
+}
+
+.save-button {
+    -fx-background-color: #3b82f6;
+    -fx-text-fill: white;
+}
+
+.save-button:hover {
+    -fx-background-color: #2563eb;
+    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.2), 10, 0, 0, 2);
+}
+
+.cancel-button {
+    -fx-background-color: #6b7280;
+    -fx-text-fill: white;
+}
+
+.cancel-button:hover {
+    -fx-background-color: #4b5563;
+    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.2), 10, 0, 0, 2);
+}
+
+/* Text fields */
+.text-field, .search-field {
+    -fx-background-color: white;
+    -fx-background-radius: 8;
+    -fx-border-color: #d1d5db;
+    -fx-border-radius: 8;
+    -fx-border-width: 1;
+    -fx-font-size: 14px;
+    -fx-font-family: 'Segoe UI';
+    -fx-padding: 12;
+    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.05), 5, 0, 0, 1);
+}
+
+.text-field:focused, .search-field:focused {
+    -fx-border-color: #3b82f6;
+    -fx-border-width: 2;
+    -fx-effect: dropshadow(gaussian, rgba(59,130,246,0.5), 8, 0, 0, 2);
+}
+
+.form-textarea {
+    -fx-background-color: white;
+    -fx-background-radius: 8;
+    -fx-border-color: #d1d5db;
+    -fx-border-radius: 8;
+    -fx-border-width: 1;
+    -fx-font-size: 14px;
+    -fx-font-family: 'Segoe UI';
+    -fx-padding: 12;
+    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.05), 5, 0, 0, 1);
+}
+
+.form-textarea:focused {
+    -fx-border-color: #3b82f6;
+    -fx-border-width: 2;
+    -fx-effect: dropshadow(gaussian, rgba(59,130,246,0.5), 8, 0, 0, 2);
+}
+
+.form-textarea.error-field {
+    -fx-border-color: #ef4444;
+    -fx-border-width: 2;
+}
+
+/* Rating control */
+.rating {
+    -fx-font-size: 24px;
+    -fx-text-fill: #d1d5db;
+}
+
+.rating .star {
+    -fx-text-fill: #d1d5db;
+}
+
+.rating .star:hover,
+.rating .star:selected {
+    -fx-text-fill: #f59e0b;
+}
+
+.rating .star-container {
+    -fx-spacing: 8px;
+}
+
+/* Star rating in comment cards */
+.comment-rating {
+    -fx-font-size: 14px;
+    -fx-text-fill: #f59e0b; /* Filled stars */
+}

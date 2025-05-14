@@ -1,17 +1,13 @@
 package controllers;
 
-import entities.Client;
 import entities.Flight;
-import entities.ReservationVol;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
-import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.image.Image;
@@ -23,12 +19,9 @@ import javafx.scene.layout.VBox;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
 import javafx.stage.Stage;
-import services.ServiceFlight;
-import services.ServiceReservationVol;
 
 import java.io.File;
 import java.io.IOException;
-import java.sql.SQLException;
 import java.text.SimpleDateFormat;
 import java.util.List;
 
@@ -47,7 +40,6 @@ public class FlightSearchResultsController {
     private ChercherVolController sourceController;
     private boolean isEmbeddedInDashboard = false;
     private UserDashboardController dashboardController;
-    private Client currentClient;
 
     public void setSourceController(ChercherVolController controller) {
         this.sourceController = controller;
@@ -56,10 +48,6 @@ public class FlightSearchResultsController {
     public void setDashboardController(UserDashboardController controller) {
         this.dashboardController = controller;
         this.isEmbeddedInDashboard = (controller != null);
-    }
-
-    public void setClient(Client client) {
-        this.currentClient = client;
     }
 
     public void setFlights(List<Flight> flights, int requiredPassengers) {
@@ -115,6 +103,7 @@ public class FlightSearchResultsController {
     }
 
     private VBox createFlightBox(Flight flight) {
+
         VBox flightBox = new VBox();
         flightBox.setStyle("-fx-background-color: white; -fx-background-radius: 8; -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.1), 10, 0, 0, 4);");
         flightBox.setSpacing(10);
@@ -130,26 +119,43 @@ public class FlightSearchResultsController {
         airlineImageView.setPreserveRatio(true);
 
         try {
-            String imagePath = flight.getImage_url();
-            if (imagePath != null && !imagePath.isEmpty()) {
-                if (!imagePath.startsWith("http")) {
-                    String projectDir = System.getProperty("user.dir");
-                    File file = new File(projectDir, "src/" + imagePath);
+            String imageUrl = flight.getImage_url();
+            if (imageUrl != null && !imageUrl.isEmpty()) {
+                // Try loading as a file path
+                File file = new File(imageUrl);
+                if (file.exists()) {
+                    Image airlineImage = new Image(file.toURI().toString());
+                    airlineImageView.setImage(airlineImage);
+                } else {
 
-                    if (file.exists()) {
-                        imagePath = file.toURI().toString();
-                    } else {
-                        System.err.println("Image non trouvée: " + file.getAbsolutePath());
-                        imagePath = "https://via.placeholder.com/80x40?text=Not+Found";
+                    try {
+                        Image airlineImage = new Image(imageUrl);
+                        airlineImageView.setImage(airlineImage);
+                    } catch (Exception e) {
+                        System.out.println("Error loading image as URL: " + e.getMessage());
+
+                        try {
+                            Image airlineImage = new Image(getClass().getResourceAsStream(imageUrl));
+                            airlineImageView.setImage(airlineImage);
+                        } catch (Exception ex) {
+                            System.out.println("Error loading image from resources: " + ex.getMessage());
+
+                            airlineImageView.setImage(new Image("https://via.placeholder.com/80x40?text=" + flight.getAirline().substring(0, Math.min(flight.getAirline().length(), 3))));
+                        }
                     }
                 }
-                airlineImageView.setImage(new Image(imagePath));
             } else {
-                airlineImageView.setImage(new Image("https://via.placeholder.com/80x40?text=No+Image"));
+
+                airlineImageView.setImage(new Image("https://via.placeholder.com/80x40?text=" + flight.getAirline().substring(0, Math.min(flight.getAirline().length(), 3))));
             }
         } catch (Exception e) {
-            System.err.println("Erreur de chargement de l'image: " + e.getMessage());
-            airlineImageView.setImage(new Image("https://via.placeholder.com/80x40?text=Error"));
+            System.out.println("Error loading airline image: " + e.getMessage());
+            try {
+
+                airlineImageView.setImage(new Image("https://via.placeholder.com/80x40?text=Air"));
+            } catch (Exception ex) {
+                System.out.println("Error loading placeholder image: " + ex.getMessage());
+            }
         }
 
         Label airlineLabel = new Label(flight.getAirline());
@@ -187,7 +193,8 @@ public class FlightSearchResultsController {
         VBox durationBox = new VBox(flightDurationLabel);
         durationBox.setAlignment(Pos.CENTER);
 
-        routeSection.getChildren().addAll(departureLabel, flightLine, durationBox, destinationLabel);
+        routeSection.getChildren().addAll(departureLabel, flightLine, destinationLabel);
+        routeSection.getChildren().add(1, durationBox);
 
         HBox bottomSection = new HBox();
         bottomSection.setAlignment(Pos.CENTER_LEFT);
@@ -219,7 +226,7 @@ public class FlightSearchResultsController {
             confirmButton.setStyle("-fx-background-color: #BDBDBD; -fx-text-fill: white; -fx-font-weight: bold; -fx-background-radius: 5;");
         }
 
-        confirmButton.setOnAction(e -> handleFlightConfirmation(e, flight));
+        confirmButton.setOnAction(e -> handleFlightConfirmation(flight));
 
         Region spacerBottom = new Region();
         HBox.setHgrow(spacerBottom, Priority.ALWAYS);
@@ -247,56 +254,34 @@ public class FlightSearchResultsController {
     void goBack(ActionEvent event) {
         try {
             if (isEmbeddedInDashboard && dashboardController != null) {
+                // If we're embedded in dashboard, go back to flight search within dashboard
                 dashboardController.reserveFlight(event);
             } else {
+                // Standalone mode, load ChercherVol.fxml as a separate scene
                 FXMLLoader loader = new FXMLLoader(getClass().getResource("/ChercherVol.fxml"));
                 Parent root = loader.load();
-                ChercherVolController controller = loader.getController();
-                controller.setClient(currentClient);
+
                 Stage stage = (Stage) backButton.getScene().getWindow();
                 stage.setScene(new Scene(root));
                 stage.setTitle("Flight Search");
             }
         } catch (IOException e) {
-            showAlert(Alert.AlertType.ERROR, "Erreur", "Erreur de navigation",
-                    "Impossible de retourner à la recherche: " + e.getMessage());
+            System.out.println("Error returning to search screen: " + e.getMessage());
             e.printStackTrace();
         }
     }
 
-    private void handleFlightConfirmation(ActionEvent event, Flight flight) {
-        try {
-            // Vérifier si le client est connecté
-            if (currentClient == null) {
-                showAlert(Alert.AlertType.ERROR, "Erreur", "Aucun client connecté",
-                        "Veuillez vous connecter pour effectuer une réservation.");
-                return;
-            }
+    private void handleFlightConfirmation(Flight flight) {
 
-            // Charger FlightBookingConfirmation.fxml
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("/FlightBookingConfirmation.fxml"));
-            Parent root = loader.load();
-            FlightBookingController controller = loader.getController();
-            controller.setClient(currentClient);
-            controller.setFlight(flight, requiredSeats);
+        System.out.println("Flight confirmed: " + flight.getFlight_number());
 
-            Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
-            stage.setScene(new Scene(root));
-            stage.setTitle("Confirmation de la réservation");
-            stage.show();
-
-        } catch (IOException e) {
-            showAlert(Alert.AlertType.ERROR, "Erreur", "Erreur de navigation",
-                    "Impossible de charger la page de confirmation: " + e.getMessage());
-            e.printStackTrace();
-        }
-    }
-
-    private void showAlert(Alert.AlertType type, String title, String header, String content) {
-        Alert alert = new Alert(type);
-        alert.setTitle(title);
-        alert.setHeaderText(header);
-        alert.setContentText(content);
+        javafx.scene.control.Alert alert = new javafx.scene.control.Alert(javafx.scene.control.Alert.AlertType.INFORMATION);
+        alert.setTitle("Flight Confirmation");
+        alert.setHeaderText("Booking Confirmed");
+        alert.setContentText("You have selected flight " + flight.getFlight_number() + " from " +
+                flight.getDeparture() + " to " + flight.getDestination() + " on " +
+                new SimpleDateFormat("dd MMM yyyy").format(flight.getFlight_date()) +
+                " for " + requiredSeats + " passenger(s).");
         alert.showAndWait();
     }
 }

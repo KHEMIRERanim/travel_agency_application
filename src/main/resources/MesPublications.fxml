@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ComboBox?>
+<?import javafx.scene.control.ScrollPane?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
+<?import java.net.URL?>
+<?import javafx.collections.FXCollections?>
+<?import java.lang.String?>
+
+<ScrollPane fitToWidth="true" prefHeight="700.0" prefWidth="760.0" styleClass="main-scroll" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controllers.MesPublicationsController">
+    <stylesheets>
+        <URL value="@/styles/publications.css" />
+    </stylesheets>
+    <content>
+        <VBox fx:id="mainVBox" spacing="20.0" styleClass="main-vbox">
+            <padding>
+                <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
+            </padding>
+            <children>
+                <!-- Search and Sort Controls -->
+                <HBox spacing="10.0" alignment="CENTER_LEFT">
+                    <TextField fx:id="searchField" promptText="Rechercher par titre" prefWidth="400.0" styleClass="search-field" />
+                    <ComboBox fx:id="sortComboBox" promptText="Trier/Filtrer" prefWidth="280.0" styleClass="sort-combo">
+                        <items>
+                            <FXCollections fx:factory="observableArrayList">
+                                <String fx:value="Recent First" />
+                                <String fx:value="Oldest First" />
+                                <String fx:value="Show Flights" />
+                                <String fx:value="Show Reservations" />
+                                <String fx:value="Show Vehicles" />
+                                <String fx:value="Show Other" />
+                                <String fx:value="Show All Types" />
+                            </FXCollections>
+                        </items>
+                    </ComboBox>
+                </HBox>
+                <!-- Add Publication Button -->
+                <Button fx:id="addPublicationBtn" text="Ajouter Publication" onAction="#showAddPopup" styleClass="add-button" alignment="CENTER_RIGHT" />
+                <!-- Publications List -->
+                <VBox fx:id="publicationsVBox" alignment="CENTER" spacing="20.0" />
+            </children>
+        </VBox>
+    </content>
+</ScrollPane>
