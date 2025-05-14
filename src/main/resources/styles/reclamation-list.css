@@ -1,0 +1,159 @@
+/* styles/reclamation-list.css */
+
+/* Main ListView styling */
+.reclamations-list {
+    -fx-background-color: white;
+    -fx-background-radius: 10;
+    -fx-padding: 5;
+    -fx-border-width: 0;
+    -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.1), 10, 0, 0, 5);
+}
+
+/* List cell styling */
+.reclamations-list .list-cell {
+    -fx-background-color: white;
+    -fx-padding: 15 20;
+    -fx-border-color: #f4f6f9;
+    -fx-border-width: 0 0 1 0;
+    -fx-font-family: "Segoe UI", Arial, sans-serif;
+}
+
+.reclamations-list .list-cell:odd {
+    -fx-background-color: #f9fafc;
+}
+
+.reclamations-list .list-cell:even {
+    -fx-background-color: white;
+}
+
+.reclamations-list .list-cell:selected {
+    -fx-background-color: #e3e9f5;
+}
+
+.reclamations-list .list-cell:hover {
+    -fx-background-color: #edf2fa;
+}
+
+/* Cell container styling */
+.cell-container {
+    -fx-spacing: 10;
+    -fx-alignment: center-left;
+}
+
+.cell-main {
+    -fx-spacing: 5;
+}
+
+.cell-header {
+    -fx-spacing: 15;
+    -fx-alignment: center-left;
+}
+
+/* Text styling */
+.cell-title {
+    -fx-font-size: 14px;
+    -fx-font-weight: bold;
+    -fx-text-fill: #1e3a8a;
+}
+
+.cell-subtitle {
+    -fx-font-size: 12px;
+    -fx-text-fill: #6b7280;
+}
+
+.cell-date {
+    -fx-font-size: 12px;
+    -fx-text-fill: #6b7280;
+}
+
+.cell-description {
+    -fx-font-size: 13px;
+    -fx-text-fill: #374151;
+    -fx-wrap-text: true;
+}
+
+/* Status styling */
+.status-indicator {
+    -fx-min-width: 90;
+    -fx-min-height: 25;
+    -fx-max-height: 25;
+    -fx-background-radius: 12.5;
+    -fx-alignment: center;
+    -fx-text-fill: white;
+    -fx-font-size: 11px;
+    -fx-font-weight: bold;
+}
+
+.status-pending {
+    -fx-background-color: #fbbf24;
+}
+
+.status-inprogress {
+    -fx-background-color: #3b82f6;
+}
+
+.status-resolved {
+    -fx-background-color: #10b981;
+}
+
+/* Status styling for cells */
+.list-cell.status-pending {
+    -fx-border-width: 0 0 0 4px;
+    -fx-border-color: transparent transparent transparent #ffb020;
+    -fx-padding: 10px 10px 10px 15px;
+    -fx-background-color: linear-gradient(to right, #fff9e6 0%, #fff9e6 10%, white 30%, white 100%);
+}
+
+.list-cell.status-progress {
+    -fx-border-width: 0 0 0 4px;
+    -fx-border-color: transparent transparent transparent #2196f3;
+    -fx-padding: 10px 10px 10px 15px;
+    -fx-background-color: linear-gradient(to right, #e6f4ff 0%, #e6f4ff 10%, white 30%, white 100%);
+}
+
+.list-cell.status-resolved {
+    -fx-border-width: 0 0 0 4px;
+    -fx-border-color: transparent transparent transparent #4caf50;
+    -fx-padding: 10px 10px 10px 15px;
+    -fx-background-color: linear-gradient(to right, #e6f7e6 0%, #e6f7e6 10%, white 30%, white 100%);
+}
+
+/* Selected state for status cells */
+.list-cell.status-pending:selected {
+    -fx-background-color: linear-gradient(to right, #fff0c6 0%, #fff0c6 10%, #e3e9f5 30%, #e3e9f5 100%);
+}
+
+.list-cell.status-progress:selected {
+    -fx-background-color: linear-gradient(to right, #d6ecff 0%, #d6ecff 10%, #e3e9f5 30%, #e3e9f5 100%);
+}
+
+.list-cell.status-resolved:selected {
+    -fx-background-color: linear-gradient(to right, #d6f0d6 0%, #d6f0d6 10%, #e3e9f5 30%, #e3e9f5 100%);
+}
+
+/* ScrollBar styling */
+.reclamations-list .scroll-bar:vertical {
+    -fx-background-color: transparent;
+    -fx-pref-width: 10;
+}
+
+.reclamations-list .scroll-bar:vertical .thumb {
+    -fx-background-color: #d1d9e6;
+    -fx-background-radius: 5;
+}
+
+.reclamations-list .scroll-bar:vertical .track {
+    -fx-background-color: transparent;
+}
+
+.reclamations-list .scroll-bar:vertical .increment-button,
+.reclamations-list .scroll-bar:vertical .decrement-button {
+    -fx-background-color: transparent;
+    -fx-padding: 0;
+}
+
+/* Empty list styling */
+.reclamations-list .placeholder {
+    -fx-text-fill: #6b7280;
+    -fx-font-style: italic;
+}
