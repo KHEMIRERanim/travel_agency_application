@@ -8,7 +8,7 @@ public class Flight {
     private Timestamp arrival_Time, departure_Time;
     private Date flight_date;
     private double price;
-
+///
     public Flight(int flight_id, int flight_duration, String flight_number, int available_seats,
                   String departure, String destination, String airline,
                   Timestamp arrival_Time, Timestamp departure_Time, Date flight_date, double price, String image_url) {
