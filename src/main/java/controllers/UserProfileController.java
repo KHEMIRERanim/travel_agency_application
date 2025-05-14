@@ -1,6 +1,7 @@
 package controllers;
 
 import entities.Client;
+import entities.Flight;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -15,8 +16,11 @@ import java.io.IOException;
 import java.sql.SQLException;
 
 public class UserProfileController {
+
     private ServiceClient serviceClient = new ServiceClient();
     private Client currentClient;
+    private Flight selectedFlight;
+    private int requiredPassengers;
     private boolean editMode = false;
 
     @FXML
@@ -50,19 +54,24 @@ public class UserProfileController {
     private Label statusLabel;
 
     public void setClient(Client client) {
-        this.currentClient = client;
+        this.currentClient = client != null ? client : new Client();
         displayClientInfo();
         setFieldsEditable(false);
         btn_save.setDisable(true);
     }
 
+    public void setFlight(Flight flight, int passengers) {
+        this.selectedFlight = flight;
+        this.requiredPassengers = passengers;
+    }
+
     private void displayClientInfo() {
-        tf_nom.setText(currentClient.getNom());
-        tf_prenom.setText(currentClient.getPrenom());
-        tf_email.setText(currentClient.getEmail());
-        tf_telephone.setText(String.valueOf(currentClient.getNumero_telephone()));
-        tf_dateNaissance.setText(currentClient.getDate_de_naissance());
-        tf_password.setText(currentClient.getMot_de_passe());
+        tf_nom.setText(currentClient.getNom() != null ? currentClient.getNom() : "");
+        tf_prenom.setText(currentClient.getPrenom() != null ? currentClient.getPrenom() : "");
+        tf_email.setText(currentClient.getEmail() != null ? currentClient.getEmail() : "");
+        tf_telephone.setText(currentClient.getNumero_telephone() != 0 ? String.valueOf(currentClient.getNumero_telephone()) : "");
+        tf_dateNaissance.setText(currentClient.getDate_de_naissance() != null ? currentClient.getDate_de_naissance() : "");
+        tf_password.setText(currentClient.getMot_de_passe() != null ? currentClient.getMot_de_passe() : "");
     }
 
     private void setFieldsEditable(boolean editable) {
@@ -86,7 +95,7 @@ public class UserProfileController {
     @FXML
     void saveProfile(ActionEvent event) {
         try {
-            // Validate inputs
+            // Validation des champs
             if (tf_nom.getText().isEmpty() || tf_prenom.getText().isEmpty() ||
                     tf_email.getText().isEmpty() || tf_telephone.getText().isEmpty() ||
                     tf_dateNaissance.getText().isEmpty() || tf_password.getText().isEmpty()) {
@@ -94,23 +103,40 @@ public class UserProfileController {
                 return;
             }
 
-            // Update client object
-            currentClient.setNom(tf_nom.getText());
-            currentClient.setPrenom(tf_prenom.getText());
-            currentClient.setEmail(tf_email.getText());
+            // Valider le format du numéro de téléphone
             try {
-                currentClient.setNumero_telephone(Integer.parseInt(tf_telephone.getText()));
+                Integer.parseInt(tf_telephone.getText());
             } catch (NumberFormatException e) {
                 statusLabel.setText("Le numéro de téléphone doit être un nombre");
                 return;
             }
+
+            // Mise à jour de l'objet client
+            currentClient.setNom(tf_nom.getText());
+            currentClient.setPrenom(tf_prenom.getText());
+            currentClient.setEmail(tf_email.getText());
+            currentClient.setNumero_telephone(Integer.parseInt(tf_telephone.getText()));
             currentClient.setDate_de_naissance(tf_dateNaissance.getText());
             currentClient.setMot_de_passe(tf_password.getText());
 
-            // Update in database
+            // Mise à jour dans la base de données
             serviceClient.modifier(currentClient);
 
-            // Update UI
+            // Si un vol est sélectionné, rediriger vers la page de confirmation
+            if (selectedFlight != null) {
+                FXMLLoader loader = new FXMLLoader(getClass().getResource("/FlightBookingConfirmation.fxml"));
+                Parent root = loader.load();
+                FlightBookingController controller = loader.getController();
+                controller.setClient(currentClient);
+                controller.setFlight(selectedFlight, requiredPassengers);
+
+                Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
+                stage.setScene(new Scene(root));
+                stage.setTitle("Confirmation de la réservation");
+                stage.show();
+            }
+
+            // Mise à jour de l'interface utilisateur
             editMode = false;
             setFieldsEditable(false);
             btn_save.setDisable(true);
@@ -118,9 +144,8 @@ public class UserProfileController {
             statusLabel.setText("Profil mis à jour avec succès");
         } catch (SQLException e) {
             statusLabel.setText("Erreur lors de la mise à jour: " + e.getMessage());
-            System.out.println(e.getMessage());
-        } catch (IllegalArgumentException e) {
-            statusLabel.setText("Erreur de validation: " + e.getMessage());
+        } catch (IOException e) {
+            statusLabel.setText("Erreur lors du chargement de la page: " + e.getMessage());
         }
     }
 
@@ -139,23 +164,20 @@ public class UserProfileController {
         alert.showAndWait().ifPresent(type -> {
             if (type == buttonTypeYes) {
                 try {
-                    // Delete from database
+                    // Supprimer de la base de données
                     serviceClient.supprimer(currentClient);
 
-                    // Return to login page
-                    try {
-                        FXMLLoader loader = new FXMLLoader(getClass().getResource("/Login.fxml"));
-                        Parent root = loader.load();
-                        Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
-                        stage.setScene(new Scene(root));
-                        stage.setTitle("Login");
-                        stage.show();
-                    } catch (IOException e) {
-                        System.out.println(e.getMessage());
-                    }
+                    // Retourner à la page de connexion
+                    FXMLLoader loader = new FXMLLoader(getClass().getResource("/Login.fxml"));
+                    Parent root = loader.load();
+                    Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
+                    stage.setScene(new Scene(root));
+                    stage.setTitle("Login");
+                    stage.show();
                 } catch (SQLException e) {
                     statusLabel.setText("Erreur lors de la suppression: " + e.getMessage());
-                    System.out.println(e.getMessage());
+                } catch (IOException e) {
+                    statusLabel.setText("Erreur lors du chargement de la page de connexion: " + e.getMessage());
                 }
             }
         });

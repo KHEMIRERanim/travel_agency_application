@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Vols en Temps Réel - Tunisie (TUN)</title>
+  <style>
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background-color: #f0f4f8;
+      margin: 0;
+      padding: 20px;
+      color: #333;
+    }
+    h1 {
+      text-align: center;
+      color: #2c3e50;
+      margin-bottom: 30px;
+      font-size: 2.5em;
+      text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.1);
+    }
+    #flight-list {
+      max-width: 900px;
+      margin: 0 auto;
+    }
+    .flight-card {
+      background-color: #ffffff;
+      border-radius: 10px;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+      padding: 20px;
+      margin-bottom: 20px;
+      transition: transform 0.2s, box-shadow 0.2s;
+    }
+    .flight-card:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
+    }
+    .flight-card p {
+      margin: 5px 0;
+      font-size: 1.1em;
+      color: #555;
+    }
+    .flight-card p strong {
+      color: #2c3e50;
+    }
+    .confirm-btn {
+      background-color: #3498db;
+      color: white;
+      border: none;
+      padding: 10px 20px;
+      border-radius: 5px;
+      cursor: pointer;
+      font-size: 1em;
+      transition: background-color 0.3s;
+      display: block;
+      margin: 10px 0 0 auto;
+    }
+    .confirm-btn:hover {
+      background-color: #2980b9;
+    }
+    .no-flights {
+      text-align: center;
+      color: #e74c3c;
+      font-size: 1.2em;
+      margin-top: 20px;
+    }
+    hr {
+      border: 0;
+      border-top: 1px solid #e0e0e0;
+      margin: 10px 0;
+    }
+  </style>
+</head>
+<body>
+<h1>Vols en Temps Réel - Tunisie (TUN)</h1>
+
+<div id="flight-list">
+  <p>Chargement des vols...</p>
+</div>
+
+<script>
+  function displayFlights(flightsJson) {
+    const flights = JSON.parse(flightsJson);
+    const flightList = document.getElementById("flight-list");
+    flightList.innerHTML = ""; // Clear previous content
+
+    if (flights.length === 0) {
+      flightList.innerHTML = '<p class="no-flights">Aucun vol trouvé.</p>';
+      return;
+    }
+
+    flights.forEach(flight => {
+      const flightDiv = document.createElement("div");
+      flightDiv.className = "flight-card";
+      flightDiv.innerHTML = `
+                    <p><strong>Vol:</strong> ${flight.flight_number} - ${flight.airline_name}</p>
+                    <p><strong>Départ:</strong> ${flight.departure_airport} à ${flight.departure_time}</p>
+                    <p><strong>  ${flight.arrival_airport} à ${flight.arrival_time}</p>
+                    <p><strong>Arrivée:</strong> ${flight.arrival_airport} à ${flight.arrival_time}</p>
+                    <p><strong>Date:</strong> ${flight.flight_date}</p>
+                    <p><strong>Prix:</strong> $${flight.price}</p>
+                    <p><strong>Sièges disponibles:</strong> ${flight.available_seats}</p>
+                    <button class="confirm-btn" onclick='confirmFlight(${JSON.stringify(flight)})'>Confirmer</button>
+                    <hr>`;
+      flightList.appendChild(flightDiv);
+    });
+  }
+
+  function confirmFlight(flightData) {
+    if (window.javafxBridge) {
+      window.javafxBridge.confirmFlight(JSON.stringify(flightData));
+    } else {
+      alert("Erreur: JavaFX Bridge non disponible.");
+    }
+  }
+</script>
+</body>
+</html>

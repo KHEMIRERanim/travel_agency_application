@@ -215,15 +215,28 @@ public class AfficherVolsController implements Initializable {
         deleteButton.setOnMouseEntered(e -> deleteScaleIn.play());
         deleteButton.setOnMouseExited(e -> deleteScaleOut.play());
 
-        // Action de suppression
+        // Action de suppression avec confirmation
         deleteButton.setOnAction(event -> {
-            try {
-                serviceFlight.supprimer(flight);
-                statusLabel.setText("Vol " + flight.getFlight_number() + " supprimé avec succès");
-                loadFlights(); // Recharger les vols après la suppression
-            } catch (SQLException e) {
-                showAlert(Alert.AlertType.ERROR, "Erreur", "Erreur lors de la suppression du vol: " + e.getMessage());
-            }
+            Alert confirmationAlert = new Alert(Alert.AlertType.CONFIRMATION);
+            confirmationAlert.setTitle("Confirmation de suppression");
+            confirmationAlert.setHeaderText("Supprimer le vol " + flight.getFlight_number() + " ?");
+            confirmationAlert.setContentText("Êtes-vous sûr de vouloir supprimer ce vol ? Cette action est irréversible.");
+
+            confirmationAlert.showAndWait().ifPresent(response -> {
+                if (response.getButtonData().isDefaultButton()) { // "OK" button
+                    try {
+                        serviceFlight.supprimer(flight);
+                        statusLabel.setText("Vol " + flight.getFlight_number() + " supprimé avec succès");
+                        loadFlights(); // Recharger les vols après la suppression
+                    } catch (SQLException e) {
+                        // Improved error handling for foreign key constraint
+                        String errorMessage = e.getMessage().contains("foreign key constraint")
+                                ? "Impossible de supprimer le vol : il est référencé ailleurs (par exemple, dans des réservations)."
+                                : "Erreur lors de la suppression du vol: " + e.getMessage();
+                        showAlert(Alert.AlertType.ERROR, "Erreur", errorMessage);
+                    }
+                }
+            });
         });
 
         // Ajouter les boutons au conteneur
