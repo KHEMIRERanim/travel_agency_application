@@ -12,6 +12,8 @@ public class ReservationVehicule {
     private LocalDate dateDebut;
     private LocalDate dateFin;
     private String clientEmail;
+    private Client client; // Added object reference
+    private Vehicule vehicule; // Added object reference
 
     public ReservationVehicule() {}
 
@@ -42,4 +44,10 @@ public class ReservationVehicule {
     public void setDateFin(LocalDate dateFin) { this.dateFin = dateFin; }
     public String getClientEmail() { return clientEmail; }
     public void setClientEmail(String clientEmail) { this.clientEmail = clientEmail; }
+
+    // Added setters for Client and Vehicule objects
+    public Client getClient() { return client; }
+    public void setClient(Client client) { this.client = client; this.clientId = client.getId_client(); }
+    public Vehicule getVehicule() { return vehicule; }
+    public void setVehicule(Vehicule vehicule) { this.vehicule = vehicule; this.vehiculeId = vehicule.getId(); }
 }
