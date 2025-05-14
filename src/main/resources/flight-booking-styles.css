@@ -1,0 +1,304 @@
+/* flight-booking-styles.css - Combined styles for flight booking application */
+
+/* ========== BASE STYLES ========== */
+.root {
+    -fx-font-family: "Segoe UI", Arial, sans-serif;
+    -fx-font-size: 14px;
+}
+
+/* ========== CARD COMPONENT ========== */
+.card {
+    -fx-background-color: white;
+    -fx-background-radius: 5px;
+    -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.1), 10, 0, 0, 3);
+}
+
+/* ========== LABELS ========== */
+.label-header {
+    -fx-font-size: 24px;
+    -fx-font-weight: bold;
+    -fx-text-fill: #1e3a8a;
+}
+
+.label-subheader {
+    -fx-font-size: 18px;
+    -fx-font-weight: bold;
+    -fx-text-fill: #333333;
+}
+
+.label-info {
+    -fx-font-size: 14px;
+    -fx-font-weight: bold;
+    -fx-text-fill: #616161;
+}
+
+.label-value {
+    -fx-font-size: 14px;
+    -fx-text-fill: #333333;
+}
+
+.bold-label {
+    -fx-font-weight: bold;
+}
+
+/* ========== TEXT FIELDS ========== */
+.text-field {
+    -fx-background-color: #f8fafc;
+    -fx-border-color: #e2e8f0;
+    -fx-border-width: 1px;
+    -fx-border-radius: 4px;
+    -fx-padding: 10px;
+    -fx-font-size: 14px;
+}
+
+.text-field:focused {
+    -fx-border-color: #FF9E0C;
+    -fx-background-color: white;
+}
+
+/* ========== BUTTONS ========== */
+.button {
+    -fx-background-radius: 4px;
+    -fx-cursor: hand;
+    -fx-font-size: 14px;
+    -fx-padding: 8px 16px;
+    -fx-transition: -fx-background-color 0.2s;
+}
+
+.button:hover {
+    -fx-opacity: 0.9;
+}
+
+.button:pressed {
+    -fx-opacity: 0.8;
+}
+
+#btn_confirmBooking {
+    -fx-background-color: #FF9E0C;
+    -fx-text-fill: white;
+    -fx-font-weight: bold;
+}
+
+#btn_confirmBooking:hover {
+    -fx-background-color: #F57C00;
+}
+
+#btn_back {
+    -fx-background-color: #616161;
+    -fx-text-fill: white;
+}
+
+#btn_back:hover {
+    -fx-background-color: #424242;
+}
+
+/* ========== STATUS MESSAGES ========== */
+.success-message {
+    -fx-text-fill: #4CAF50;
+    -fx-font-weight: bold;
+}
+
+.error-message {
+    -fx-text-fill: #F44336;
+    -fx-font-weight: bold;
+}
+
+/* ========== FLIGHT DETAILS ========== */
+#flightDetailCard {
+    -fx-background-color: white;
+}
+
+#airlineLabel {
+    -fx-font-size: 18px;
+    -fx-font-weight: bold;
+}
+
+#priceLabel {
+    -fx-font-size: 22px;
+    -fx-font-weight: bold;
+    -fx-text-fill: #FF6F00;
+}
+
+#departureLabel, #destinationLabel {
+    -fx-font-size: 16px;
+    -fx-font-weight: bold;
+    -fx-text-alignment: center;
+}
+
+/* ========== TABLE VIEW ========== */
+.table-view {
+    -fx-background-color: transparent;
+    -fx-border-color: #e2e8f0;
+    -fx-border-width: 1px;
+    -fx-border-radius: 5px;
+}
+
+.table-view .column-header-background {
+    -fx-background-color: #f1f5f9;
+    -fx-padding: 5px 0px;
+}
+
+.table-view .column-header, .table-view .filler {
+    -fx-background-color: transparent;
+    -fx-size: 40px;
+    -fx-border-width: 0 0 1 0;
+    -fx-border-color: #e2e8f0;
+}
+
+.table-view .column-header .label {
+    -fx-text-fill: #334155;
+    -fx-font-weight: bold;
+    -fx-alignment: center-left;
+    -fx-padding: 5px 10px;
+}
+
+.table-row-cell {
+    -fx-background-color: white;
+    -fx-border-width: 0 0 1 0;
+    -fx-border-color: #f1f5f9;
+    -fx-padding: 5px 0px;
+}
+
+.table-row-cell:odd {
+    -fx-background-color: #fafafa;
+}
+
+.table-row-cell:selected {
+    -fx-background-color: #e2f1ff;
+    -fx-text-fill: #1e3a8a;
+}
+
+.table-view .table-cell {
+    -fx-alignment: center-left;
+    -fx-padding: 10px;
+    -fx-text-fill: #1e293b;
+}
+
+/* ========== SCROLLBARS ========== */
+.table-view .scroll-bar:vertical,
+.table-view .scroll-bar:horizontal,
+.scroll-bar:vertical,
+.scroll-bar:horizontal {
+    -fx-background-color: transparent;
+}
+
+.table-view .scroll-bar:vertical .thumb,
+.table-view .scroll-bar:horizontal .thumb,
+.scroll-bar:vertical .thumb,
+.scroll-bar:horizontal .thumb {
+    -fx-background-color: #cbd5e1;
+    -fx-background-radius: 5px;
+}
+
+.table-view .scroll-bar:vertical .thumb:hover,
+.table-view .scroll-bar:horizontal .thumb:hover,
+.scroll-bar:vertical .thumb:hover,
+.scroll-bar:horizontal .thumb:hover {
+    -fx-background-color: #94a3b8;
+}
+
+.table-view .scroll-bar .increment-button,
+.table-view .scroll-bar .decrement-button,
+.scroll-bar .increment-button,
+.scroll-bar .decrement-button {
+    -fx-background-color: transparent;
+    -fx-border-color: transparent;
+}
+
+/* ========== ADDITIONAL ELEMENTS ========== */
+.separator {
+    -fx-background-color: #e2e8f0;
+}
+
+/* Duration line in flight card */
+VBox > Region {
+    -fx-background-color: #BDBDBD;
+    -fx-pref-height: 1px;
+}
+
+/* Duration label */
+#durationLabel {
+    -fx-text-fill: #757575;
+    -fx-font-size: 12px;
+}
+
+/* Additional flight info elements */
+#seatsLabel {
+    -fx-text-fill: #4CAF50;
+    -fx-font-weight: normal;
+}
+
+#dateLabel, #passengersLabel, #flightNumberLabel {
+    -fx-text-fill: #616161;
+    -fx-font-weight: normal;
+}
+/* ScrollPane Styling */
+.scroll-pane {
+    -fx-background-color: #F5F7FA;
+    -fx-border-color: #E0E0E0;
+    -fx-border-radius: 5;
+    -fx-transition: all 0.3s ease;
+}
+
+.scroll-pane:hover {
+    -fx-border-color: #BEBEBE;
+    -fx-effect: dropshadow(three-pass-box, rgba(0, 0, 0, 0.1), 5, 0, 0, 0);
+}
+
+.scroll-pane:focused {
+    -fx-border-color: #1864DF;
+    -fx-border-width: 2px;
+    -fx-effect: dropshadow(three-pass-box, rgba(24, 100, 223, 0.2), 8, 0, 0, 0);
+}
+
+/* GridPane Styling */
+.grid-pane {
+    -fx-background-color: #F5F7FA;
+    -fx-border-color: #E0E0E0;
+    -fx-border-radius: 5;
+    -fx-padding: 20;
+    -fx-transition: all 0.4s ease;
+}
+
+.grid-pane:hover {
+    -fx-scale-x: 1.03;
+    -fx-scale-y: 1.03;
+    -fx-effect: dropshadow(three-pass-box, rgba(0, 0, 0, 0.2), 15, 0, 0, 8);
+}
+
+/* Back Button Styling */
+#backButton {
+    -fx-background-color: #FF6B6B;
+    -fx-background-radius: 5;
+    -fx-text-fill: white;
+    -fx-font-weight: bold;
+    -fx-transition: all 0.4s ease;
+}
+
+#backButton:hover {
+    -fx-background-color: #FF8C8C;
+    -fx-translate-y: -3px;
+    -fx-effect: dropshadow(three-pass-box, rgba(255, 107, 107, 0.7), 12, 0, 0, 4);
+}
+
+#backButton:pressed {
+    -fx-background-color: #E85C5C;
+    -fx-translate-y: 1px;
+    -fx-effect: dropshadow(three-pass-box, rgba(255, 107, 107, 0.4), 5, 0, 0, 1);
+}
+
+/* Apply pulse animation to backButton */
+#backButton {
+    -fx-animation: pulse 2s infinite;
+}
+
+/* Disable pulse animation on hover */
+#backButton:hover {
+    -fx-animation: none;
+}
+
+/* AnchorPane Styling */
+.root {
+    -fx-background-color: #F5F7FA;
+    -fx-animation: fadeIn 1s;
+}

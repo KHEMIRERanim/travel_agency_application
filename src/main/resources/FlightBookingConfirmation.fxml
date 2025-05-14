@@ -1,0 +1,197 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import java.net.URL?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.effect.DropShadow?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.ColumnConstraints?>
+<?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.Pane?>
+<?import javafx.scene.layout.Region?>
+<?import javafx.scene.layout.RowConstraints?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+
+<AnchorPane prefHeight="800.0" prefWidth="900.0" style="-fx-background-color: #f4f6f9;" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controllers.FlightBookingController">
+    <stylesheets>
+        <URL value="@/flight-booking-styles.css" />
+    </stylesheets>
+
+    <children>
+        <VBox prefHeight="800.0" prefWidth="900.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+            <children>
+                <HBox alignment="CENTER_LEFT" prefHeight="80.0" prefWidth="900.0" style="-fx-background-color: white;">
+                    <effect>
+                        <DropShadow color="#00000033" height="10.0" radius="4.5" width="10.0" />
+                    </effect>
+                    <children>
+                        <Label styleClass="label-header" text="Confirmation de Réservation">
+                            <HBox.margin>
+                                <Insets left="25.0" />
+                            </HBox.margin>
+                        </Label>
+                    </children>
+                </HBox>
+
+                <HBox alignment="CENTER_LEFT" prefHeight="50.0" style="-fx-background-color: #f4f6f9;">
+                    <children>
+                        <Label styleClass="label-subheader" text="Détails du Vol">
+                            <HBox.margin>
+                                <Insets left="25.0" />
+                            </HBox.margin>
+                        </Label>
+                    </children>
+                    <VBox.margin>
+                        <Insets top="20.0" />
+                    </VBox.margin>
+                </HBox>
+
+                <VBox fx:id="flightDetailCard" prefHeight="200.0" prefWidth="850.0" styleClass="card">
+                    <VBox.margin>
+                        <Insets bottom="20.0" left="25.0" right="25.0" top="10.0" />
+                    </VBox.margin>
+                    <padding>
+                        <Insets bottom="15.0" left="15.0" right="15.0" top="15.0" />
+                    </padding>
+                    <children>
+                        <HBox alignment="CENTER_LEFT" spacing="10.0">
+                            <ImageView fx:id="airlineImageView" fitHeight="40.0" fitWidth="80.0" preserveRatio="true" />
+                            <Label fx:id="airlineLabel" styleClass="bold-label" text="Airline Name">
+                                <font>
+                                    <Font name="System Bold" size="16.0" />
+                                </font>
+                            </Label>
+                            <Region HBox.hgrow="ALWAYS" />
+                            <Label fx:id="flightNumberLabel" style="-fx-text-fill: #757575;" text="Flight XYZ123" />
+                        </HBox>
+
+                        <HBox alignment="CENTER" prefHeight="92.0" prefWidth="861.0" spacing="10.0" style="-fx-background-color: #a4ebf7;">
+                            <padding>
+                                <Insets bottom="15.0" top="15.0" />
+                            </padding>
+                            <Label fx:id="departureLabel" prefHeight="74.0" prefWidth="98.0" text="City\n00:00" />
+                            <VBox alignment="CENTER">
+                                <Region prefHeight="1.0" prefWidth="200.0" style="-fx-background-color: #BDBDBD;" />
+                                <Label fx:id="durationLabel" style="-fx-text-fill: #757575;" text="0h 00m" />
+                            </VBox>
+                            <Label fx:id="destinationLabel" prefHeight="59.0" prefWidth="166.0" text="City\n00:00" />
+                        </HBox>
+
+                        <HBox alignment="CENTER_LEFT" spacing="15.0">
+                            <Label fx:id="priceLabel" style="-fx-text-fill: #FF6F00;" text="0.00">
+                                <font>
+                                    <Font name="System Bold" size="18.0" />
+                                </font>
+                            </Label>
+                            <Label fx:id="seatsLabel" style="-fx-text-fill: #4CAF50;" text="0 seats" />
+                            <Label fx:id="dateLabel" style="-fx-text-fill: #616161;" text="01 Jan 2025" />
+                            <Label fx:id="passengersLabel" style="-fx-text-fill: #616161;" text="1 passenger(s)" />
+                        </HBox>
+                    </children>
+                </VBox>
+
+                <HBox alignment="CENTER_LEFT" prefHeight="50.0" style="-fx-background-color: #f4f6f9;">
+                    <children>
+                        <Label styleClass="label-subheader" text="Informations du Client">
+                            <HBox.margin>
+                                <Insets left="25.0" />
+                            </HBox.margin>
+                        </Label>
+                    </children>
+                    <VBox.margin>
+                        <Insets top="10.0" />
+                    </VBox.margin>
+                </HBox>
+
+                <VBox prefHeight="320.0" prefWidth="850.0" style="-fx-background-color: #a4ebf7;" styleClass="card">
+                    <VBox.margin>
+                        <Insets bottom="20.0" left="25.0" right="25.0" top="10.0" />
+                    </VBox.margin>
+                    <padding>
+                        <Insets bottom="25.0" left="25.0" right="25.0" top="25.0" />
+                    </padding>
+                    <children>
+                        <GridPane hgap="20.0" vgap="15.0">
+                            <columnConstraints>
+                                <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="300.0" />
+                                <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="300.0" />
+                            </columnConstraints>
+                            <rowConstraints>
+                                <RowConstraints minHeight="10.0" prefHeight="70.0" vgrow="SOMETIMES" />
+                                <RowConstraints minHeight="10.0" prefHeight="70.0" vgrow="SOMETIMES" />
+                                <RowConstraints minHeight="10.0" prefHeight="70.0" vgrow="SOMETIMES" />
+                            </rowConstraints>
+                            <children>
+                                <VBox spacing="5.0">
+                                    <children>
+                                        <Label styleClass="label-info" text="Nom" />
+                                        <TextField fx:id="tf_nom" styleClass="text-field" />
+                                    </children>
+                                </VBox>
+                                <VBox spacing="5.0" GridPane.columnIndex="1">
+                                    <children>
+                                        <Label styleClass="label-info" text="Prénom" />
+                                        <TextField fx:id="tf_prenom" styleClass="text-field" />
+                                    </children>
+                                </VBox>
+                                <VBox spacing="5.0" GridPane.rowIndex="1">
+                                    <children>
+                                        <Label styleClass="label-info" text="Email" />
+                                        <TextField fx:id="tf_email" styleClass="text-field" />
+                                    </children>
+                                </VBox>
+                                <VBox spacing="5.0" GridPane.columnIndex="1" GridPane.rowIndex="1">
+                                    <children>
+                                        <Label styleClass="label-info" text="Téléphone" />
+                                        <TextField fx:id="tf_telephone" styleClass="text-field" />
+                                    </children>
+                                </VBox>
+                                <VBox spacing="5.0" GridPane.rowIndex="2">
+                                    <children>
+                                        <Label styleClass="label-info" text="Date de naissance" />
+                                        <TextField fx:id="tf_dateNaissance" styleClass="text-field" />
+                                    </children>
+                                </VBox>
+                                <VBox spacing="5.0" GridPane.columnIndex="1" GridPane.rowIndex="2">
+                                    <children>
+                                        <Label styleClass="label-info" text="Nombre de passagers" />
+                                        <TextField fx:id="tf_passengers" editable="false" styleClass="text-field" />
+                                    </children>
+                                </VBox>
+                            </children>
+                        </GridPane>
+                    </children>
+                </VBox>
+
+                <HBox alignment="CENTER" prefHeight="60.0" prefWidth="850.0" styleClass="card">
+                    <VBox.margin>
+                        <Insets bottom="20.0" left="25.0" right="25.0" />
+                    </VBox.margin>
+                    <padding>
+                        <Insets bottom="10.0" left="20.0" right="20.0" top="10.0" />
+                    </padding>
+                    <children>
+                        <Pane prefHeight="60.0" prefWidth="90.0" HBox.hgrow="ALWAYS" />
+                        <Button fx:id="btn_back" mnemonicParsing="false" onAction="#goBack" prefHeight="40.0" prefWidth="150.0" style="-fx-background-color: #616161; -fx-text-fill: white;" text="Retour">
+                            <HBox.margin>
+                                <Insets right="10.0" />
+                            </HBox.margin>
+                        </Button>
+                        <Button fx:id="btn_confirmBooking" mnemonicParsing="false" onAction="#confirmBooking" prefHeight="40.0" prefWidth="200.0" style="-fx-background-color: #FF9E0C; -fx-text-fill: white; -fx-font-weight: bold;" text="Confirmer la Réservation" />
+                    </children>
+                </HBox>
+
+                <Label fx:id="statusLabel" alignment="CENTER" prefHeight="20.0" prefWidth="850.0" style="-fx-text-fill: #1e3a8a;" styleClass="label-value">
+                    <VBox.margin>
+                        <Insets left="25.0" right="25.0" />
+                    </VBox.margin>
+                </Label>
+            </children>
+        </VBox>
+    </children>
+</AnchorPane>
