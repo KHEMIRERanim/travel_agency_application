@@ -196,8 +196,6 @@ public class UserProfileController {
             statusLabel.setText("Profil mis à jour avec succès");
         } catch (SQLException e) {
             statusLabel.setText("Erreur lors de la mise à jour: " + e.getMessage());
-        } catch (IOException e) {
-            statusLabel.setText("Erreur lors du chargement de la page: " + e.getMessage());
         }
     }
 
@@ -230,8 +228,6 @@ public class UserProfileController {
                     }
                 } catch (SQLException e) {
                     statusLabel.setText("Erreur lors de la suppression: " + e.getMessage());
-                } catch (IOException e) {
-                    statusLabel.setText("Erreur lors du chargement de la page de connexion: " + e.getMessage());
                 }
             }
         });
