@@ -11,31 +11,54 @@
 }
 
 .button-primary {
-    -fx-background-color: #1e3a8a;
+    -fx-background-color: #1e40af;
     -fx-text-fill: white;
+    -fx-alignment: center-left;
 }
 
 .button-primary:hover {
-    -fx-background-color: #17316f;
+    -fx-background-color: #1e3a8a;
 }
 
 .button-secondary {
-    -fx-background-color: #f4f6f9;
-    -fx-text-fill: #1e3a8a;
-    -fx-border-color: #1e3a8a;
+    -fx-background-color: #f3f4f6;
+    -fx-text-fill: #1e40af;
+    -fx-border-color: #1e40af;
     -fx-border-radius: 5;
     -fx-border-width: 1;
 }
 
 .button-secondary:hover {
-    -fx-background-color: #e3e9f5;
+    -fx-background-color: #e5e7eb;
+}
+
+.button-danger {
+    -fx-background-color: #ef4444;
+    -fx-text-fill: white;
+}
+
+.button-danger:hover {
+    -fx-background-color: #dc2626;
+}
+
+.button-danger:pressed {
+    -fx-background-color: #b91c1c;
+}
+
+.button-success {
+    -fx-background-color: #10b981;
+    -fx-text-fill: white;
+}
+
+.button-success:hover {
+    -fx-background-color: #059669;
 }
 
 /* TextField Styles */
 .text-field, .combo-box {
-    -fx-background-color: white;
+    -fx-background-color: #f9fafb;
     -fx-background-radius: 5;
-    -fx-border-color: #d1d9e6;
+    -fx-border-color: #d1d5db;
     -fx-border-radius: 5;
     -fx-border-width: 1;
     -fx-padding: 8 12;
@@ -43,14 +66,14 @@
 }
 
 .text-field:focused, .combo-box:focused {
-    -fx-border-color: #1e3a8a;
+    -fx-border-color: #1e40af;
 }
 
 /* TextArea Styles */
 .text-area {
-    -fx-background-color: #f4f6f9;
+    -fx-background-color: #f9fafb;
     -fx-background-radius: 5;
-    -fx-border-color: #d1d9e6;
+    -fx-border-color: #d1d5db;
     -fx-border-radius: 5;
     -fx-border-width: 1;
     -fx-padding: 8 12;
@@ -58,30 +81,30 @@
 }
 
 .text-area .content {
-    -fx-background-color: #f4f6f9;
+    -fx-background-color: #f9fafb;
     -fx-background-radius: 5;
 }
 
 /* Label Styles */
 .label-header {
-    -fx-text-fill: #1e3a8a;
+    -fx-text-fill: #1e40af;
     -fx-font-size: 24px;
     -fx-font-weight: bold;
 }
 
 .label-subheader {
-    -fx-text-fill: #1e3a8a;
+    -fx-text-fill: #1e40af;
     -fx-font-size: 16px;
     -fx-font-weight: bold;
 }
 
 .label-info {
-    -fx-text-fill: #90a4ae;
+    -fx-text-fill: #6b7280;
     -fx-font-size: 12px;
 }
 
 .label-value {
-    -fx-text-fill: #1e3a8a;
+    -fx-text-fill: #1e40af;
     -fx-font-size: 14px;
     -fx-font-weight: bold;
 }
@@ -92,17 +115,4 @@
     -fx-background-radius: 10;
     -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.1), 10, 0, 0, 0);
     -fx-padding: 20;
-}
-/* Add to admin-common.css */
-.button-danger {
-    -fx-background-color: #e53e3e;
-    -fx-text-fill: white;
-}
-
-.button-danger:hover {
-    -fx-background-color: #c53030;
-}
-
-.button-danger:pressed {
-    -fx-background-color: #9b2c2c;
 }

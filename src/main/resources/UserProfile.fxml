@@ -5,6 +5,7 @@
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.PasswordField?>
 <?import javafx.scene.control.TextField?>
+<?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
@@ -13,7 +14,9 @@
 <?import javafx.scene.effect.DropShadow?>
 <?import javafx.scene.text.Font?>
 <?import java.net.URL?>
+<?import javafx.scene.control.ComboBox?>
 
+<?import javafx.scene.image.Image?>
 <AnchorPane prefHeight="600.0" prefWidth="700.0" style="-fx-background-color: #f4f6f9;" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controllers.UserProfileController">
     <stylesheets>
         <URL value="@/styles/admin-common.css" />
@@ -49,7 +52,7 @@
                     </VBox.margin>
                 </HBox>
 
-                <VBox prefHeight="350.0" prefWidth="650.0" styleClass="card">
+                <VBox prefHeight="400.0" prefWidth="650.0" styleClass="card">
                     <VBox.margin>
                         <Insets bottom="20.0" left="25.0" right="25.0" top="10.0" />
                     </VBox.margin>
@@ -57,6 +60,16 @@
                         <Insets bottom="25.0" left="25.0" right="25.0" top="25.0" />
                     </padding>
                     <children>
+                        <HBox alignment="CENTER" spacing="10.0">
+                            <children>
+                                <ImageView fx:id="iv_profilePicture" fitHeight="100.0" fitWidth="100.0" pickOnBounds="true" preserveRatio="true" />
+                                <Button mnemonicParsing="false" onAction="#selectProfilePicture" text="Changer la photo" styleClass="button button-primary">
+                                    <HBox.margin>
+                                        <Insets left="10.0" />
+                                    </HBox.margin>
+                                </Button>
+                            </children>
+                        </HBox>
                         <GridPane hgap="20.0" vgap="15.0">
                             <columnConstraints>
                                 <javafx.scene.layout.ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="300.0" />
@@ -101,7 +114,27 @@
                                 <VBox spacing="5.0" GridPane.columnIndex="1" GridPane.rowIndex="2">
                                     <children>
                                         <Label text="Mot de passe" styleClass="label-info" />
-                                        <PasswordField fx:id="tf_password" styleClass="text-field" />
+                                        <HBox spacing="0">
+                                            <children>
+                                                <PasswordField fx:id="tf_password" styleClass="text-field" />
+                                                <TextField fx:id="tf_password_visible" styleClass="text-field" visible="false" managed="false" />
+                                                <Button fx:id="btn_toggle_password" mnemonicParsing="false" prefHeight="40.0" prefWidth="40.0" styleClass="text-field" onAction="#togglePasswordVisibility">
+                                                    <graphic>
+                                                        <ImageView fitHeight="20.0" fitWidth="20.0">
+                                                            <image>
+                                                                <Image url="@/images/eye.png" />
+                                                            </image>
+                                                        </ImageView>
+                                                    </graphic>
+                                                </Button>
+                                            </children>
+                                        </HBox>
+                                    </children>
+                                </VBox>
+                                <VBox spacing="5.0" GridPane.columnIndex="0" GridPane.rowIndex="3">
+                                    <children>
+                                        <Label text="Genre" styleClass="label-info" />
+                                        <ComboBox fx:id="cb_gender" promptText="Sélectionnez le genre" styleClass="combo-box" />
                                     </children>
                                 </VBox>
                             </children>

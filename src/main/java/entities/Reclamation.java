@@ -1,8 +1,5 @@
 package entities;
 
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
 import java.util.regex.Pattern;
 
 public class Reclamation {
@@ -10,16 +7,15 @@ public class Reclamation {
     private String type;
     private String dateIncident;
     private String description;
-    private String etat; // Added state field
-    private Client client = new Client(); // Initialize Client object
+    private String etat;
+    private Client client = new Client();
 
-    // Constructors
     public Reclamation(int clientId, String type, String dateIncident, String description) {
         this.client.setId_client(clientId);
         setType(type);
         setDateIncident(dateIncident);
         setDescription(description);
-        this.etat = "pas encore vu"; // Default state
+        this.etat = "en cours"; // Default state
     }
 
     public Reclamation(int id_reclamation, int clientId, String type, String dateIncident, String description) {
@@ -32,7 +28,6 @@ public class Reclamation {
         this.etat = etat;
     }
 
-    // Getters and Setters
     public int getId_reclamation() {
         return id_reclamation;
     }

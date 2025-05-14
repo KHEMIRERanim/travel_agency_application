@@ -10,10 +10,8 @@ import javafx.fxml.Initializable;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.control.Alert;
-import javafx.scene.control.ListCell;
-import javafx.scene.control.ListView;
-import javafx.scene.control.TextField;
+import javafx.scene.control.*;
+import javafx.scene.image.ImageView;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Priority;
@@ -21,22 +19,16 @@ import javafx.scene.layout.VBox;
 import javafx.scene.text.Text;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
-import javafx.stage.StageStyle;
 import javafx.util.Callback;
 import services.ServiceClient;
+import javafx.geometry.Insets;
+import utils.ImageUtils;
 
 import java.io.IOException;
 import java.net.URL;
 import java.sql.SQLException;
 import java.util.ResourceBundle;
 import java.util.stream.Collectors;
-import javafx.scene.control.Button;
-import javafx.scene.control.ButtonType;
-import java.util.ResourceBundle;
-import java.util.stream.Collectors;
-import javafx.scene.control.Button;
-import javafx.scene.control.ButtonType;
-import javafx.scene.Node;
 
 public class AdminDashboardController implements Initializable {
     private ServiceClient serviceClient = new ServiceClient();
@@ -50,7 +42,29 @@ public class AdminDashboardController implements Initializable {
     @FXML
     private TextField searchField;
 
+    @FXML
+    private Button clientsBtn;
+
+    @FXML
+    private Button reclamationsBtn;
+
+    @FXML
+    private Button volsBtn;
+
+    @FXML
+    private Button hotelsBtn;
+
+    @FXML
+    private Button transportBtn;
+
+    @FXML
+    private Button publicationsBtn;
+
+    @FXML
+    private Button logoutBtn;
+
     private ObservableList<Client> allClients;
+    private Client currentLoggedInClient;
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
@@ -70,6 +84,81 @@ public class AdminDashboardController implements Initializable {
             @Override
             public ListCell<Client> call(ListView<Client> param) {
                 return new ListCell<Client>() {
+                    private final HBox container = new HBox(15);
+                    private final VBox infoContainer = new VBox(5);
+                    private final Text nameText = new Text();
+                    private final HBox detailsBox = new HBox(15);
+                    private final ImageView profileImageView = new ImageView();
+                    private final Button editButton = new Button("Modifier");
+                    private final Button deleteButton = new Button("Supprimer");
+                    private Client currentClient;
+
+                    // Add a VBox for the role
+                    private final VBox roleBox = createDetailBox("Rôle", "");
+                    // Add a VBox for the gender
+                    private final VBox genderBox = createDetailBox("Genre", "");
+
+                    {
+                        // Initialize the layout
+                        container.getStyleClass().add("list-cell-container");
+
+                        // Configure image view
+                        profileImageView.setFitHeight(50);
+                        profileImageView.setFitWidth(50);
+                        HBox.setMargin(profileImageView, new Insets(0, 15, 0, 0));
+
+                        // Configure info container
+                        infoContainer.getStyleClass().add("client-info-container");
+                        HBox.setHgrow(infoContainer, Priority.ALWAYS);
+                        nameText.getStyleClass().add("client-name");
+
+                        // Create detail boxes
+                        VBox emailBox = createDetailBox("Email", "");
+                        VBox passwordBox = createDetailBox("Mot de passe", "");
+                        VBox phoneBox = createDetailBox("Téléphone", "");
+                        VBox dobBox = createDetailBox("Date de naissance", "");
+
+                        // Add roleBox and genderBox to detailsBox
+                        detailsBox.getChildren().addAll(emailBox, passwordBox, phoneBox, dobBox, roleBox, genderBox);
+                        infoContainer.getChildren().addAll(nameText, detailsBox);
+
+                        // Configure buttons
+                        editButton.getStyleClass().addAll("button", "button-primary");
+                        editButton.setPrefSize(100, 30);
+                        editButton.setVisible(false);
+
+                        deleteButton.getStyleClass().addAll("button", "button-danger");
+                        deleteButton.setPrefSize(100, 30);
+                        deleteButton.setVisible(false);
+
+                        HBox buttonBox = new HBox(10, editButton, deleteButton);
+                        buttonBox.setAlignment(javafx.geometry.Pos.CENTER_RIGHT);
+
+                        container.getChildren().addAll(profileImageView, infoContainer, buttonBox);
+
+                        // Hover behavior
+                        setOnMouseEntered(e -> {
+                            if (!isEmpty()) {
+                                editButton.setVisible(true);
+                                deleteButton.setVisible(true);
+                            }
+                        });
+                        setOnMouseExited(e -> {
+                            editButton.setVisible(false);
+                            deleteButton.setVisible(false);
+                        });
+                    }
+
+                    private VBox createDetailBox(String labelText, String valueText) {
+                        VBox box = new VBox(2);
+                        Text label = new Text(labelText);
+                        label.getStyleClass().add("info-label");
+                        Text value = new Text(valueText);
+                        value.getStyleClass().add("info-value");
+                        box.getChildren().addAll(label, value);
+                        return box;
+                    }
+
                     @Override
                     protected void updateItem(Client client, boolean empty) {
                         super.updateItem(client, empty);
@@ -77,58 +166,49 @@ public class AdminDashboardController implements Initializable {
                         if (empty || client == null) {
                             setText(null);
                             setGraphic(null);
+                            currentClient = null;
                         } else {
-                            // Create the layout for each cell
-                            HBox container = new HBox(15);
-                            container.getStyleClass().add("list-cell-container");
+                            currentClient = client;
+                            nameText.setText(client.getNom() + " " + client.getPrenom());
 
-                            VBox infoContainer = new VBox(5);
-                            infoContainer.getStyleClass().add("client-info-container");
-                            HBox.setHgrow(infoContainer, Priority.ALWAYS);
+                            // Update detail values
+                            ((Text)((VBox)detailsBox.getChildren().get(0)).getChildren().get(1)).setText(client.getEmail());
+                            ((Text)((VBox)detailsBox.getChildren().get(1)).getChildren().get(1)).setText("********");
+                            ((Text)((VBox)detailsBox.getChildren().get(2)).getChildren().get(1)).setText(String.valueOf(client.getNumero_telephone()));
+                            ((Text)((VBox)detailsBox.getChildren().get(3)).getChildren().get(1)).setText(client.getDate_de_naissance());
+                            ((Text)((VBox)detailsBox.getChildren().get(4)).getChildren().get(1)).setText(client.getRole());
+                            ((Text)((VBox)detailsBox.getChildren().get(5)).getChildren().get(1)).setText(client.getGender());
 
-                            // Main client info
-                            Text nameText = new Text(client.getNom() + " " + client.getPrenom());
-                            nameText.getStyleClass().add("client-name");
+                            // Main admin logic
+                            if (client.getEmail().equalsIgnoreCase("admin@gmail.com")) {
+                                deleteButton.setDisable(true);
+                                deleteButton.setVisible(false);
+                                // Only allow edit if this is the logged-in admin
+                                if (currentLoggedInClient != null && currentLoggedInClient.getEmail().equalsIgnoreCase("admin@gmail.com") &&
+                                    client.getEmail().equalsIgnoreCase(currentLoggedInClient.getEmail())) {
+                                    editButton.setDisable(false);
+                                    editButton.setVisible(true);
+                                } else {
+                                    editButton.setDisable(true);
+                                    editButton.setVisible(false);
+                                }
+                            } else {
+                                deleteButton.setDisable(false);
+                                deleteButton.setVisible(true);
+                                editButton.setDisable(false);
+                                editButton.setVisible(true);
+                            }
 
-                            HBox detailsBox = new HBox(15);
+                            // Load profile image
+                            try {
+                                profileImageView.setImage(ImageUtils.loadProfileImage(client.getProfilePicture()));
+                            } catch (Exception e) {
+                                System.err.println("Error loading profile image: " + e.getMessage());
+                            }
 
-                            // Email
-                            VBox emailBox = new VBox(2);
-                            Text emailLabel = new Text("Email");
-                            emailLabel.getStyleClass().add("info-label");
-                            Text emailValue = new Text(client.getEmail());
-                            emailValue.getStyleClass().add("info-value");
-                            emailBox.getChildren().addAll(emailLabel, emailValue);
-
-                            // Password
-                            VBox passwordBox = new VBox(2);
-                            Text passwordLabel = new Text("Mot de passe");
-                            passwordLabel.getStyleClass().add("info-label");
-                            Text passwordValue = new Text(client.getMot_de_passe());
-                            passwordValue.getStyleClass().add("info-value");
-                            passwordBox.getChildren().addAll(passwordLabel, passwordValue);
-
-                            // Phone
-                            VBox phoneBox = new VBox(2);
-                            Text phoneLabel = new Text("Téléphone");
-                            phoneLabel.getStyleClass().add("info-label");
-                            Text phoneValue = new Text(String.valueOf(client.getNumero_telephone()));
-                            phoneValue.getStyleClass().add("info-value");
-                            phoneBox.getChildren().addAll(phoneLabel, phoneValue);
-
-                            // Date of birth
-                            VBox dobBox = new VBox(2);
-                            Text dobLabel = new Text("Date de naissance");
-                            dobLabel.getStyleClass().add("info-label");
-                            Text dobValue = new Text(client.getDate_de_naissance());
-                            dobValue.getStyleClass().add("info-value");
-                            dobBox.getChildren().addAll(dobLabel, dobValue);
-
-                            detailsBox.getChildren().addAll(emailBox, passwordBox, phoneBox, dobBox);
-
-                            // Add all elements to containers
-                            infoContainer.getChildren().addAll(nameText, detailsBox);
-                            container.getChildren().add(infoContainer);
+                            // Set button actions
+                            editButton.setOnAction(event -> editSelectedClient(event, currentClient));
+                            deleteButton.setOnAction(event -> removeSelectedClient(event, currentClient));
 
                             setGraphic(container);
                         }
@@ -152,11 +232,11 @@ public class AdminDashboardController implements Initializable {
             clientListView.setItems(allClients);
         } else {
             String lowerCaseFilter = searchText.toLowerCase();
-            ObservableList<Client> filteredList = allClients.stream().filter(client ->
-                            client.getNom().toLowerCase().contains(lowerCaseFilter) ||
-                                    client.getPrenom().toLowerCase().contains(lowerCaseFilter) ||
-                                    client.getEmail().toLowerCase().contains(lowerCaseFilter) ||
-                                    String.valueOf(client.getNumero_telephone()).contains(lowerCaseFilter))
+            ObservableList<Client> filteredList = allClients.stream()
+                    .filter(client -> client.getNom().toLowerCase().contains(lowerCaseFilter) ||
+                            client.getPrenom().toLowerCase().contains(lowerCaseFilter) ||
+                            client.getEmail().toLowerCase().contains(lowerCaseFilter) ||
+                            String.valueOf(client.getNumero_telephone()).contains(lowerCaseFilter))
                     .collect(Collectors.toCollection(FXCollections::observableArrayList));
 
             clientListView.setItems(filteredList);
@@ -164,32 +244,49 @@ public class AdminDashboardController implements Initializable {
     }
 
     @FXML
-    void removeSelectedClient(ActionEvent event) {
-        Client selectedClient = clientListView.getSelectionModel().getSelectedItem();
+    void editSelectedClient(ActionEvent event, Client client) {
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/EditClientPopup.fxml"));
+            Parent root = loader.load();
 
-        if (selectedClient == null) {
-            showAlert(Alert.AlertType.WARNING, "Aucune sélection", "Aucun client sélectionné",
-                    "Veuillez sélectionner un client à supprimer.");
-            return;
+            EditClientPopupController controller = loader.getController();
+            controller.setClient(client);
+            controller.setRefreshCallback(this::loadClients);
+
+            Stage popupStage = new Stage();
+            popupStage.initModality(Modality.APPLICATION_MODAL);
+            popupStage.initOwner(((Node)event.getSource()).getScene().getWindow());
+            popupStage.setTitle("Modifier le client");
+
+            Scene scene = new Scene(root);
+            scene.getStylesheets().add(getClass().getResource("/styles/admin-common.css").toExternalForm());
+            popupStage.setScene(scene);
+            popupStage.showAndWait();
+
+            loadClients();
+        } catch (IOException e) {
+            showAlert(Alert.AlertType.ERROR, "Erreur", "Erreur de chargement",
+                    "Impossible de charger le formulaire de modification: " + e.getMessage());
+            e.printStackTrace();
         }
+    }
 
-        // Show confirmation dialog
+    @FXML
+    void removeSelectedClient(ActionEvent event, Client client) {
         Alert confirmation = new Alert(Alert.AlertType.CONFIRMATION);
         confirmation.setTitle("Confirmation de suppression");
         confirmation.setHeaderText("Supprimer le client");
-        confirmation.setContentText("Êtes-vous sûr de vouloir supprimer " + selectedClient.getNom() + " " + selectedClient.getPrenom() + "?");
+        confirmation.setContentText("Êtes-vous sûr de vouloir supprimer " + client.getNom() + " " + client.getPrenom() + "?");
 
-        // Customize the buttons
         ButtonType yesButton = new ButtonType("Oui");
         ButtonType noButton = new ButtonType("Non");
         confirmation.getButtonTypes().setAll(yesButton, noButton);
 
-        // Handle the response
         confirmation.showAndWait().ifPresent(response -> {
             if (response == yesButton) {
                 try {
-                    serviceClient.supprimer(selectedClient);
-                    loadClients(); // Refresh the list
+                    serviceClient.supprimer(client);
+                    loadClients();
                     showAlert(Alert.AlertType.INFORMATION, "Succès", "Client supprimé",
                             "Le client a été supprimé avec succès.");
                 } catch (SQLException e) {
@@ -199,6 +296,7 @@ public class AdminDashboardController implements Initializable {
             }
         });
     }
+
     @FXML
     void refreshList(ActionEvent event) {
         loadClients();
@@ -207,30 +305,22 @@ public class AdminDashboardController implements Initializable {
     @FXML
     void addNewClient(ActionEvent event) {
         try {
-            // Load the FXML
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/AddClientPopup.fxml"));
             Parent root = loader.load();
 
-            // Get the controller
             AddClientPopupController controller = loader.getController();
-
-            // Set the refresh callback
             controller.setRefreshCallback(this::loadClients);
 
-            // Create a new stage for the popup
             Stage popupStage = new Stage();
             popupStage.initModality(Modality.APPLICATION_MODAL);
             popupStage.initOwner(((Node)event.getSource()).getScene().getWindow());
             popupStage.setTitle("Ajouter un client");
 
-            // Apply stylesheets
             Scene scene = new Scene(root);
             scene.getStylesheets().add(getClass().getResource("/styles/admin-common.css").toExternalForm());
-
             popupStage.setScene(scene);
             popupStage.setResizable(false);
             popupStage.showAndWait();
-
         } catch (IOException e) {
             showAlert(Alert.AlertType.ERROR, "Erreur", "Erreur de chargement",
                     "Impossible de charger le formulaire d'ajout: " + e.getMessage());
@@ -349,5 +439,9 @@ public class AdminDashboardController implements Initializable {
         alert.setHeaderText(header);
         alert.setContentText(content);
         alert.showAndWait();
+    }
+
+    public void setCurrentLoggedInClient(Client client) {
+        this.currentLoggedInClient = client;
     }
 }

@@ -58,11 +58,21 @@
                                         <Font size="12.0" />
                                     </font>
                                 </Label>
-                                <PasswordField fx:id="tf_password" prefHeight="40.0" prefWidth="300.0" promptText="Entrez votre mot de passe" style="-fx-background-radius: 5;">
-                                    <font>
-                                        <Font size="14.0" />
-                                    </font>
-                                </PasswordField>
+                                <HBox spacing="0">
+                                    <children>
+                                        <PasswordField fx:id="tf_password" prefHeight="40.0" prefWidth="260.0" promptText="Entrez votre mot de passe" style="-fx-background-radius: 5;" />
+                                        <TextField fx:id="tf_password_visible" prefHeight="40.0" prefWidth="260.0" promptText="Entrez votre mot de passe" style="-fx-background-radius: 5;" visible="false" managed="false" />
+                                        <Button fx:id="btn_toggle_password" mnemonicParsing="false" prefHeight="40.0" prefWidth="40.0" style="-fx-background-radius: 5;" onAction="#togglePasswordVisibility">
+                                            <graphic>
+                                                <ImageView fitHeight="20.0" fitWidth="20.0">
+                                                    <image>
+                                                        <Image url="/images/eye.png" />
+                                                    </image>
+                                                </ImageView>
+                                            </graphic>
+                                        </Button>
+                                    </children>
+                                </HBox>
                             </children>
                         </VBox>
                         <Button mnemonicParsing="false" onAction="#login" prefHeight="45.0" prefWidth="300.0" style="-fx-background-color: #2a6ec1; -fx-background-radius: 5;" text="CONNEXION" textFill="WHITE">
@@ -107,12 +117,15 @@
         </AnchorPane>
         <AnchorPane prefHeight="600.0" prefWidth="450.0">
             <children>
-                <!-- Full-sized image with no overlay -->
+                <!-- Full-sized image with semi-transparent overlay for better text visibility -->
                 <ImageView fitHeight="600.0" fitWidth="450.0" pickOnBounds="true" preserveRatio="false">
                     <image>
                         <Image url="/images/atravel_illustration.png" />
                     </image>
                 </ImageView>
+
+                <!-- Lighter semi-transparent overlay to allow more image visibility -->
+                <AnchorPane prefHeight="600.0" prefWidth="450.0" style="-fx-background-color: rgba(0, 0, 0, 0.3);" />
 
                 <VBox alignment="CENTER" layoutX="50.0" prefHeight="600.0" prefWidth="350.0" spacing="20.0">
                     <children>
@@ -120,11 +133,25 @@
                             <font>
                                 <Font name="System Bold" size="32.0" />
                             </font>
+                            <effect>
+                                <DropShadow height="15.0" radius="7.0" spread="0.2" width="15.0">
+                                    <color>
+                                        <Color opacity="0.6" />
+                                    </color>
+                                </DropShadow>
+                            </effect>
                         </Label>
-                        <Label text="Connectez-vous pour gérer votre compte, vos réservations, vos réclamations et bien plus encore" textAlignment="CENTER" textFill="YELLOW" wrapText="true">
+                        <Label text="Connectez-vous pour gérer votre compte, vos réservations, vos réclamations et bien plus encore" textAlignment="CENTER" textFill="WHITE" wrapText="true">
                             <font>
-                                <Font size="28.0" />
+                                <Font size="24.0" />
                             </font>
+                            <effect>
+                                <DropShadow height="15.0" radius="7.0" spread="0.2" width="15.0">
+                                    <color>
+                                        <Color opacity="0.6" />
+                                    </color>
+                                </DropShadow>
+                            </effect>
                         </Label>
                     </children>
                 </VBox>
