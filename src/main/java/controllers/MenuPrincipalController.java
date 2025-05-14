@@ -18,13 +18,7 @@ public class MenuPrincipalController {
     private Button btnAfficher;
 
     @FXML
-    private Button btnModifier;
-
-    @FXML
     private AnchorPane contentArea;
-
-    @FXML
-    private Button btnsupprimer;
 
     @FXML
     private Button btnAfficherReservations;

@@ -281,19 +281,19 @@ public class AdminDashboardController implements Initializable {
         }
     }
 
-    @FXML
+@FXML
     void showVols(ActionEvent event) {
         try {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/MenuPrincipale.fxml"));
             Parent volsView = loader.load();
 
-            // If using contentArea (which is the case in the current UI)
+            // If contentArea is available, use it
             if (contentArea != null) {
                 contentArea.getChildren().clear();
                 contentArea.getChildren().add(volsView);
             } else {
-                // Fallback to opening in a new window
-                Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
+                // Otherwise open in a new window
+                Stage stage = new Stage();
                 stage.setScene(new Scene(volsView));
                 stage.setTitle("Gestion des vols");
                 stage.show();
@@ -304,6 +304,7 @@ public class AdminDashboardController implements Initializable {
             e.printStackTrace();
         }
     }
+
 
     @FXML
     void showHotels(ActionEvent event) {

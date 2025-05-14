@@ -1,31 +1,41 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import java.net.URL?>
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.layout.AnchorPane?>
-<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.layout.HBox?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane prefHeight="831.0" prefWidth="1381.0" style="-fx-background-color: #E0F7FA;" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controllers.MenuPrincipalController">
+<AnchorPane prefHeight="831.0" prefWidth="1381.0" style="-fx-background-color: #FFFFFF;" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controllers.MenuPrincipalController">
+    <stylesheets>
+        <URL value="@flightstyle.css" />
+    </stylesheets>
     <children>
-        <VBox layoutX="14.0" layoutY="31.0" prefHeight="303.0" prefWidth="188.0" spacing="20.0" style="-fx-background-color: #B2EBF2; -fx-background-radius: 10;">
+
+        <!-- Menu horizontal en haut -->
+        <HBox alignment="CENTER_RIGHT" layoutX="420.0" layoutY="22.0" spacing="20.0" />
+
+        <!-- Zone de contenu principale -->
+        <AnchorPane prefHeight="831.0" prefWidth="1382.0" style="-fx-background-color: #a0dfe3;">
             <children>
-                <Button fx:id="btnAjouter" mnemonicParsing="false" onAction="#ouvrirAjouter" prefHeight="50.0" prefWidth="200.0" style="-fx-background-color: #039BE5; -fx-text-fill: white; -fx-background-radius: 5;" text="Ajouter Vol">
+                <!-- Zone de contenu principal pour afficher les formulaires -->
+                <AnchorPane fx:id="contentArea" layoutX="247.0" layoutY="103.0" prefHeight="705.0" prefWidth="1095.0" style="-fx-background-color: white; -fx-background-radius: 10; -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.1), 10, 0, 0, 5);" />
+                <Button fx:id="btnAfficher" layoutX="29.0" layoutY="155.0" mnemonicParsing="false" onAction="#ouvrirAfficher" prefHeight="40.0" prefWidth="180.0" styleClass="button-white-border" text="Afficher Vols">
                     <font>
                         <Font size="14.0" />
                     </font>
                 </Button>
-                <Button fx:id="btnAfficher" mnemonicParsing="false" onAction="#ouvrirAfficher" prefHeight="50.0" prefWidth="200.0" style="-fx-background-color: #039BE5; -fx-text-fill: white; -fx-background-radius: 5;" text="Afficher Vols">
+                <Button fx:id="btnAjouter" layoutX="29.0" layoutY="268.0" mnemonicParsing="false" onAction="#ouvrirAjouter" prefHeight="40.0" prefWidth="180.0" styleClass="button-white-border" text="Ajouter Vol">
                     <font>
                         <Font size="14.0" />
                     </font>
                 </Button>
-                <Button fx:id="btnAfficherReservations" mnemonicParsing="false" onAction="#ouvrirAfficherReservations" prefHeight="50.0" prefWidth="200.0" style="-fx-background-color: #039BE5; -fx-text-fill: white; -fx-background-radius: 5;" text="Afficher Réservations">
+                <Button fx:id="btnAfficherReservations" layoutX="29.0" layoutY="211.0" mnemonicParsing="false" onAction="#ouvrirAfficherReservations" prefHeight="40.0" prefWidth="180.0" styleClass="button-primary" text="Afficher Réservations">
                     <font>
                         <Font size="14.0" />
                     </font>
                 </Button>
             </children>
-        </VBox>
-        <AnchorPane fx:id="contentArea" layoutX="218.0" layoutY="14.0" prefHeight="793.0" prefWidth="1134.0" style="-fx-background-color: #ffebfb; -fx-background-radius: 10;" />
+        </AnchorPane>
     </children>
 </AnchorPane>

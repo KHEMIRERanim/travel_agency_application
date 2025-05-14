@@ -1,68 +1,218 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.DatePicker?>
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
 <?import javafx.scene.shape.Rectangle?>
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
+<?import java.net.URL?>
 
-<AnchorPane prefHeight="788.0" prefWidth="1227.0" style="-fx-background-color: #E0F7FA;" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controllers.ChercherVolController">
+<AnchorPane prefHeight="799.0" prefWidth="1289.0" style="-fx-background-color: #FFFFFF;" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controllers.ChercherVolController">
+    <stylesheets>
+        <URL value="@flightstyle.css" />
+    </stylesheets>
     <children>
-        <Rectangle arcHeight="20.0" arcWidth="20.0" fill="#c4e6ea" height="409.0" layoutX="207.0" layoutY="88.0" stroke="WHITE" strokeType="INSIDE" width="454.0" />
-        <Rectangle arcHeight="20.0" arcWidth="20.0" fill="#ffebfb" height="530.0" layoutX="690.0" layoutY="88.0" stroke="#b4aaaa" strokeType="INSIDE" width="426.0" />
-        <TextField fx:id="departurechercher" layoutX="727.0" layoutY="181.0" prefHeight="26.0" prefWidth="226.0" promptText="Departure" style="-fx-border-color: #39909D; -fx-border-radius: 5;" />
-        <TextField fx:id="destinationchercher" layoutX="727.0" layoutY="250.0" prefHeight="26.0" prefWidth="226.0" promptText="Destination" style="-fx-border-color: #39909D; -fx-border-radius: 5;" />
-        <ImageView fitHeight="282.0" fitWidth="304.0" layoutX="303.0" layoutY="188.0" pickOnBounds="true" preserveRatio="true">
-            <image>
-                <Image url="@ImageVol/ae8a4bda5d8385b87e1bd3ccf57cfcdb.jpg" />
-            </image>
-        </ImageView>
-        <DatePicker fx:id="flightdatechercher" layoutX="727.0" layoutY="316.0" prefHeight="26.0" prefWidth="226.0" promptText="Depature-Date" style="-fx-border-color: #39909D; -fx-border-radius: 5;" />
-        <Button fx:id="btnRechercherVol" layoutX="732.0" layoutY="529.0" mnemonicParsing="false" onAction="#recherchervol" prefHeight="35.0" prefWidth="204.0" style="-fx-background-color: FF9E0C; -fx-background-radius: 5;" text="Search" />
-        <Button fx:id="btnRealTimeFlights" layoutX="732.0" layoutY="574.0" mnemonicParsing="false" onAction="#showRealTimeFlights" prefHeight="35.0" prefWidth="204.0" style="-fx-background-color: #FF9E0C; -fx-background-radius: 5;" text="Real-Time Tunis Flights" />
-        <Button fx:id="btnWeather" layoutX="732.0" layoutY="619.0" mnemonicParsing="false" onAction="#showWeather" prefHeight="35.0" prefWidth="204.0" style="-fx-background-color: #FF9E0C; -fx-background-radius: 5;" text="Weather in Tunis" />
-        <Text layoutX="727.0" layoutY="165.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Departure" wrappingWidth="213.15423583984375" />
-        <Text layoutX="727.0" layoutY="235.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Destination" />
-        <Text layoutX="727.0" layoutY="302.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Flight-Date" />
-        <Text layoutX="726.0" layoutY="381.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Number of adult passengers" />
-        <Text layoutX="727.0" layoutY="458.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Number of child passengers" />
-        <Text fill="#dc2a2a" layoutX="226.0" layoutY="121.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Ready to explore tho world ?">
+        <!-- Header with gradient background -->
+        <Rectangle arcHeight="0.0" arcWidth="0.0" fill="#1a2b47" height="81.0" layoutX="0.0" layoutY="2.0" stroke="TRANSPARENT" strokeType="INSIDE" width="1354.0" />
+
+        <!-- Logo or Title Area -->
+        <Text fill="WHITE" layoutX="30.0" layoutY="50.0" strokeType="OUTSIDE" strokeWidth="0.0">
             <font>
-                <Font name="Bookman Old Style Italic" size="30.0" />
+                <Font name="Montserrat Bold" size="24.0" />
             </font>
         </Text>
-        <Text layoutX="264.0" layoutY="157.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Discover the perfect flight for your next adventure !">
-            <font>
-                <Font name="Century Schoolbook" size="14.0" />
-            </font>
-        </Text>
-        <Rectangle arcHeight="20.0" arcWidth="20.0" fill="#ff7757" height="134.0" layoutX="207.0" layoutY="521.0" opacity="0.86" stroke="BLACK" strokeType="INSIDE" width="136.0" />
-        <ImageView fitHeight="70.0" fitWidth="123.0" layoutX="238.0" layoutY="524.0" pickOnBounds="true" preserveRatio="true">
-            <image>
-                <Image url="@ImageVol/agence-de-voyage (1) 1.png" />
-            </image>
-        </ImageView>
-        <Text layoutX="238.0" layoutY="611.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Personalized Expertise and Advice" textAlignment="CENTER" wrappingWidth="70.40000000000009" />
-        <Rectangle arcHeight="20.0" arcWidth="20.0" fill="#ff7757" height="134.0" layoutX="370.0" layoutY="522.0" opacity="0.86" stroke="BLACK" strokeType="INSIDE" width="136.0" />
-        <Rectangle arcHeight="20.0" arcWidth="20.0" fill="#ff7757" height="134.0" layoutX="529.0" layoutY="522.0" opacity="0.86" stroke="BLACK" strokeType="INSIDE" width="136.0" />
-        <ImageView fitHeight="70.0" fitWidth="54.0" layoutX="411.0" layoutY="532.0" pickOnBounds="true" preserveRatio="true">
-            <image>
-                <Image url="@ImageVol/lhorloge 1.png" />
-            </image>
-        </ImageView>
-        <Text layoutX="403.0" layoutY="612.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Time Savings and Simplicity" textAlignment="CENTER" wrappingWidth="70.39999999999986" />
-        <ImageView fitHeight="61.0" fitWidth="83.0" layoutX="567.0" layoutY="529.0" pickOnBounds="true" preserveRatio="true">
-            <image>
-                <Image url="@ImageVol/idees 1.png" />
-            </image>
-        </ImageView>
-        <Text layoutX="556.0" layoutY="613.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Access to a wide range of destinations" textAlignment="CENTER" wrappingWidth="81.59999999999991" />
-        <TextField fx:id="adultchercher" layoutX="727.0" layoutY="402.0" prefHeight="26.0" prefWidth="226.0" promptText="Number of adult passengers" style="-fx-border-color: #39909D; -fx-border-radius: 5;" />
-        <TextField fx:id="childchercher" layoutX="727.0" layoutY="470.0" prefHeight="26.0" prefWidth="226.0" promptText="Number of child passengers" style="-fx-border-color: #39909D; -fx-border-radius: 5;" />
-        <Button fx:id="btnmyreservations" layoutX="903.0" layoutY="110.0" mnemonicParsing="false" onAction="#showMyReservations" prefHeight="35.0" prefWidth="204.0" style="-fx-background-color: FF9E0C; -fx-background-radius: 5;" text="My reservations" />
+
+        <!-- Navigation buttons in header -->
+        <HBox alignment="CENTER_RIGHT" layoutX="600.0" layoutY="20.0" spacing="20.0">
+            <children>
+                <Button fx:id="btnWeather" mnemonicParsing="false" onAction="#showWeather" prefHeight="40.0" prefWidth="180.0" style="-fx-background-color: transparent; -fx-text-fill: white; -fx-border-color: white; -fx-border-radius: 5; -fx-border-width: 1;" text="Weather in Tunis" />
+                <Button fx:id="btnRealTimeFlights" mnemonicParsing="false" onAction="#showRealTimeFlights" prefHeight="40.0" prefWidth="180.0" style="-fx-background-color: transparent; -fx-text-fill: white; -fx-border-color: white; -fx-border-radius: 5; -fx-border-width: 1;" text="Real-Time Tunis Flights" />
+                <Button fx:id="btnmyreservations" mnemonicParsing="false" onAction="#showMyReservations" prefHeight="40.0" prefWidth="180.0" style="-fx-background-color: #FF6B6B; -fx-background-radius: 5; -fx-text-fill: white;" text="My Reservations" />
+            </children>
+        </HBox>
+
+        <!-- Main content area -->
+        <AnchorPane layoutY="80.0" prefHeight="728.0" prefWidth="1354.0" style="-fx-background-color: #a0dfe3;">
+            <children>
+                <!-- Main Banner Area -->
+                <Rectangle arcHeight="10.0" arcWidth="10.0" fill="#FFFFFF" height="280.0" layoutX="54.0" layoutY="48.0" stroke="#E0E0E0" strokeType="INSIDE" strokeWidth="1.0" width="700.0" />
+
+                <Text fill="#1864df" layoutX="80.0" layoutY="97.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Ready to explore the world?">
+                    <font>
+                        <Font name="System Bold" size="32.0" />
+                    </font>
+                </Text>
+
+                <Text fill="#d10e0e" layoutX="80.0" layoutY="135.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Discover the perfect flight for your next adventure!">
+                    <font>
+                        <Font name="Book Antiqua" size="15.0" />
+                    </font>
+                </Text>
+
+                <ImageView fitHeight="266.0" fitWidth="261.0" layoutX="519.0" layoutY="55.0" pickOnBounds="true" preserveRatio="true">
+                    <image>
+                        <Image url="@ImageVol/ae8a4bda5d8385b87e1bd3ccf57cfcdb.jpg" />
+                    </image>
+                </ImageView>
+
+                <!-- Features section -->
+                <HBox alignment="CENTER" layoutX="41.0" layoutY="350.0" prefHeight="160.0" prefWidth="700.0" spacing="30.0">
+                    <children>
+                        <!-- Feature 1 -->
+                        <VBox alignment="TOP_CENTER" prefHeight="160.0" prefWidth="200.0" style="-fx-background-color: #fda9bf; -fx-background-radius: 10; -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.1), 10, 0, 0, 5);">
+                            <children>
+                                <ImageView fitHeight="70.0" fitWidth="70.0" pickOnBounds="true" preserveRatio="true">
+                                    <image>
+                                        <Image url="@ImageVol/agence-de-voyage (1) 1.png" />
+                                    </image>
+                                </ImageView>
+                                <Text fill="#333333" strokeType="OUTSIDE" strokeWidth="0.0" text="Personalized Expertise" textAlignment="CENTER" wrappingWidth="180.0">
+                                    <font>
+                                        <Font name="Montserrat Bold" size="14.0" />
+                                    </font>
+                                </Text>
+                                <Text fill="#777777" strokeType="OUTSIDE" strokeWidth="0.0" text="Get tailored advice from our travel experts" textAlignment="CENTER" wrappingWidth="180.0">
+                                    <font>
+                                        <Font name="Montserrat" size="12.0" />
+                                    </font>
+                                </Text>
+                            </children>
+                        </VBox>
+
+                        <!-- Feature 2 -->
+                        <VBox alignment="TOP_CENTER" prefHeight="160.0" prefWidth="200.0" style="-fx-background-color: #fda9bf; -fx-background-radius: 10; -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.1), 10, 0, 0, 5);">
+                            <children>
+                                <ImageView fitHeight="70.0" fitWidth="70.0" pickOnBounds="true" preserveRatio="true">
+                                    <image>
+                                        <Image url="@ImageVol/lhorloge 1.png" />
+                                    </image>
+                                </ImageView>
+                                <Text fill="#333333" strokeType="OUTSIDE" strokeWidth="0.0" text="Time Savings" textAlignment="CENTER" wrappingWidth="180.0">
+                                    <font>
+                                        <Font name="Montserrat Bold" size="14.0" />
+                                    </font>
+                                </Text>
+                                <Text fill="#777777" strokeType="OUTSIDE" strokeWidth="0.0" text="Quick and simple booking process" textAlignment="CENTER" wrappingWidth="180.0">
+                                    <font>
+                                        <Font name="Montserrat" size="12.0" />
+                                    </font>
+                                </Text>
+                            </children>
+                        </VBox>
+
+                        <!-- Feature 3 -->
+                        <VBox alignment="TOP_CENTER" prefHeight="160.0" prefWidth="200.0" style="-fx-background-color: fda9bf; -fx-background-radius: 10; -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.1), 10, 0, 0, 5);">
+                            <children>
+                                <ImageView fitHeight="70.0" fitWidth="70.0" pickOnBounds="true" preserveRatio="true">
+                                    <image>
+                                        <Image url="@ImageVol/idees 1.png" />
+                                    </image>
+                                </ImageView>
+                                <Text fill="#333333" strokeType="OUTSIDE" strokeWidth="0.0" text="Wide Range of Options" textAlignment="CENTER" wrappingWidth="180.0">
+                                    <font>
+                                        <Font name="Montserrat Bold" size="14.0" />
+                                    </font>
+                                </Text>
+                                <Text fill="#777777" strokeType="OUTSIDE" strokeWidth="0.0" text="Access to global destinations" textAlignment="CENTER" wrappingWidth="180.0">
+                                    <font>
+                                        <Font name="Montserrat" size="12.0" />
+                                    </font>
+                                </Text>
+                            </children>
+                        </VBox>
+                    </children>
+                </HBox>
+
+                <!-- Search Form Area -->
+                <VBox alignment="TOP_CENTER" layoutX="800.0" layoutY="40.0" prefHeight="480.0" prefWidth="360.0" spacing="10.0" style="-fx-background-color: white; -fx-background-radius: 10; -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.1), 10, 0, 0, 5);">
+                    <padding>
+                        <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
+                    </padding>
+                    <children>
+                        <Text fill="#1a2b47" strokeType="OUTSIDE" strokeWidth="0.0" text="Search Flights" textAlignment="CENTER" wrappingWidth="300.0">
+                            <font>
+                                <Font name="Montserrat Bold" size="24.0" />
+                            </font>
+                        </Text>
+
+                        <VBox spacing="5.0">
+                            <padding>
+                                <Insets top="10.0" />
+                            </padding>
+                            <Text fill="#555555" strokeType="OUTSIDE" strokeWidth="0.0" text="Departure" wrappingWidth="300.0">
+                                <font>
+                                    <Font name="Montserrat" size="14.0" />
+                                </font>
+                            </Text>
+                            <TextField fx:id="departurechercher" prefHeight="45.0" prefWidth="300.0" promptText="Enter departure city" style="-fx-background-color: #F5F7FA; -fx-border-color: #E0E0E0; -fx-border-radius: 5; -fx-padding: 10;" />
+                        </VBox>
+
+                        <VBox spacing="5.0">
+                            <padding>
+                                <Insets top="10.0" />
+                            </padding>
+                            <Text fill="#555555" strokeType="OUTSIDE" strokeWidth="0.0" text="Destination" wrappingWidth="300.0">
+                                <font>
+                                    <Font name="Montserrat" size="14.0" />
+                                </font>
+                            </Text>
+                            <TextField fx:id="destinationchercher" prefHeight="45.0" prefWidth="300.0" promptText="Enter destination city" style="-fx-background-color: #F5F7FA; -fx-border-color: #E0E0E0; -fx-border-radius: 5; -fx-padding: 10;" />
+                        </VBox>
+
+                        <VBox spacing="5.0">
+                            <padding>
+                                <Insets top="10.0" />
+                            </padding>
+                            <Text fill="#555555" strokeType="OUTSIDE" strokeWidth="0.0" text="Flight Date" wrappingWidth="300.0">
+                                <font>
+                                    <Font name="Montserrat" size="14.0" />
+                                </font>
+                            </Text>
+                            <DatePicker fx:id="flightdatechercher" prefHeight="45.0" prefWidth="300.0" promptText="Select date" style="-fx-background-color: #F5F7FA; -fx-border-color: #E0E0E0; -fx-border-radius: 5;" />
+                        </VBox>
+
+                        <VBox spacing="5.0">
+                            <padding>
+                                <Insets top="10.0" />
+                            </padding>
+                            <Text fill="#555555" strokeType="OUTSIDE" strokeWidth="0.0" text="Number of adult passengers" wrappingWidth="300.0">
+                                <font>
+                                    <Font name="Montserrat" size="14.0" />
+                                </font>
+                            </Text>
+                            <TextField fx:id="adultchercher" prefHeight="45.0" prefWidth="300.0" promptText="Enter number of adults" style="-fx-background-color: #F5F7FA; -fx-border-color: #E0E0E0; -fx-border-radius: 5; -fx-padding: 10;" />
+                        </VBox>
+
+                        <VBox spacing="5.0">
+                            <padding>
+                                <Insets top="10.0" />
+                            </padding>
+                            <Text fill="#555555" strokeType="OUTSIDE" strokeWidth="0.0" text="Number of child passengers" wrappingWidth="300.0">
+                                <font>
+                                    <Font name="Montserrat" size="14.0" />
+                                </font>
+                            </Text>
+                            <TextField fx:id="childchercher" prefHeight="45.0" prefWidth="300.0" promptText="Enter number of children" style="-fx-background-color: #F5F7FA; -fx-border-color: #E0E0E0; -fx-border-radius: 5; -fx-padding: 10;" />
+                        </VBox>
+
+                        <Button fx:id="btnRechercherVol" mnemonicParsing="false" onAction="#recherchervol" prefHeight="50.0" prefWidth="300.0" style="-fx-background-color: #FF6B6B; -fx-background-radius: 5; -fx-text-fill: white; -fx-font-weight: bold;" text="SEARCH FLIGHTS" textAlignment="JUSTIFY">
+                            <font>
+                                <Font name="Montserrat Bold" size="16.0" />
+                            </font>
+                            <VBox.margin>
+                                <Insets top="20.0" />
+                            </VBox.margin>
+                        </Button>
+                    </children>
+                </VBox>
+            </children>
+        </AnchorPane>
     </children>
 </AnchorPane>

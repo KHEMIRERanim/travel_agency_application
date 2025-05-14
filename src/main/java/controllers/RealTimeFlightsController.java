@@ -44,7 +44,7 @@ public class RealTimeFlightsController {
     private String destination;
     private Date flightDate;
 
-    private static final String API_KEY = "b54ed24b5ede2e30cbeeb4202c6b5cb4"; // Remplacez par votre clé API AviationStack
+    private static final String API_KEY = "7613ba7aa892041d692ad2bf1e6c18ff"; // Remplacez par votre clé API AviationStack
     private static final String API_URL = "http://api.aviationstack.com/v1/flights?access_key=" + API_KEY;
 
     public void setClient(Client client) {
@@ -115,89 +115,67 @@ public class RealTimeFlightsController {
     public void fetchRealTimeFlights(ActionEvent event) {
         Platform.runLater(() -> {
             try {
-                StringBuilder depUrl = new StringBuilder(API_URL);
-                depUrl.append("&dep_iata=TUN");
-                StringBuilder arrUrl = new StringBuilder(API_URL);
-                arrUrl.append("&arr_iata=TUN");
-
-                if (!departure.isEmpty() && !departure.equalsIgnoreCase("TUN")) {
-                    depUrl.append("&dep_iata=").append(departure);
-                    arrUrl.append("&dep_iata=").append(departure);
-                }
-                if (!destination.isEmpty() && !destination.equalsIgnoreCase("TUN")) {
-                    depUrl.append("&arr_iata=").append(destination);
-                    arrUrl.append("&arr_iata=").append(destination);
+                // Valider la clé API
+                if (API_KEY == null || API_KEY.trim().isEmpty()) {
+                    showAlert(Alert.AlertType.ERROR, "Erreur", "Clé API manquante",
+                            "La clé API AviationStack n'est pas configurée.");
+                    return;
                 }
 
-                System.out.println("Departure API URL: " + depUrl.toString());
-                String depResponse = callAviationStackAPI(depUrl.toString());
-                System.out.println("Departure API Response: " + depResponse);
-
-                System.out.println("Arrival API URL: " + arrUrl.toString());
-                String arrResponse = callAviationStackAPI(arrUrl.toString());
-                System.out.println("Arrival API Response: " + arrResponse);
-
-                JSONObject depJsonResponse = new JSONObject(depResponse);
-                JSONArray depFlights = depJsonResponse.getJSONArray("data");
-
-                JSONObject arrJsonResponse = new JSONObject(arrResponse);
-                JSONArray arrFlights = arrJsonResponse.getJSONArray("data");
-
-                JSONArray flights = new JSONArray();
-                for (int i = 0; i < depFlights.length(); i++) {
-                    flights.put(depFlights.getJSONObject(i));
+                // Construire l'URL de l'API
+                String apiUrl = API_URL + "&limit=50"; // Limiter à 50 résultats
+                if (!departure.isEmpty()) {
+                    apiUrl += "&dep_iata=" + departure;
                 }
-                for (int i = 0; i < arrFlights.length(); i++) {
-                    JSONObject flight = arrFlights.getJSONObject(i);
-                    boolean isDuplicate = false;
-                    for (int j = 0; j < flights.length(); j++) {
-                        if (flights.getJSONObject(j).getJSONObject("flight").optString("iata", "")
-                                .equals(flight.getJSONObject("flight").optString("iata", ""))) {
-                            isDuplicate = true;
-                            break;
-                        }
-                    }
-                    if (!isDuplicate) {
-                        flights.put(flight);
-                    }
+                if (!destination.isEmpty()) {
+                    apiUrl += "&arr_iata=" + destination;
+                }
+                if (flightDate != null) {
+                    apiUrl += "&flight_date=" + flightDate.toString();
                 }
 
+                System.out.println("API URL: " + apiUrl);
+                String response = callAviationStackAPI(apiUrl);
+                System.out.println("API Response: " + response);
+
+                // Analyser la réponse
+                JSONObject jsonResponse = new JSONObject(response);
+                JSONArray flights = jsonResponse.getJSONArray("data");
+
+                // Vérifier si des vols sont retournés
                 if (flights.length() == 0) {
-                    System.out.println("No flights returned from API, adding mock data...");
-                    JSONObject mockFlight1 = new JSONObject();
-                    mockFlight1.put("flight", new JSONObject().put("iata", "TU123"));
-                    mockFlight1.put("departure", new JSONObject()
-                            .put("iata", "TUN")
-                            .put("scheduled", "2025-05-13T10:00:00+00:00"));
-                    mockFlight1.put("arrival", new JSONObject()
-                            .put("iata", "CDG")
-                            .put("scheduled", "2025-05-13T12:30:00+00:00"));
-                    mockFlight1.put("airline", new JSONObject().put("name", "Tunisair"));
-                    mockFlight1.put("flight_date", "2025-05-13");
-                    flights.put(mockFlight1);
-
-                    JSONObject mockFlight2 = new JSONObject();
-                    mockFlight2.put("flight", new JSONObject().put("iata", "AF456"));
-                    mockFlight2.put("departure", new JSONObject()
-                            .put("iata", "JFK")
-                            .put("scheduled", "2025-05-13T15:00:00+00:00"));
-                    mockFlight2.put("arrival", new JSONObject()
-                            .put("iata", "TUN")
-                            .put("scheduled", "2025-05-13T23:00:00+00:00"));
-                    mockFlight2.put("airline", new JSONObject().put("name", "Air France"));
-                    mockFlight2.put("flight_date", "2025-05-13");
-                    flights.put(mockFlight2);
+                    showAlert(Alert.AlertType.INFORMATION, "Aucun vol", "Aucun vol trouvé",
+                            "L'API n'a retourné aucun vol pour ces critères.");
+                    return;
                 }
                 System.out.println("Total flights received: " + flights.length());
 
-                JSONArray tunisFlights = new JSONArray();
+                // Filtrer les vols selon les critères
+                JSONArray filteredFlights = new JSONArray();
                 for (int i = 0; i < flights.length(); i++) {
                     JSONObject flight = flights.getJSONObject(i);
                     JSONObject departure = flight.getJSONObject("departure");
                     JSONObject arrival = flight.getJSONObject("arrival");
                     String depIata = departure.optString("iata", "");
                     String arrIata = arrival.optString("iata", "");
-                    if (depIata.equalsIgnoreCase("TUN") || arrIata.equalsIgnoreCase("TUN")) {
+
+                    // Vérifier si le vol correspond aux critères
+                    boolean matchesCriteria = true;
+                    if (!this.departure.isEmpty() && !depIata.equalsIgnoreCase(this.departure)) {
+                        matchesCriteria = false;
+                    }
+                    if (!this.destination.isEmpty() && !arrIata.equalsIgnoreCase(this.destination)) {
+                        matchesCriteria = false;
+                    }
+                    if (this.flightDate != null) {
+                        String apiFlightDate = flight.optString("flight_date", "");
+                        if (!apiFlightDate.equals(this.flightDate.toString())) {
+                            matchesCriteria = false;
+                        }
+                    }
+
+                    // Ajouter les vols correspondants ou tous les vols si aucun critère
+                    if (matchesCriteria || (this.departure.isEmpty() && this.destination.isEmpty())) {
                         String flightNumber = flight.getJSONObject("flight").optString("iata", "N/A");
                         flight.put("flight_number", flightNumber);
                         flight.put("departure_airport", depIata);
@@ -206,17 +184,22 @@ public class RealTimeFlightsController {
                         flight.put("departure_time", departure.optString("scheduled", "N/A"));
                         flight.put("arrival_time", arrival.optString("scheduled", "N/A"));
                         flight.put("flight_date", flight.optString("flight_date", "N/A"));
-                        flight.put("price", 200.0);
-                        flight.put("available_seats", 50);
-                        flight.put("flight_duration", 120);
-                        tunisFlights.put(flight);
+                        flight.put("price", 200.0); // Placeholder
+                        flight.put("available_seats", 50); // Placeholder
+                        flight.put("flight_duration", 120); // Placeholder
+                        filteredFlights.put(flight);
                     }
                 }
-                System.out.println("Flights after TUN filter: " + tunisFlights.length());
 
-                JSONArray filteredFlights = tunisFlights;
-                System.out.println("Flights after date filter: " + filteredFlights.length());
+                // Vérifier si des vols correspondent
+                if (filteredFlights.length() == 0) {
+                    showAlert(Alert.AlertType.INFORMATION, "Aucun vol", "Aucun vol trouvé",
+                            "Aucun vol ne correspond à vos critères. Essayez d'autres paramètres.");
+                    return;
+                }
+                System.out.println("Flights after filters: " + filteredFlights.length());
 
+                // Filtrer par sièges requis
                 JSONArray finalFlights = new JSONArray();
                 for (int i = 0; i < filteredFlights.length(); i++) {
                     JSONObject flight = filteredFlights.getJSONObject(i);
@@ -224,8 +207,15 @@ public class RealTimeFlightsController {
                         finalFlights.put(flight);
                     }
                 }
+
+                if (finalFlights.length() == 0) {
+                    showAlert(Alert.AlertType.INFORMATION, "Aucun vol", "Sièges insuffisants",
+                            "Aucun vol avec suffisamment de sièges disponibles.");
+                    return;
+                }
                 System.out.println("Final flights after seat filter: " + finalFlights.length());
 
+                // Envoyer au WebView
                 String flightsJson = finalFlights.toString();
                 System.out.println("Flights JSON sent to WebView: " + flightsJson);
                 WebEngine engine = webView.getEngine();
@@ -234,11 +224,11 @@ public class RealTimeFlightsController {
 
             } catch (IOException e) {
                 showAlert(Alert.AlertType.ERROR, "Erreur", "Erreur API",
-                        "Impossible de récupérer les vols: " + e.getMessage());
+                        "Impossible de récupérer les vols : " + e.getMessage());
                 e.printStackTrace();
             } catch (Exception e) {
                 showAlert(Alert.AlertType.ERROR, "Erreur", "Erreur inattendue",
-                        "Une erreur s'est produite: " + e.getMessage());
+                        "Une erreur s'est produite : " + e.getMessage());
                 e.printStackTrace();
             }
         });
