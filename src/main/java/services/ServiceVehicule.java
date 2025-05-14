@@ -17,7 +17,7 @@ public class ServiceVehicule {
 
     public void ajouter(Vehicule vehicule) throws SQLException {
         String query = "INSERT INTO vehicule (type, lieu_prise, lieu_retour, date_location, date_retour, image_path, prix) VALUES (?, ?, ?, ?, ?, ?, ?)";
-        try (PreparedStatement stmt = conn.prepareStatement(query)) {
+        try (PreparedStatement stmt = conn.prepareStatement(query, Statement.RETURN_GENERATED_KEYS)) {
             stmt.setString(1, vehicule.getType());
             stmt.setString(2, vehicule.getLieuPrise());
             stmt.setString(3, vehicule.getLieuRetour());
@@ -26,6 +26,11 @@ public class ServiceVehicule {
             stmt.setString(6, vehicule.getImagePath());
             stmt.setDouble(7, vehicule.getPrix());
             stmt.executeUpdate();
+            try (ResultSet rs = stmt.getGeneratedKeys()) {
+                if (rs.next()) {
+                    vehicule.setId(rs.getInt(1));
+                }
+            }
             System.out.println("Vehicle added: " + vehicule.getType());
         }
     }
@@ -80,18 +85,19 @@ public class ServiceVehicule {
         String query = "SELECT * FROM vehicule WHERE id_vehicule = ?";
         try (PreparedStatement stmt = conn.prepareStatement(query)) {
             stmt.setInt(1, id_vehicule);
-            ResultSet rs = stmt.executeQuery();
-            if (rs.next()) {
-                Vehicule v = new Vehicule();
-                v.setId(rs.getInt("id_vehicule"));
-                v.setType(rs.getString("type"));
-                v.setLieuPrise(rs.getString("lieu_prise"));
-                v.setLieuRetour(rs.getString("lieu_retour"));
-                v.setDateLocation(rs.getDate("date_location") != null ? rs.getDate("date_location").toLocalDate() : null);
-                v.setDateRetour(rs.getDate("date_retour") != null ? rs.getDate("date_retour").toLocalDate() : null);
-                v.setImagePath(rs.getString("image_path"));
-                v.setPrix(rs.getDouble("prix"));
-                return v;
+            try (ResultSet rs = stmt.executeQuery()) {
+                if (rs.next()) {
+                    Vehicule v = new Vehicule();
+                    v.setId(rs.getInt("id_vehicule"));
+                    v.setType(rs.getString("type"));
+                    v.setLieuPrise(rs.getString("lieu_prise"));
+                    v.setLieuRetour(rs.getString("lieu_retour"));
+                    v.setDateLocation(rs.getDate("date_location") != null ? rs.getDate("date_location").toLocalDate() : null);
+                    v.setDateRetour(rs.getDate("date_retour") != null ? rs.getDate("date_retour").toLocalDate() : null);
+                    v.setImagePath(rs.getString("image_path"));
+                    v.setPrix(rs.getDouble("prix"));
+                    return v;
+                }
             }
             return null;
         }

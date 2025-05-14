@@ -41,4 +41,9 @@ public class Vehicule {
     public void setImagePath(String imagePath) { this.imagePath = imagePath; }
     public double getPrix() { return prix; }
     public void setPrix(double prix) { this.prix = prix; }
+
+    @Override
+    public String toString() {
+        return type;
+    }
 }
