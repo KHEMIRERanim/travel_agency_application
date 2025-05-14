@@ -8,8 +8,12 @@ import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
+import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.PasswordField;
+import javafx.scene.control.TextField;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.stage.Stage;
 import services.ServiceClient;
 
@@ -36,6 +40,22 @@ public class ResetPasswordController {
     @FXML
     private Label passwordRequirements;
 
+    @FXML
+    private TextField tf_new_password_visible;
+
+    @FXML
+    private Button btn_toggle_new_password;
+
+    private boolean newPasswordVisible = false;
+
+    @FXML
+    private TextField tf_confirm_password_visible;
+
+    @FXML
+    private Button btn_toggle_confirm_password;
+
+    private boolean confirmPasswordVisible = false;
+
     public void setClient(Client client) {
         this.currentClient = client;
         // Afficher l'email du client pour confirmer
@@ -46,8 +66,8 @@ public class ResetPasswordController {
     void changePassword(ActionEvent event) {
         try {
             // Validation des champs
-            String newPassword = tf_new_password.getText();
-            String confirmPassword = tf_confirm_password.getText();
+            String newPassword = newPasswordVisible ? tf_new_password_visible.getText() : tf_new_password.getText();
+            String confirmPassword = confirmPasswordVisible ? tf_confirm_password_visible.getText() : tf_confirm_password.getText();
 
             if (newPassword.isEmpty() || confirmPassword.isEmpty()) {
                 statusLabel.setText("Veuillez remplir tous les champs");
@@ -115,6 +135,46 @@ public class ResetPasswordController {
             stage.show();
         } catch (IOException e) {
             System.out.println(e.getMessage());
+        }
+    }
+
+    @FXML
+    void toggleNewPasswordVisibility(ActionEvent event) {
+        newPasswordVisible = !newPasswordVisible;
+        if (newPasswordVisible) {
+            tf_new_password_visible.setText(tf_new_password.getText());
+            tf_new_password_visible.setVisible(true);
+            tf_new_password_visible.setManaged(true);
+            tf_new_password.setVisible(false);
+            tf_new_password.setManaged(false);
+            btn_toggle_new_password.setGraphic(new ImageView(new Image(getClass().getResourceAsStream("/images/eye-off.png"))));
+        } else {
+            tf_new_password.setText(tf_new_password_visible.getText());
+            tf_new_password.setVisible(true);
+            tf_new_password.setManaged(true);
+            tf_new_password_visible.setVisible(false);
+            tf_new_password_visible.setManaged(false);
+            btn_toggle_new_password.setGraphic(new ImageView(new Image(getClass().getResourceAsStream("/images/eye.png"))));
+        }
+    }
+
+    @FXML
+    void toggleConfirmPasswordVisibility(ActionEvent event) {
+        confirmPasswordVisible = !confirmPasswordVisible;
+        if (confirmPasswordVisible) {
+            tf_confirm_password_visible.setText(tf_confirm_password.getText());
+            tf_confirm_password_visible.setVisible(true);
+            tf_confirm_password_visible.setManaged(true);
+            tf_confirm_password.setVisible(false);
+            tf_confirm_password.setManaged(false);
+            btn_toggle_confirm_password.setGraphic(new ImageView(new Image(getClass().getResourceAsStream("/images/eye-off.png"))));
+        } else {
+            tf_confirm_password.setText(tf_confirm_password_visible.getText());
+            tf_confirm_password.setVisible(true);
+            tf_confirm_password.setManaged(true);
+            tf_confirm_password_visible.setVisible(false);
+            tf_confirm_password_visible.setManaged(false);
+            btn_toggle_confirm_password.setGraphic(new ImageView(new Image(getClass().getResourceAsStream("/images/eye.png"))));
         }
     }
 }

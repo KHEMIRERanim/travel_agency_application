@@ -11,7 +11,9 @@ import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
 import services.ServiceClient;
+import utils.EmailSender;
 
+import javax.mail.MessagingException;
 import java.io.IOException;
 import java.sql.SQLException;
 import java.util.List;
@@ -35,10 +37,13 @@ public class ForgotPasswordController {
             return;
         }
 
+        // Afficher un indicateur de chargement
+        statusLabel.setText("Recherche en cours...");
+
         try {
             // Vérification si l'email existe dans la base de données
             if (serviceClient.emailExists(email)) {
-                // Récupérer le client pour passer son ID au contrôleur de réinitialisation
+                // Récupérer le client pour passer son ID au contrôleur de vérification
                 List<Client> clients = serviceClient.recuperer();
                 Client foundClient = null;
 
@@ -50,19 +55,48 @@ public class ForgotPasswordController {
                 }
 
                 if (foundClient != null) {
-                    // Passer à la page de réinitialisation du mot de passe
-                    FXMLLoader loader = new FXMLLoader(getClass().getResource("/ResetPassword.fxml"));
-                    Parent root = loader.load();
+                    // Générer un code de vérification
+                    String verificationCode = generateVerificationCode();
+                    final Client finalFoundClient = foundClient;
 
-                    // Obtenir le contrôleur et lui passer le client
-                    ResetPasswordController controller = loader.getController();
-                    controller.setClient(foundClient);
+                    // Pour éviter que l'UI se bloque, nous utilisons un thread séparé pour l'envoi d'email
+                    statusLabel.setText("Envoi du code de vérification...");
 
-                    // Afficher la nouvelle fenêtre
-                    Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
-                    stage.setScene(new Scene(root));
-                    stage.setTitle("Réinitialiser mot de passe");
-                    stage.show();
+                    // Utiliser un thread séparé pour l'envoi de l'email
+                    new Thread(() -> {
+                        try {
+                            // Envoyer le code par email
+                            EmailSender.sendVerificationCode(email, verificationCode);
+
+                            // Retourner à l'UI thread pour mettre à jour l'interface
+                            javafx.application.Platform.runLater(() -> {
+                                try {
+                                    // Passer à la page de vérification du code
+                                    FXMLLoader loader = new FXMLLoader(getClass().getResource("/VerifyCode.fxml"));
+                                    Parent root = loader.load();
+
+                                    // Obtenir le contrôleur et lui passer les informations nécessaires
+                                    VerifyCodeController controller = loader.getController();
+                                    controller.initialize(finalFoundClient, verificationCode, email);
+
+                                    // Afficher la nouvelle fenêtre
+                                    Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
+                                    stage.setScene(new Scene(root));
+                                    stage.setTitle("Vérification du code");
+                                    stage.show();
+                                } catch (IOException e) {
+                                    statusLabel.setText("Erreur lors du chargement de la page");
+                                    System.out.println(e.getMessage());
+                                }
+                            });
+                        } catch (MessagingException e) {
+                            // Retourner à l'UI thread pour afficher l'erreur
+                            javafx.application.Platform.runLater(() -> {
+                                statusLabel.setText("Erreur lors de l'envoi de l'email. Veuillez réessayer.");
+                                System.out.println("Erreur d'envoi d'email: " + e.getMessage());
+                            });
+                        }
+                    }).start();
                 }
             } else {
                 statusLabel.setText("Cet email n'existe pas dans notre système");
@@ -70,10 +104,17 @@ public class ForgotPasswordController {
         } catch (SQLException e) {
             statusLabel.setText("Erreur de connexion à la base de données");
             System.out.println(e.getMessage());
-        } catch (IOException e) {
-            statusLabel.setText("Erreur lors du chargement de la page");
-            System.out.println(e.getMessage());
         }
+    }
+
+    /**
+     * Génère un code de vérification aléatoire à 6 chiffres
+     * @return Le code de vérification généré
+     */
+    private String generateVerificationCode() {
+        // Générer un code à 6 chiffres
+        int code = (int) (Math.random() * 900000) + 100000;
+        return String.valueOf(code);
     }
 
     @FXML

@@ -1,112 +1,42 @@
-/* ListView Styling - Improved based on listview.css */
-.list-view, .reclamations-list {
+.reclamations-list {
     -fx-background-color: white;
-    -fx-background-radius: 10px;
-    -fx-padding: 5px;
-    -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.1), 10, 0, 0, 5);
-    -fx-border-width: 0;
-}
-
-.list-view .list-cell, .reclamations-list .list-cell {
-    -fx-padding: 15px 20px;
-    -fx-background-color: white;
-    -fx-border-color: #f4f6f9;
-    -fx-border-width: 0 0 1px 0;
-    -fx-font-size: 13px;
-    -fx-font-family: "Segoe UI", Arial, sans-serif;
-}
-
-.list-view .list-cell:odd, .reclamations-list .list-cell:odd {
-    -fx-background-color: #f9fafc;
-}
-
-.list-view .list-cell:hover, .reclamations-list .list-cell:hover {
-    -fx-background-color: #edf2fa;
-}
-
-.list-view .list-cell:selected, .reclamations-list .list-cell:selected {
-    -fx-background-color: #e3e9f5;
-    -fx-text-fill: #1e3a8a;
-}
-
-/* Custom styles for reclamation cells */
-.reclamation-cell {
-    -fx-font-family: "Segoe UI", Arial, sans-serif;
-    -fx-border-width: 0 0 1px 0;
-    -fx-border-color: #f4f6f9;
-}
-
-/* Status styling with custom cell appearance */
-.status-pending {
-    -fx-border-width: 0 0 0 4px;
-    -fx-border-color: transparent transparent transparent #fbbf24;
-    -fx-padding: 15px 20px 15px 16px;
-    -fx-background-color: linear-gradient(to right, rgba(251, 191, 36, 0.1) 0%, rgba(251, 191, 36, 0.05) 20%, transparent 40%);
-}
-
-.status-progress, .status-inprogress {
-    -fx-border-width: 0 0 0 4px;
-    -fx-border-color: transparent transparent transparent #3b82f6;
-    -fx-padding: 15px 20px 15px 16px;
-    -fx-background-color: linear-gradient(to right, rgba(59, 130, 246, 0.1) 0%, rgba(59, 130, 246, 0.05) 20%, transparent 40%);
-}
-
-.status-resolved {
-    -fx-border-width: 0 0 0 4px;
-    -fx-border-color: transparent transparent transparent #10b981;
-    -fx-padding: 15px 20px 15px 16px;
-    -fx-background-color: linear-gradient(to right, rgba(16, 185, 129, 0.1) 0%, rgba(16, 185, 129, 0.05) 20%, transparent 40%);
-}
-
-/* Status indicator for the AdminReclamationsController custom cell */
-.status-indicator {
-    -fx-min-width: 90;
-    -fx-min-height: 25;
-    -fx-max-height: 25;
-    -fx-background-radius: 12.5;
-    -fx-alignment: center;
-    -fx-text-fill: white;
-    -fx-font-size: 11px;
-    -fx-font-weight: bold;
-}
-
-.status-indicator.status-pending {
-    -fx-background-color: #fbbf24;
+    -fx-border-color: #e5e7eb;
+    -fx-border-radius: 8px;
+    -fx-background-radius: 8px;
     -fx-padding: 0;
 }
 
-.status-indicator.status-inprogress {
-    -fx-background-color: #3b82f6;
+.reclamations-list .list-cell {
+    -fx-background-color: transparent;
     -fx-padding: 0;
 }
 
-.status-indicator.status-resolved {
-    -fx-background-color: #10b981;
-    -fx-padding: 0;
-}
-
-/* Custom cell styling from listview.css */
 .cell-container {
-    -fx-spacing: 10;
+    -fx-background-color: white;
+    -fx-padding: 10px;
+    -fx-border-width: 0 0 1px 0;
+    -fx-border-color: #e5e7eb;
+    -fx-background-radius: 4px;
+}
+
+.cell-container.cell-hover {
+    -fx-background-color: #f3f4f6;
+    -fx-cursor: hand;
 }
 
 .cell-main {
-    -fx-spacing: 5;
+    -fx-spacing: 5px;
 }
 
 .cell-header {
-    -fx-spacing: 15;
+    -fx-spacing: 10px;
+    -fx-alignment: center-left;
 }
 
 .cell-title {
     -fx-font-size: 14px;
     -fx-font-weight: bold;
-    -fx-text-fill: #1e3a8a;
-}
-
-.cell-subtitle {
-    -fx-font-size: 12px;
-    -fx-text-fill: #6b7280;
+    -fx-text-fill: #1f2937;
 }
 
 .cell-date {
@@ -114,169 +44,32 @@
     -fx-text-fill: #6b7280;
 }
 
-.cell-description {
-    -fx-font-size: 13px;
-    -fx-text-fill: #374151;
-    -fx-wrap-text: true;
+.status-indicator {
+    -fx-font-size: 12px;
+    -fx-padding: 4px 12px;
+    -fx-background-radius: 12px;
+    -fx-alignment: center;
+    -fx-min-width: 80px;
+    -fx-text-alignment: center;
 }
 
-/* ListView scroll bar styling - improved version */
-.list-view .scroll-bar:vertical, .reclamations-list .scroll-bar:vertical {
-    -fx-background-color: transparent;
-    -fx-pref-width: 10px;
-}
-
-.list-view .scroll-bar:vertical .thumb, .reclamations-list .scroll-bar:vertical .thumb {
-    -fx-background-color: #d1d9e6;
-    -fx-background-radius: 5px;
-}
-
-.list-view .scroll-bar:vertical .track, .reclamations-list .scroll-bar:vertical .track {
-    -fx-background-color: transparent;
-}
-
-.list-view .scroll-bar:vertical .increment-button,
-.list-view .scroll-bar:vertical .decrement-button,
-.reclamations-list .scroll-bar:vertical .increment-button,
-.reclamations-list .scroll-bar:vertical .decrement-button {
-    -fx-background-color: transparent;
-    -fx-padding: 0;
-}
-
-.list-view .scroll-bar:vertical .increment-arrow,
-.list-view .scroll-bar:vertical .decrement-arrow,
-.reclamations-list .scroll-bar:vertical .increment-arrow,
-.reclamations-list .scroll-bar:vertical .decrement-arrow {
-    -fx-background-color: #9ca3af;
-    -fx-padding: 2px;
-}
-
-/* Empty list style */
-.list-view .placeholder, .reclamations-list .placeholder {
-    -fx-text-fill: #6b7280;
-    -fx-font-style: italic;
-}
-
-/* Card styling */
-.card {
-    -fx-background-color: white;
-    -fx-background-radius: 10;
-    -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.1), 10, 0, 0, 3);
-}
-
-/* Form elements styling enhancements */
-.combo-box, .text-field, .text-area {
-    -fx-background-color: #f9fafc;
-    -fx-background-radius: 5;
-    -fx-border-color: #e5e7eb;
-    -fx-border-radius: 5;
-    -fx-padding: 8px;
-}
-
-.combo-box:focused, .text-field:focused, .text-area:focused {
-    -fx-border-color: #3b82f6;
-    -fx-effect: dropshadow(three-pass-box, rgba(59, 130, 246, 0.2), 5, 0, 0, 0);
-}
-
-.combo-box .arrow-button {
-    -fx-background-color: transparent;
-}
-
-.combo-box .arrow {
-    -fx-background-color: #6b7280;
-}
-
-/* Button styling */
-.button {
-    -fx-background-radius: 5;
-    -fx-cursor: hand;
-    -fx-font-weight: bold;
-}
-
-.button-primary {
-    -fx-background-color: #1e3a8a;
+.status-inprogress {
+    -fx-background-color: #3b82f6;
     -fx-text-fill: white;
 }
 
-.button-primary:hover {
-    -fx-background-color: #1e40af;
-}
-
-.button-secondary {
-    -fx-background-color: #f3f4f6;
-    -fx-border-color: #d1d5db;
-    -fx-border-radius: 5;
-    -fx-text-fill: #4b5563;
-}
-
-.button-secondary:hover {
-    -fx-background-color: #e5e7eb;
-}
-
-.button-success {
+.status-resolved {
     -fx-background-color: #10b981;
     -fx-text-fill: white;
 }
 
-.button-success:hover {
-    -fx-background-color: #059669;
+.cell-description {
+    -fx-font-size: 13px;
+    -fx-text-fill: #4b5563;
+    -fx-wrap-text: true;
+    -fx-max-width: 500px;
 }
 
-.button-danger {
-    -fx-background-color: #ef4444;
-    -fx-text-fill: white;
-}
-
-.button-danger:hover {
-    -fx-background-color: #dc2626;
-}
-
-/* Labels */
-.label-info {
-    -fx-font-size: 12px;
-    -fx-text-fill: #6b7280;
-}
-
-.label-value {
-    -fx-font-size: 14px;
-    -fx-text-fill: #111827;
-    -fx-font-weight: bold;
-}
-
-.label-header {
-    -fx-font-size: 24px;
-    -fx-font-weight: bold;
-    -fx-text-fill: #111827;
-}
-
-.label-subheader {
-    -fx-font-size: 18px;
-    -fx-font-weight: bold;
-    -fx-text-fill: #374151;
-}
-
-/* Text area */
-.text-area {
-    -fx-background-color: #f9fafc;
-    -fx-background-radius: 5;
-    -fx-border-color: #e5e7eb;
-    -fx-border-radius: 5;
-}
-
-.text-area .content {
-    -fx-background-color: #f9fafc;
-}
-
-/* State-specific styles for cell selection */
-.list-view .list-cell:selected.status-pending {
-    -fx-background-color: rgba(251, 191, 36, 0.15);
-}
-
-.list-view .list-cell:selected.status-progress,
-.list-view .list-cell:selected.status-inprogress {
-    -fx-background-color: rgba(59, 130, 246, 0.15);
-}
-
-.list-view .list-cell:selected.status-resolved {
-    -fx-background-color: rgba(16, 185, 129, 0.15);
+.button-box {
+    -fx-padding: 5px;
 }

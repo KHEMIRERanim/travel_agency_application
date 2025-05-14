@@ -6,17 +6,20 @@ import javafx.beans.property.StringProperty;
 import java.util.regex.Pattern;
 
 public class Client {
-    private int id_client;  // Changed from id to id_client
+    private int id_client;
     private String nom;
     private String prenom;
     private String email;
     private int numero_telephone;
     private String date_de_naissance;
     private String mot_de_passe;
+    private String profilePicture; // New field for profile picture path
+    private String role; // New field for user role
+    private String gender; // New field for gender
 
     // Constructors
     public Client(int id_client, String nom, String prenom, String email,
-                  int numero_telephone, String date_de_naissance, String mot_de_passe) {
+                  int numero_telephone, String date_de_naissance, String mot_de_passe, String profilePicture, String role, String gender) {
         this.id_client = id_client;
         this.nom = nom;
         this.prenom = prenom;
@@ -24,14 +27,21 @@ public class Client {
         setNumero_telephone(numero_telephone);
         setDate_de_naissance(date_de_naissance);
         this.mot_de_passe = mot_de_passe;
+        this.profilePicture = profilePicture != null ? profilePicture : "/images/default_profile.png";
+        this.role = role != null ? role : "USER"; // Default role is USER
+        this.gender = gender;
     }
 
     public Client(String nom, String prenom, String email, int numero_telephone,
-                  String date_de_naissance, String mot_de_passe) {
-        this(0, nom, prenom, email, numero_telephone, date_de_naissance, mot_de_passe);
+                  String date_de_naissance, String mot_de_passe, String profilePicture, String role, String gender) {
+        this(0, nom, prenom, email, numero_telephone, date_de_naissance, mot_de_passe, profilePicture, role, gender);
     }
 
-    public Client() {}
+    public Client() {
+        this.profilePicture = "/images/default_profile.png";
+        this.role = "USER"; // Default role is USER
+        this.gender = "";
+    }
 
     // Getters and Setters
     public int getId_client() {
@@ -102,6 +112,33 @@ public class Client {
         this.mot_de_passe = mot_de_passe;
     }
 
+    public String getProfilePicture() {
+        return profilePicture;
+    }
+
+    public void setProfilePicture(String profilePicture) {
+        this.profilePicture = profilePicture != null ? profilePicture : "/images/default_profile.png";
+    }
+
+    public String getRole() {
+        return role;
+    }
+
+    public void setRole(String role) {
+        if (role == null || (!role.equals("ADMIN") && !role.equals("USER"))) {
+            throw new IllegalArgumentException("Role must be either 'ADMIN' or 'USER'");
+        }
+        this.role = role;
+    }
+
+    public String getGender() {
+        return gender;
+    }
+
+    public void setGender(String gender) {
+        this.gender = gender;
+    }
+
     @Override
     public String toString() {
         return "Client{" +
@@ -111,5 +148,9 @@ public class Client {
                 ", email='" + email + '\'' +
                 ", numero_telephone=" + numero_telephone +
                 ", date_de_naissance='" + date_de_naissance + '\'' +
-                '}';  // Password intentionally excluded from toString()
-    }}
+                ", profilePicture='" + profilePicture + '\'' +
+                ", role='" + role + '\'' +
+                ", gender='" + gender + '\'' +
+                '}';
+    }
+}

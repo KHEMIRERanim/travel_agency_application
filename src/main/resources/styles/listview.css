@@ -10,20 +10,20 @@
 .reclamations-list .list-cell {
     -fx-background-color: white;
     -fx-padding: 15 20;
-    -fx-border-color: #f4f6f9;
+    -fx-border-color: #e5e7eb;
     -fx-border-width: 0 0 1 0;
 }
 
 .reclamations-list .list-cell:odd {
-    -fx-background-color: #f9fafc;
+    -fx-background-color: #f9fafb;
 }
 
 .reclamations-list .list-cell:selected {
-    -fx-background-color: #e3e9f5;
+    -fx-background-color: #dbeafe;
 }
 
 .reclamations-list .list-cell:hover {
-    -fx-background-color: #edf2fa;
+    -fx-background-color: #eff6ff;
 }
 
 /* Custom cell styling */
@@ -42,7 +42,7 @@
 .cell-title {
     -fx-font-size: 14px;
     -fx-font-weight: bold;
-    -fx-text-fill: #1e3a8a;
+    -fx-text-fill: #1e40af;
 }
 
 .cell-subtitle {
@@ -70,10 +70,6 @@
     -fx-text-fill: white;
     -fx-font-size: 11px;
     -fx-font-weight: bold;
-}
-
-.status-pending {
-    -fx-background-color: #fbbf24;
 }
 
 .status-inprogress {
@@ -116,21 +112,21 @@
 
 /* Text area */
 .text-area {
-    -fx-background-color: #f9fafc;
+    -fx-background-color: #f9fafb;
     -fx-background-radius: 5;
-    -fx-border-color: #e5e7eb;
+    -fx-border-color: #d1d5db;
     -fx-border-radius: 5;
 }
 
 .text-area .content {
-    -fx-background-color: #f9fafc;
+    -fx-background-color: #f9fafb;
 }
 
 /* ComboBox */
 .combo-box {
-    -fx-background-color: #f9fafc;
+    -fx-background-color: #f9fafb;
     -fx-background-radius: 5;
-    -fx-border-color: #e5e7eb;
+    -fx-border-color: #d1d5db;
     -fx-border-radius: 5;
 }
 
@@ -150,12 +146,12 @@
 }
 
 .button-primary {
-    -fx-background-color: #1e3a8a;
+    -fx-background-color: #1e40af;
     -fx-text-fill: white;
 }
 
 .button-primary:hover {
-    -fx-background-color: #1e40af;
+    -fx-background-color: #1e3a8a;
 }
 
 .button-secondary {

@@ -9,10 +9,18 @@ import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
+import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 import services.ServiceClient;
+import utils.ImageUtils;
 
+import java.io.File;
 import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.sql.SQLException;
 
 public class UserProfileController {
@@ -22,6 +30,7 @@ public class UserProfileController {
     private Flight selectedFlight;
     private int requiredPassengers;
     private boolean editMode = false;
+    private boolean passwordVisible = false;
 
     @FXML
     private TextField tf_nom;
@@ -42,6 +51,9 @@ public class UserProfileController {
     private PasswordField tf_password;
 
     @FXML
+    private TextField tf_password_visible;
+
+    @FXML
     private Button btn_edit;
 
     @FXML
@@ -51,13 +63,24 @@ public class UserProfileController {
     private Button btn_delete;
 
     @FXML
+    private Button btn_toggle_password;
+
+    @FXML
     private Label statusLabel;
 
+    @FXML
+    private ImageView iv_profilePicture;
+
+    @FXML
+    private ComboBox<String> cb_gender;
+
     public void setClient(Client client) {
-        this.currentClient = client != null ? client : new Client();
+        this.currentClient = client;
+        System.out.println("Setting client in UserProfileController: " + (client != null ? client.getEmail() : "null"));
         displayClientInfo();
         setFieldsEditable(false);
         btn_save.setDisable(true);
+        updateProfilePicture();
     }
 
     public void setFlight(Flight flight, int passengers) {
@@ -66,12 +89,25 @@ public class UserProfileController {
     }
 
     private void displayClientInfo() {
-        tf_nom.setText(currentClient.getNom() != null ? currentClient.getNom() : "");
-        tf_prenom.setText(currentClient.getPrenom() != null ? currentClient.getPrenom() : "");
-        tf_email.setText(currentClient.getEmail() != null ? currentClient.getEmail() : "");
-        tf_telephone.setText(currentClient.getNumero_telephone() != 0 ? String.valueOf(currentClient.getNumero_telephone()) : "");
-        tf_dateNaissance.setText(currentClient.getDate_de_naissance() != null ? currentClient.getDate_de_naissance() : "");
-        tf_password.setText(currentClient.getMot_de_passe() != null ? currentClient.getMot_de_passe() : "");
+        if (currentClient == null) {
+            System.out.println("Current client is null in displayClientInfo");
+            return;
+        }
+        tf_nom.setText(currentClient.getNom());
+        tf_prenom.setText(currentClient.getPrenom());
+        tf_email.setText(currentClient.getEmail());
+        tf_telephone.setText(String.valueOf(currentClient.getNumero_telephone()));
+        tf_dateNaissance.setText(currentClient.getDate_de_naissance());
+        tf_password.setText(currentClient.getMot_de_passe());
+        if (cb_gender != null) {
+            cb_gender.getItems().setAll("Homme", "Femme", "Autre");
+            cb_gender.setValue(currentClient.getGender());
+        }
+    }
+
+    private void updateProfilePicture() {
+        if (currentClient == null) return;
+        iv_profilePicture.setImage(ImageUtils.loadProfileImage(currentClient.getProfilePicture()));
     }
 
     private void setFieldsEditable(boolean editable) {
@@ -80,7 +116,41 @@ public class UserProfileController {
         tf_email.setEditable(editable);
         tf_telephone.setEditable(editable);
         tf_dateNaissance.setEditable(editable);
-        tf_password.setEditable(editable);
+        if (editable && editMode) {
+            tf_password.setEditable(true);
+            tf_password_visible.setEditable(true);
+        } else {
+            tf_password.setEditable(false);
+            tf_password_visible.setEditable(false);
+        }
+        if (cb_gender != null) cb_gender.setDisable(!editable);
+    }
+
+    @FXML
+    void selectProfilePicture(ActionEvent event) {
+        if (!editMode) {
+            statusLabel.setText("Veuillez activer le mode édition pour changer la photo.");
+            return;
+        }
+
+        FileChooser fileChooser = new FileChooser();
+        fileChooser.setTitle("Choisir une photo de profil");
+        fileChooser.getExtensionFilters().addAll(
+                new FileChooser.ExtensionFilter("Images", "*.png", "*.jpg", "*.jpeg")
+        );
+        File selectedFile = fileChooser.showOpenDialog(null);
+        if (selectedFile != null) {
+            try {
+                String newProfilePicturePath = ImageUtils.saveProfileImage(selectedFile);
+                currentClient.setProfilePicture(newProfilePicturePath);
+                serviceClient.modifier(currentClient);
+                updateProfilePicture();
+                statusLabel.setText("Photo de profil mise à jour avec succès.");
+            } catch (IOException | SQLException e) {
+                statusLabel.setText("Erreur lors du chargement de l'image: " + e.getMessage());
+                e.printStackTrace();
+            }
+        }
     }
 
     @FXML
@@ -95,15 +165,13 @@ public class UserProfileController {
     @FXML
     void saveProfile(ActionEvent event) {
         try {
-            // Validation des champs
             if (tf_nom.getText().isEmpty() || tf_prenom.getText().isEmpty() ||
                     tf_email.getText().isEmpty() || tf_telephone.getText().isEmpty() ||
-                    tf_dateNaissance.getText().isEmpty() || tf_password.getText().isEmpty()) {
+                    tf_dateNaissance.getText().isEmpty() || tf_password_visible.getText().isEmpty() ||
+                    cb_gender.getValue() == null) {
                 statusLabel.setText("Veuillez remplir tous les champs");
                 return;
             }
-
-            // Valider le format du numéro de téléphone
             try {
                 Integer.parseInt(tf_telephone.getText());
             } catch (NumberFormatException e) {
@@ -111,32 +179,16 @@ public class UserProfileController {
                 return;
             }
 
-            // Mise à jour de l'objet client
             currentClient.setNom(tf_nom.getText());
             currentClient.setPrenom(tf_prenom.getText());
             currentClient.setEmail(tf_email.getText());
             currentClient.setNumero_telephone(Integer.parseInt(tf_telephone.getText()));
             currentClient.setDate_de_naissance(tf_dateNaissance.getText());
-            currentClient.setMot_de_passe(tf_password.getText());
-
-            // Mise à jour dans la base de données
+            String password = passwordVisible ? tf_password_visible.getText() : tf_password.getText();
+            currentClient.setMot_de_passe(password);
+            currentClient.setGender(cb_gender.getValue());
             serviceClient.modifier(currentClient);
 
-            // Si un vol est sélectionné, rediriger vers la page de confirmation
-            if (selectedFlight != null) {
-                FXMLLoader loader = new FXMLLoader(getClass().getResource("/FlightBookingConfirmation.fxml"));
-                Parent root = loader.load();
-                FlightBookingController controller = loader.getController();
-                controller.setClient(currentClient);
-                controller.setFlight(selectedFlight, requiredPassengers);
-
-                Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
-                stage.setScene(new Scene(root));
-                stage.setTitle("Confirmation de la réservation");
-                stage.show();
-            }
-
-            // Mise à jour de l'interface utilisateur
             editMode = false;
             setFieldsEditable(false);
             btn_save.setDisable(true);
@@ -164,16 +216,18 @@ public class UserProfileController {
         alert.showAndWait().ifPresent(type -> {
             if (type == buttonTypeYes) {
                 try {
-                    // Supprimer de la base de données
                     serviceClient.supprimer(currentClient);
 
-                    // Retourner à la page de connexion
-                    FXMLLoader loader = new FXMLLoader(getClass().getResource("/Login.fxml"));
-                    Parent root = loader.load();
-                    Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
-                    stage.setScene(new Scene(root));
-                    stage.setTitle("Login");
-                    stage.show();
+                    try {
+                        FXMLLoader loader = new FXMLLoader(getClass().getResource("/Login.fxml"));
+                        Parent root = loader.load();
+                        Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
+                        stage.setScene(new Scene(root));
+                        stage.setTitle("Login");
+                        stage.show();
+                    } catch (IOException e) {
+                        System.out.println(e.getMessage());
+                    }
                 } catch (SQLException e) {
                     statusLabel.setText("Erreur lors de la suppression: " + e.getMessage());
                 } catch (IOException e) {
@@ -181,5 +235,25 @@ public class UserProfileController {
                 }
             }
         });
+    }
+
+    @FXML
+    void togglePasswordVisibility(ActionEvent event) {
+        passwordVisible = !passwordVisible;
+        if (passwordVisible) {
+            tf_password_visible.setText(tf_password.getText());
+            tf_password_visible.setVisible(true);
+            tf_password_visible.setManaged(true);
+            tf_password.setVisible(false);
+            tf_password.setManaged(false);
+            btn_toggle_password.setGraphic(new ImageView(new Image(getClass().getResourceAsStream("/images/eye-off.png"))));
+        } else {
+            tf_password.setText(tf_password_visible.getText());
+            tf_password.setVisible(true);
+            tf_password.setManaged(true);
+            tf_password_visible.setVisible(false);
+            tf_password_visible.setManaged(false);
+            btn_toggle_password.setGraphic(new ImageView(new Image(getClass().getResourceAsStream("/images/eye.png"))));
+        }
     }
 }

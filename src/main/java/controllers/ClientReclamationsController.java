@@ -6,16 +6,26 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
+import javafx.geometry.Insets;
+import javafx.geometry.Pos;
+import javafx.scene.Scene;
 import javafx.scene.control.*;
-import javafx.scene.control.Alert.AlertType;
-import javafx.util.Callback;
+import javafx.scene.layout.HBox;
+import javafx.scene.layout.Priority;
+import javafx.scene.layout.Region;
+import javafx.scene.layout.VBox;
+import javafx.stage.Modality;
+import javafx.stage.Stage;
 import services.ServiceReclamation;
 
+import java.io.IOException;
 import java.net.URL;
 import java.sql.SQLException;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
+import java.util.List;
 import java.util.Optional;
 import java.util.ResourceBundle;
 
@@ -28,25 +38,7 @@ public class ClientReclamationsController implements Initializable {
     private ListView<Reclamation> reclamationsListView;
 
     @FXML
-    private ComboBox<String> typeComboBox;
-
-    @FXML
-    private TextField dateIncidentField;
-
-    @FXML
-    private TextArea descriptionTextArea;
-
-    @FXML
-    private Button submitButton;
-
-    @FXML
-    private Button updateButton;
-
-    @FXML
     private Button newReclamationButton;
-
-    @FXML
-    private Button deleteButton;
 
     @FXML
     private Label statusLabel;
@@ -58,102 +50,13 @@ public class ClientReclamationsController implements Initializable {
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
-        // Make submit button initially disabled instead of hidden
-        submitButton.setDisable(true);
+        reclamationsListView.setCellFactory(param -> new ReclamationListCell());
 
-        // Configure ListView cell factory
-        reclamationsListView.setCellFactory(new Callback<ListView<Reclamation>, ListCell<Reclamation>>() {
-            @Override
-            public ListCell<Reclamation> call(ListView<Reclamation> param) {
-                return new ListCell<Reclamation>() {
-                    @Override
-                    protected void updateItem(Reclamation reclamation, boolean empty) {
-                        super.updateItem(reclamation, empty);
-
-                        // Clear all previous style classes to prevent style inheritance
-                        getStyleClass().removeAll("status-pending", "status-progress", "status-resolved", "reclamation-cell");
-
-                        if (empty || reclamation == null) {
-                            setText(null);
-                            setGraphic(null);
-                        } else {
-                            String status = reclamation.getEtat();
-
-                            // Add reclamation-cell style to all cells
-                            getStyleClass().add("reclamation-cell");
-
-                            // Apply status-specific style class
-                            if ("pas encore vu".equals(status)) {
-                                getStyleClass().add("status-pending");
-                            } else if ("en cours".equals(status)) {
-                                getStyleClass().add("status-progress");
-                            } else if ("traité".equals(status) || "résolue".equals(status)) {
-                                getStyleClass().add("status-resolved");
-                            }
-
-                            setText(String.format("Type: %s | Date: %s | État: %s | %s",
-                                    reclamation.getType(),
-                                    reclamation.getDateIncident(),
-                                    reclamation.getEtat(),
-                                    reclamation.getDescription().length() > 50 ?
-                                            reclamation.getDescription().substring(0, 47) + "..." :
-                                            reclamation.getDescription()
-                            ));
-                        }
-                    }
-                };
-            }
-        });
-
-        // Setup type combo box
-        ObservableList<String> types = FXCollections.observableArrayList(
-                "Réclamations liées aux réservations",
-                "Réclamations concernant les vols",
-                "Réclamations liées à l'hébergement",
-                "Réclamations sur les prestations incluses",
-                "Réclamations liées au service client",
-                "Réclamations post-voyage",
-                "Réclamations exceptionnelles"
-        );
-        typeComboBox.setItems(types);
-
-        // Set today's date as default
-        LocalDate today = LocalDate.now();
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
-        dateIncidentField.setText(today.format(formatter));
-
-        // Add ListView row selection listener
         reclamationsListView.getSelectionModel().selectedItemProperty().addListener((obs, oldSelection, newSelection) -> {
-            if (newSelection != null) {
-                selectedReclamation = newSelection;
-                typeComboBox.setValue(selectedReclamation.getType());
-                dateIncidentField.setText(selectedReclamation.getDateIncident());
-                descriptionTextArea.setText(selectedReclamation.getDescription());
-
-                // Enable update and delete buttons
-                updateButton.setDisable(false);
-                deleteButton.setDisable(false);
-
-                // Disable submit button when a reclamation is selected
-                submitButton.setDisable(true);
-
-                // Disable editing if the state is not "pas encore vu"
-                boolean isEditable = "pas encore vu".equals(selectedReclamation.getEtat());
-                typeComboBox.setDisable(!isEditable);
-                dateIncidentField.setDisable(!isEditable);
-                descriptionTextArea.setDisable(!isEditable);
-                updateButton.setDisable(!isEditable);
-
-                // Delete button should be enabled for any state
-                deleteButton.setDisable(false);
-
-                if (!isEditable) {
-                    statusLabel.setText("Cette réclamation est déjà en traitement et ne peut plus être modifiée.");
-                } else {
-                    statusLabel.setText("Vous pouvez modifier cette réclamation.");
-                }
-            }
+            selectedReclamation = newSelection;
         });
+
+        loadReclamations();
     }
 
     private void loadReclamations() {
@@ -163,13 +66,7 @@ public class ClientReclamationsController implements Initializable {
                         serviceReclamation.getReclamationsByClientId(currentClient.getId_client())
                 );
                 reclamationsListView.setItems(reclamations);
-
-                // If no reclamations are found, display a message
-                if (reclamations.isEmpty()) {
-                    statusLabel.setText("Vous n'avez pas encore de réclamations");
-                } else {
-                    statusLabel.setText("Réclamations chargées avec succès");
-                }
+                statusLabel.setText(reclamations.isEmpty() ? "Vous n'avez pas encore de réclamations" : "Réclamations chargées avec succès");
             }
         } catch (SQLException e) {
             statusLabel.setText("Erreur lors du chargement des réclamations: " + e.getMessage());
@@ -178,41 +75,27 @@ public class ClientReclamationsController implements Initializable {
     }
 
     @FXML
-    void submitReclamation(ActionEvent event) {
+    void newReclamation(ActionEvent event) {
         try {
-            // Validate inputs
-            String type = typeComboBox.getValue();
-            String dateIncident = dateIncidentField.getText();
-            String description = descriptionTextArea.getText();
-
-            if (type == null || dateIncident.isEmpty() || description.isEmpty()) {
-                statusLabel.setText("Veuillez remplir tous les champs");
-                return;
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/ReclamationPopup.fxml"));
+            if (loader.getLocation() == null) {
+                throw new IOException("Cannot find ReclamationPopup.fxml");
             }
+            VBox popupContent = loader.load();
+            ReclamationPopupController popupController = loader.getController();
+            popupController.setClient(currentClient);
+            popupController.setParentController(this);
 
-            // Create and save reclamation
-            Reclamation reclamation = new Reclamation(
-                    currentClient.getId_client(),
-                    type,
-                    dateIncident,
-                    description
-            );
-
-            serviceReclamation.ajouter(reclamation);
-            statusLabel.setText("Réclamation soumise avec succès");
-
-            // Refresh list and clear form
-            loadReclamations();
-            clearForm(event);
-
-            // Disable submit button after submission
-            submitButton.setDisable(true);
-
-        } catch (SQLException e) {
-            statusLabel.setText("Erreur lors de la soumission: " + e.getMessage());
+            Stage popupStage = new Stage();
+            popupStage.initModality(Modality.APPLICATION_MODAL);
+            popupStage.setTitle("Nouvelle Réclamation");
+            popupStage.setScene(new Scene(popupContent));
+            popupStage.setResizable(false);
+            popupStage.showAndWait();
+        } catch (IOException e) {
+            statusLabel.setText("Erreur lors de l'ouverture du popup: " + e.getMessage());
             System.out.println(e.getMessage());
-        } catch (IllegalArgumentException e) {
-            statusLabel.setText("Erreur de validation: " + e.getMessage());
+            e.printStackTrace();
         }
     }
 
@@ -224,39 +107,31 @@ public class ClientReclamationsController implements Initializable {
                 return;
             }
 
-            // Check if state allows updating
-            if (!"pas encore vu".equals(selectedReclamation.getEtat())) {
-                statusLabel.setText("Cette réclamation est déjà en traitement et ne peut plus être modifiée.");
+            if (!"en cours".equals(selectedReclamation.getEtat())) {
+                statusLabel.setText("Cette réclamation est traitée et ne peut plus être modifiée.");
                 return;
             }
 
-            // Validate inputs
-            String type = typeComboBox.getValue();
-            String dateIncident = dateIncidentField.getText();
-            String description = descriptionTextArea.getText();
-
-            if (type == null || dateIncident.isEmpty() || description.isEmpty()) {
-                statusLabel.setText("Veuillez remplir tous les champs");
-                return;
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/ReclamationPopup.fxml"));
+            if (loader.getLocation() == null) {
+                throw new IOException("Cannot find ReclamationPopup.fxml");
             }
+            VBox popupContent = loader.load();
+            ReclamationPopupController popupController = loader.getController();
+            popupController.setClient(currentClient);
+            popupController.setParentController(this);
+            popupController.setReclamation(selectedReclamation);
 
-            // Update reclamation
-            selectedReclamation.setType(type);
-            selectedReclamation.setDateIncident(dateIncident);
-            selectedReclamation.setDescription(description);
-
-            serviceReclamation.modifier(selectedReclamation);
-            statusLabel.setText("Réclamation mise à jour avec succès");
-
-            // Refresh list and clear form
-            loadReclamations();
-            clearForm(event);
-
-        } catch (SQLException e) {
-            statusLabel.setText("Erreur lors de la mise à jour: " + e.getMessage());
+            Stage popupStage = new Stage();
+            popupStage.initModality(Modality.APPLICATION_MODAL);
+            popupStage.setTitle("Modifier Réclamation");
+            popupStage.setScene(new Scene(popupContent));
+            popupStage.setResizable(false);
+            popupStage.showAndWait();
+        } catch (IOException e) {
+            statusLabel.setText("Erreur lors de l'ouverture du popup: " + e.getMessage());
             System.out.println(e.getMessage());
-        } catch (IllegalArgumentException e) {
-            statusLabel.setText("Erreur de validation: " + e.getMessage());
+            e.printStackTrace();
         }
     }
 
@@ -268,26 +143,19 @@ public class ClientReclamationsController implements Initializable {
                 return;
             }
 
-            // Ask for confirmation
-            Alert confirmDialog = new Alert(AlertType.CONFIRMATION);
+            Alert confirmDialog = new Alert(Alert.AlertType.CONFIRMATION);
             confirmDialog.setTitle("Confirmation de suppression");
             confirmDialog.setHeaderText("Supprimer la réclamation");
             confirmDialog.setContentText("Êtes-vous sûr de vouloir supprimer cette réclamation ?");
 
             Optional<ButtonType> result = confirmDialog.showAndWait();
-
             if (result.isPresent() && result.get() == ButtonType.OK) {
-                // Proceed with deletion
                 serviceReclamation.supprimer(selectedReclamation);
                 statusLabel.setText("Réclamation supprimée avec succès");
-
-                // Refresh list and clear form
                 loadReclamations();
-                clearForm(event);
             } else {
                 statusLabel.setText("Suppression annulée");
             }
-
         } catch (SQLException e) {
             statusLabel.setText("Erreur lors de la suppression: " + e.getMessage());
             System.out.println(e.getMessage());
@@ -295,37 +163,211 @@ public class ClientReclamationsController implements Initializable {
     }
 
     @FXML
-    void clearForm(ActionEvent event) {
-        typeComboBox.setValue(null);
+    void viewConversation(ActionEvent event) {
+        if (selectedReclamation == null) {
+            statusLabel.setText("Veuillez sélectionner une réclamation");
+            return;
+        }
 
-        // Reset to today's date
-        LocalDate today = LocalDate.now();
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
-        dateIncidentField.setText(today.format(formatter));
+        Dialog<Void> dialog = new Dialog<>();
+        dialog.setTitle("Conversation - Réclamation #" + selectedReclamation.getId_reclamation());
+        dialog.getDialogPane().getButtonTypes().addAll(ButtonType.CLOSE);
 
-        descriptionTextArea.setText("");
-        selectedReclamation = null;
-        updateButton.setDisable(true);
-        deleteButton.setDisable(true);
+        VBox content = new VBox(10);
+        content.setPadding(new Insets(20));
+        content.setStyle("-fx-background-color: white; -fx-background-radius: 10; -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.1), 10, 0, 0, 5);");
 
-        // Disable submit button by default
-        submitButton.setDisable(true);
+        ScrollPane scrollPane = new ScrollPane();
+        scrollPane.setFitToWidth(true);
+        scrollPane.setPrefHeight(300);
+        VBox chatContainer = new VBox(10);
+        chatContainer.setStyle("-fx-padding: 10; -fx-spacing: 5;");
+        loadChatMessages(chatContainer);
+        scrollPane.setContent(chatContainer);
 
-        // Re-enable all fields
-        typeComboBox.setDisable(false);
-        dateIncidentField.setDisable(false);
-        descriptionTextArea.setDisable(false);
+        HBox inputBox = new HBox(10);
+        inputBox.setAlignment(Pos.CENTER_LEFT);
+        TextArea messageArea = new TextArea();
+        messageArea.setPromptText("Tapez votre message...");
+        messageArea.setPrefHeight(60);
+        messageArea.setWrapText(true);
+        Button sendButton = new Button("Envoyer");
+        sendButton.setStyle("-fx-background-color: #1e40af; -fx-text-fill: white; -fx-background-radius: 5; -fx-padding: 8 16; -fx-cursor: hand;");
+        sendButton.setOnAction(e -> {
+            try {
+                String message = messageArea.getText().trim();
+                if (!message.isEmpty()) {
+                    serviceReclamation.addMessage(selectedReclamation.getId_reclamation(), "CLIENT", message);
+                    messageArea.clear();
+                    chatContainer.getChildren().clear();
+                    loadChatMessages(chatContainer);
+                    statusLabel.setText("Message envoyé avec succès");
+                }
+            } catch (SQLException ex) {
+                statusLabel.setText("Erreur lors de l'envoi: " + ex.getMessage());
+                System.out.println(ex.getMessage());
+            }
+        });
 
-        statusLabel.setText("Prêt à saisir une nouvelle réclamation");
+        inputBox.getChildren().addAll(messageArea, sendButton);
+        content.getChildren().addAll(scrollPane, inputBox);
 
-        // Clear list selection
-        reclamationsListView.getSelectionModel().clearSelection();
+        dialog.getDialogPane().setContent(content);
+        dialog.showAndWait();
     }
 
-    @FXML
-    void newReclamation(ActionEvent event) {
-        clearForm(event);
-        // Enable submit button when "Nouvelle" is clicked
-        submitButton.setDisable(false);
+    private void loadChatMessages(VBox chatContainer) {
+        chatContainer.getChildren().clear();
+        if (selectedReclamation != null) {
+            try {
+                List<ServiceReclamation.Message> messages = serviceReclamation.getMessagesByReclamationId(selectedReclamation.getId_reclamation());
+                for (ServiceReclamation.Message message : messages) {
+                    Label messageLabel = new Label(message.getSender_type() + ": " + message.getMessage_text());
+                    messageLabel.setWrapText(true);
+                    messageLabel.setMaxWidth(500);
+                    messageLabel.setStyle("-fx-padding: 10; -fx-background-radius: 10;");
+                    if (message.getSender_type().equals("CLIENT")) {
+                        messageLabel.setStyle(messageLabel.getStyle() + " -fx-background-color: #dbeafe; -fx-text-fill: #1e40af;");
+                    } else {
+                        messageLabel.setStyle(messageLabel.getStyle() + " -fx-background-color: #d1fae5; -fx-text-fill: #065f46; -fx-alignment: center-right;");
+                    }
+                    chatContainer.getChildren().add(messageLabel);
+                }
+            } catch (SQLException e) {
+                statusLabel.setText("Erreur lors du chargement des messages: " + e.getMessage());
+                System.out.println(e.getMessage());
+            }
+        }
+    }
+
+    public void refreshReclamations() {
+        loadReclamations();
+    }
+
+    private class ReclamationListCell extends ListCell<Reclamation> {
+        private HBox cellContainer;
+        private VBox cellMain;
+        private HBox cellHeader;
+        private Label titleLabel;
+        private Label dateLabel;
+        private Region spacer;
+        private Label statusLabel;
+        private Label descriptionLabel;
+        private HBox buttonBox;
+        private Button updateButton;
+        private Button deleteButton;
+        private Button viewConversationButton;
+
+        public ReclamationListCell() {
+            super();
+
+            cellContainer = new HBox();
+            cellContainer.getStyleClass().add("cell-container");
+
+            cellMain = new VBox();
+            cellMain.getStyleClass().add("cell-main");
+            HBox.setHgrow(cellMain, Priority.ALWAYS);
+
+            cellHeader = new HBox();
+            cellHeader.getStyleClass().add("cell-header");
+            cellHeader.setAlignment(Pos.CENTER_LEFT);
+
+            titleLabel = new Label();
+            titleLabel.getStyleClass().add("cell-title");
+
+            spacer = new Region();
+            HBox.setHgrow(spacer, Priority.ALWAYS);
+
+            dateLabel = new Label();
+            dateLabel.getStyleClass().add("cell-date");
+
+            statusLabel = new Label();
+            statusLabel.getStyleClass().add("status-indicator");
+
+            descriptionLabel = new Label();
+            descriptionLabel.getStyleClass().add("cell-description");
+            descriptionLabel.setWrapText(true);
+            descriptionLabel.setMaxWidth(500);
+
+            buttonBox = new HBox(10);
+            buttonBox.setAlignment(Pos.CENTER_RIGHT);
+            buttonBox.setVisible(false);
+            buttonBox.setManaged(false);
+            buttonBox.getStyleClass().add("button-box");
+
+            updateButton = new Button("Modifier");
+            updateButton.getStyleClass().addAll("button", "button-primary");
+            updateButton.setOnAction(e -> updateReclamation(null));
+
+            deleteButton = new Button("Supprimer");
+            deleteButton.getStyleClass().addAll("button", "button-danger");
+            deleteButton.setOnAction(e -> deleteReclamation(null));
+
+            viewConversationButton = new Button("Voir Conversation");
+            viewConversationButton.getStyleClass().addAll("button", "button-secondary");
+            viewConversationButton.setOnAction(e -> viewConversation(null));
+
+            buttonBox.getChildren().addAll(updateButton, deleteButton, viewConversationButton);
+
+            cellHeader.getChildren().addAll(titleLabel, spacer, dateLabel, statusLabel);
+            cellMain.getChildren().addAll(cellHeader, descriptionLabel);
+            cellContainer.getChildren().addAll(cellMain, buttonBox);
+
+            setOnMouseEntered(event -> {
+                if (!isEmpty()) {
+                    cellContainer.getStyleClass().add("cell-hover");
+                    buttonBox.setVisible(true);
+                    buttonBox.setManaged(true);
+                    getListView().getSelectionModel().select(getItem());
+                }
+            });
+
+            setOnMouseExited(event -> {
+                if (!isEmpty()) {
+                    cellContainer.getStyleClass().remove("cell-hover");
+                    buttonBox.setVisible(false);
+                    buttonBox.setManaged(false);
+                }
+            });
+        }
+
+        @Override
+        protected void updateItem(Reclamation reclamation, boolean empty) {
+            super.updateItem(reclamation, empty);
+
+            if (empty || reclamation == null) {
+                setGraphic(null);
+                setText(null);
+            } else {
+                titleLabel.setText(reclamation.getType() != null ? reclamation.getType() : "N/A");
+                dateLabel.setText(reclamation.getDateIncident() != null ? reclamation.getDateIncident() : "N/A");
+
+                String etat = reclamation.getEtat() != null ? reclamation.getEtat() : "N/A";
+                statusLabel.setText(etat);
+                statusLabel.getStyleClass().removeAll("status-inprogress", "status-resolved");
+                switch (etat.toLowerCase()) {
+                    case "en cours":
+                        statusLabel.getStyleClass().add("status-inprogress");
+                        updateButton.setDisable(false);
+                        viewConversationButton.setDisable(false);
+                        break;
+                    case "traitée":
+                        statusLabel.getStyleClass().add("status-resolved");
+                        updateButton.setDisable(true);
+                        viewConversationButton.setDisable(true);
+                        break;
+                    default:
+                        statusLabel.getStyleClass().add("status-inprogress");
+                        updateButton.setDisable(false);
+                        viewConversationButton.setDisable(false);
+                        break;
+                }
+
+                String desc = reclamation.getDescription();
+                descriptionLabel.setText(desc != null && desc.length() > 100 ? desc.substring(0, 97) + "..." : (desc != null ? desc : "N/A"));
+
+                setGraphic(cellContainer);
+            }
+        }
     }
 }
