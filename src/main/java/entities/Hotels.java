@@ -1,4 +1,4 @@
-package entities;
+public class Hotels{
 
-public class Hotels {
+  
 }

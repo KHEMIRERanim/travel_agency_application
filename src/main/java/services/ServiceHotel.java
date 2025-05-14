@@ -1,4 +1,8 @@
-package services;
-
-public class ServiceHotel {
-}
+packages services;
+public class ServiceHotel  {
+    public ServiceHotel{
+        
+    }
+    
+    }
+   
