@@ -1,6 +1,7 @@
 package controllers;
 
 import entities.Client;
+import entities.Flight;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -23,8 +24,11 @@ import java.nio.file.Paths;
 import java.sql.SQLException;
 
 public class UserProfileController {
+
     private ServiceClient serviceClient = new ServiceClient();
     private Client currentClient;
+    private Flight selectedFlight;
+    private int requiredPassengers;
     private boolean editMode = false;
     private boolean passwordVisible = false;
 
@@ -79,6 +83,11 @@ public class UserProfileController {
         updateProfilePicture();
     }
 
+    public void setFlight(Flight flight, int passengers) {
+        this.selectedFlight = flight;
+        this.requiredPassengers = passengers;
+    }
+
     private void displayClientInfo() {
         if (currentClient == null) {
             System.out.println("Current client is null in displayClientInfo");
@@ -100,6 +109,7 @@ public class UserProfileController {
         if (currentClient == null) return;
         iv_profilePicture.setImage(ImageUtils.loadProfileImage(currentClient.getProfilePicture()));
     }
+
     private void setFieldsEditable(boolean editable) {
         tf_nom.setEditable(editable);
         tf_prenom.setEditable(editable);
@@ -162,20 +172,23 @@ public class UserProfileController {
                 statusLabel.setText("Veuillez remplir tous les champs");
                 return;
             }
-            currentClient.setNom(tf_nom.getText());
-            currentClient.setPrenom(tf_prenom.getText());
-            currentClient.setEmail(tf_email.getText());
             try {
-                currentClient.setNumero_telephone(Integer.parseInt(tf_telephone.getText()));
+                Integer.parseInt(tf_telephone.getText());
             } catch (NumberFormatException e) {
                 statusLabel.setText("Le numéro de téléphone doit être un nombre");
                 return;
             }
+
+            currentClient.setNom(tf_nom.getText());
+            currentClient.setPrenom(tf_prenom.getText());
+            currentClient.setEmail(tf_email.getText());
+            currentClient.setNumero_telephone(Integer.parseInt(tf_telephone.getText()));
             currentClient.setDate_de_naissance(tf_dateNaissance.getText());
             String password = passwordVisible ? tf_password_visible.getText() : tf_password.getText();
             currentClient.setMot_de_passe(password);
             currentClient.setGender(cb_gender.getValue());
             serviceClient.modifier(currentClient);
+
             editMode = false;
             setFieldsEditable(false);
             btn_save.setDisable(true);
@@ -183,9 +196,8 @@ public class UserProfileController {
             statusLabel.setText("Profil mis à jour avec succès");
         } catch (SQLException e) {
             statusLabel.setText("Erreur lors de la mise à jour: " + e.getMessage());
-            System.out.println(e.getMessage());
-        } catch (IllegalArgumentException e) {
-            statusLabel.setText("Erreur de validation: " + e.getMessage());
+        } catch (IOException e) {
+            statusLabel.setText("Erreur lors du chargement de la page: " + e.getMessage());
         }
     }
 
@@ -218,7 +230,8 @@ public class UserProfileController {
                     }
                 } catch (SQLException e) {
                     statusLabel.setText("Erreur lors de la suppression: " + e.getMessage());
-                    System.out.println(e.getMessage());
+                } catch (IOException e) {
+                    statusLabel.setText("Erreur lors du chargement de la page de connexion: " + e.getMessage());
                 }
             }
         });

@@ -17,7 +17,7 @@
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
-<AnchorPane prefHeight="793.0" prefWidth="1134.0" style="-fx-background-color: #ffebfb;" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controllers.AjouterVolsController">
+<AnchorPane prefHeight="793.0" prefWidth="901.0" style="-fx-background-color: #a0dfe3;" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controllers.AjouterVolsController">
    <children>
       <!-- Fond principal avec effet d'ombre -->
       <Rectangle arcHeight="30.0" arcWidth="30.0" height="737.0" layoutX="80.0" layoutY="16.0" stroke="transparent" strokeType="INSIDE" width="774.0">

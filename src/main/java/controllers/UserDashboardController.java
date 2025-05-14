@@ -42,7 +42,7 @@ public class UserDashboardController implements Initializable {
         // Initialize the controller
     }
 
-    // Method to receive client data from login
+    // Méthode pour recevoir les données du client depuis la connexion
     public void setClient(Client client) {
         this.currentClient = client;
         welcomeLabel.setText("Bonjour, " + client.getPrenom() + " " + client.getNom() + "!");
@@ -62,12 +62,12 @@ public class UserDashboardController implements Initializable {
         }
     }
 
-    // Load content to the content area and properly set anchors
+    // Charger le contenu dans la zone de contenu et ajuster les ancrages
     public void loadContentToArea(Parent content) {
         contentArea.getChildren().clear();
         contentArea.getChildren().add(content);
 
-        // Adjust the content to fill the entire content area
+        // Ajuster le contenu pour remplir toute la zone de contenu
         AnchorPane.setTopAnchor(content, 0.0);
         AnchorPane.setRightAnchor(content, 0.0);
         AnchorPane.setBottomAnchor(content, 0.0);
@@ -77,15 +77,16 @@ public class UserDashboardController implements Initializable {
     @FXML
     void reserveFlight(ActionEvent event) {
         try {
-            // Load the ChercherVol.fxml file
+            // Charger le fichier ChercherVol.fxml
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/ChercherVol.fxml"));
             Parent flightSearchView = loader.load();
 
-            // Get the controller and set the dashboard reference
+            // Obtenir le contrôleur et définir la référence au tableau de bord
             ChercherVolController controller = loader.getController();
             controller.setDashboardController(this);
+            controller.setClient(currentClient); // Ajout : Passer le client
 
-            // Clear the content area and add the flight search view
+            // Effacer la zone de contenu et ajouter la vue de recherche de vols
             loadContentToArea(flightSearchView);
         } catch (IOException e) {
             showAlert(Alert.AlertType.ERROR, "Erreur", "Erreur de chargement",
@@ -96,7 +97,7 @@ public class UserDashboardController implements Initializable {
     @FXML
     void reserveHotel(ActionEvent event) {
         try {
-            // Placeholder for future functionality - load hotel reservation screen
+            // Placeholder pour une fonctionnalité future - charger l'écran de réservation d'hôtel
             contentArea.getChildren().clear();
             Label label = new Label("Réservation d'hôtel");
             label.setLayoutX(200);
@@ -112,7 +113,7 @@ public class UserDashboardController implements Initializable {
     @FXML
     void reserveTransport(ActionEvent event) {
         try {
-            // Placeholder for future functionality - load transport reservation screen
+            // Placeholder pour une fonctionnalité future - charger l'écran de réservation de transport
             contentArea.getChildren().clear();
             Label label = new Label("Réservation de transport");
             label.setLayoutX(200);
@@ -131,7 +132,7 @@ public class UserDashboardController implements Initializable {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/UserProfile.fxml"));
             Parent profileView = loader.load();
 
-            // Pass client to profile controller
+            // Passer le client au contrôleur de profil
             UserProfileController controller = loader.getController();
             controller.setClient(currentClient);
 
@@ -144,12 +145,19 @@ public class UserDashboardController implements Initializable {
 
     @FXML
     void showReservations(ActionEvent event) {
-        // This method is now replaced by the submenu, but kept for backward compatibility
-        contentArea.getChildren().clear();
-        Label label = new Label("Vos réservations seront affichées ici");
-        label.setLayoutX(200);
-        label.setLayoutY(200);
-        contentArea.getChildren().add(label);
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/MyReservations.fxml"));
+            Parent reservationsView = loader.load();
+
+            // Passer le client au contrôleur des réservations
+            MyReservationsController controller = loader.getController();
+            controller.setClient(currentClient);
+
+            loadContentToArea(reservationsView);
+        } catch (IOException e) {
+            showAlert(Alert.AlertType.ERROR, "Erreur", "Erreur de chargement",
+                    "Impossible de charger les réservations: " + e.getMessage());
+        }
     }
 
     @FXML
@@ -158,7 +166,7 @@ public class UserDashboardController implements Initializable {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/ClientReclamations.fxml"));
             Parent reclamationsView = loader.load();
 
-            // Pass client to reclamations controller
+            // Passer le client au contrôleur des réclamations
             ClientReclamationsController controller = loader.getController();
             controller.setClient(currentClient);
 
@@ -171,7 +179,7 @@ public class UserDashboardController implements Initializable {
 
     @FXML
     void planTrip(ActionEvent event) {
-        // Placeholder for future functionality
+        // Placeholder pour une fonctionnalité future
         contentArea.getChildren().clear();
         Label label = new Label("Planifier un nouveau voyage");
         label.setLayoutX(200);

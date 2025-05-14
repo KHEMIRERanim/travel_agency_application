@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import java.net.URL?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ScrollPane?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.ColumnConstraints?>
+<?import javafx.scene.layout.GridPane?>
+
+<AnchorPane fx:id="root" prefHeight="811.0" prefWidth="1321.0" style="-fx-background-color: #a0dfe3;" styleClass="root" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controllers.MyReservationsController">
+    <stylesheets>
+        <URL value="@flightstyle.css" />
+    </stylesheets>
+    <children>
+        <ScrollPane fitToWidth="true" layoutX="25.0" layoutY="63.0" prefHeight="702.0" prefWidth="1252.0" style="-fx-background-color: white;" styleClass="scroll-pane">
+            <content>
+                <GridPane fx:id="reservationsContainer" hgap="20" styleClass="grid-pane" vgap="20">
+                    <columnConstraints>
+                        <ColumnConstraints percentWidth="20.0" />
+                        <ColumnConstraints percentWidth="20.0" />
+                        <ColumnConstraints percentWidth="20.0" />
+                        <ColumnConstraints percentWidth="20.0" />
+                        <ColumnConstraints percentWidth="20.0" />
+                    </columnConstraints>
+                </GridPane>
+            </content>
+        </ScrollPane>
+        <Button fx:id="backButton" layoutX="150.0" layoutY="700.0" mnemonicParsing="false" onAction="#goBack" prefHeight="35.0" prefWidth="204.0" styleClass="pulse-animation" text="Retour" />
+    </children>
+</AnchorPane>

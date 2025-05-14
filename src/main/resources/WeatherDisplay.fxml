@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.VBox?>
+
+<VBox alignment="CENTER" prefHeight="300.0" prefWidth="400.0" style="-fx-background-color: #f4f6f9; -fx-background-radius: 10; -fx-border-radius: 10; -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.1), 8, 0, 4, 4);" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controllers.WeatherDisplayController">
+    <padding>
+        <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
+    </padding>
+    <children>
+        <Label fx:id="weatherHeader" text="Météo en Temps Réel - Tunis" style="-fx-text-fill: #2980b9; -fx-font-size: 20px; -fx-font-weight: bold;" />
+        <Label fx:id="cityLabel" text="Ville : Tunis" style="-fx-font-size: 16px; -fx-text-fill: #34495e; -fx-padding: 10 0 0 0;" />
+        <ImageView fx:id="weatherIcon" fitHeight="50.0" fitWidth="50.0" preserveRatio="true" />
+        <Label fx:id="temperatureLabel" text="Température : Chargement..." style="-fx-font-size: 16px; -fx-text-fill: #34495e; -fx-padding: 10 0 0 0;" />
+        <Label fx:id="descriptionLabel" text="Conditions : Chargement..." style="-fx-font-size: 16px; -fx-text-fill: #34495e; -fx-padding: 10 0 0 0;" />
+        <Label fx:id="updateTimeLabel" text="Mise à jour : Chargement..." style="-fx-font-size: 12px; -fx-text-fill: #7f8c8d; -fx-padding: 10 0 0 0;" />
+    </children>
+</VBox>
