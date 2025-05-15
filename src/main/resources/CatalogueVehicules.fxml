@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ComboBox?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.TilePane?>
+<?import javafx.scene.layout.VBox?>
+<?import java.net.URL?>
+
+<BorderPane fx:id="rootPane" prefHeight="700.0" prefWidth="760.0" styleClass="root-pane" xmlns="http://javafx.com/javafx/21.0.2" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controllers.CatalogueVehiculesController">
+    <stylesheets>
+        <URL value="@/styles/med.css" />
+        <URL value="@/styles/admin-common.css" />
+        <URL value="@/styles/tableview.css" />
+    </stylesheets>
+    <top>
+        <HBox alignment="CENTER_LEFT" spacing="10" styleClass="header">
+            <children>
+                <Label styleClass="header-title" text="Car Rental - Vehicle Catalog" />
+                <Button onAction="#backToDashboard" styleClass="button" text="Retour" />
+            </children>
+            <padding>
+                <Insets bottom="10" left="10" right="10" top="10" />
+            </padding>
+        </HBox>
+    </top>
+    <center>
+        <TilePane fx:id="vehiclePane" hgap="10" prefHeight="500.0" prefWidth="560.0" styleClass="tile-pane" vgap="10" BorderPane.alignment="CENTER" />
+    </center>
+    <bottom>
+        <HBox alignment="CENTER" spacing="10" styleClass="search-pane">
+            <children>
+                <Label styleClass="search-label" text="Filter by Type:" />
+                <ComboBox fx:id="typeFilter" promptText="Select Type" styleClass="search-field" />
+                <Label styleClass="search-label" text="Min Price:" />
+                <TextField fx:id="minPriceField" prefWidth="100" promptText="Min Price" styleClass="search-field" />
+                <Label styleClass="search-label" text="Max Price:" />
+                <TextField fx:id="maxPriceField" prefWidth="100" promptText="Max Price" styleClass="search-field" />
+                <Button onAction="#handleSearch" styleClass="button" text="Search" />
+                <Button onAction="#openManageReservations" styleClass="button" text="Manage Reservations" />
+            </children>
+            <padding>
+                <Insets bottom="10" left="10" right="10" top="10" />
+            </padding>
+        </HBox>
+    </bottom>
+    <right>
+        <VBox fx:id="formContainer" prefWidth="200.0" visible="false" managed="false" styleClass="form-container">
+            <padding>
+                <Insets top="10" right="10" bottom="10" left="10" />
+            </padding>
+        </VBox>
+    </right>
+</BorderPane>

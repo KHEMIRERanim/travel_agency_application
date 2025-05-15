@@ -403,7 +403,26 @@ public class AdminDashboardController implements Initializable {
 
     @FXML
     void showTransport(ActionEvent event) {
-        showEmptyModuleAlert("Gestion du transport", "Le module de gestion du transport n'est pas encore disponible.");
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/AdminVehicles.fxml"));
+            Parent vehiclesView = loader.load();
+
+            // If using contentArea (which is the case in the current UI)
+            if (contentArea != null) {
+                contentArea.getChildren().clear();
+                contentArea.getChildren().add(vehiclesView);
+            } else {
+                // Fallback to opening in a new window
+                Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
+                stage.setScene(new Scene(vehiclesView));
+                stage.setTitle("Gestion des véhicules");
+                stage.show();
+            }
+        } catch (IOException e) {
+            showAlert(Alert.AlertType.ERROR, "Erreur", "Erreur de chargement",
+                    "Impossible de charger la gestion des véhicules: " + e.getMessage());
+            e.printStackTrace();
+        }
     }
 
     @FXML
