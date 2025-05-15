@@ -9,17 +9,17 @@
 
 <AnchorPane prefHeight="788.0" prefWidth="1227.0" style="-fx-background-color: #a0dfe3;" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controllers.FlightSearchResultsController">
     <children>
-        <Label layoutX="520.0" layoutY="30.0" text="Available Flights" textFill="#006064">
+        <Label layoutX="426.0" layoutY="28.0" text="Available Flights" textFill="#006064">
             <font>
                 <Font name="System Bold" size="24.0" />
             </font>
         </Label>
-        <Label fx:id="resultCountLabel" layoutX="560.0" layoutY="70.0" text="0 flights found" textFill="#0277bd">
+        <Label fx:id="resultCountLabel" layoutX="474.0" layoutY="71.0" text="0 flights found" textFill="#0277bd">
             <font>
                 <Font size="14.0" />
             </font>
         </Label>
-        <ScrollPane layoutX="150.0" layoutY="109.0" prefHeight="553.0" prefWidth="1068.0">
+        <ScrollPane layoutX="71.0" layoutY="103.0" prefHeight="554.0" prefWidth="924.0">
             <content>
                 <VBox fx:id="flightsContainer" prefWidth="910.0" spacing="15.0" style="-fx-padding: 15;" />
             </content>

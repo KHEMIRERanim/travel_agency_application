@@ -182,6 +182,12 @@
                                 <Insets right="10.0" />
                             </HBox.margin>
                         </Button>
+                        <!-- Added Choose Seats button -->
+                        <Button fx:id="chooseSeatsButton" mnemonicParsing="false" onAction="#openSeatSelection" prefHeight="40.0" prefWidth="150.0" style="-fx-background-color: #FF9E0C; -fx-text-fill: white;" text="Choisir Sièges">
+                            <HBox.margin>
+                                <Insets right="10.0" />
+                            </HBox.margin>
+                        </Button>
                         <Button fx:id="btn_confirmBooking" mnemonicParsing="false" onAction="#confirmBooking" prefHeight="40.0" prefWidth="200.0" style="-fx-background-color: #FF9E0C; -fx-text-fill: white; -fx-font-weight: bold;" text="Confirmer la Réservation" />
                     </children>
                 </HBox>

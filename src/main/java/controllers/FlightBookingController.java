@@ -10,11 +10,14 @@ import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
+import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.layout.GridPane;
 import javafx.scene.layout.VBox;
+import javafx.stage.Modality;
 import javafx.stage.Stage;
 import services.ServiceFlight;
 import services.ServiceReservationVol;
@@ -23,7 +26,10 @@ import java.io.File;
 import java.io.IOException;
 import java.sql.SQLException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
+import java.util.Random;
 
 public class FlightBookingController {
 
@@ -84,6 +90,7 @@ public class FlightBookingController {
     private Client currentClient;
     private Flight selectedFlight;
     private int requiredPassengers;
+    private List<String> selectedSeats = new ArrayList<>();
 
     public void setClient(Client client) {
         this.currentClient = client;
@@ -152,7 +159,8 @@ public class FlightBookingController {
             departureLabel.setText(selectedFlight.getDeparture() + "\n" + timeFormat.format(selectedFlight.getDeparture_Time()));
             destinationLabel.setText(selectedFlight.getDestination() + "\n" + timeFormat.format(selectedFlight.getArrival_Time()));
             durationLabel.setText(formatDuration(selectedFlight.getFlight_duration()));
-            priceLabel.setText(String.format("$%.2f", selectedFlight.getPrice() * requiredPassengers));
+            double totalPrice = selectedFlight.getPrice() * requiredPassengers;
+            priceLabel.setText(String.format("$%.2f", totalPrice)); // Ensure proper formatting
             seatsLabel.setText(selectedFlight.getAvailable_seats() + " seats available");
             dateLabel.setText(dateFormat.format(selectedFlight.getFlight_date()));
             passengersLabel.setText(requiredPassengers + " passenger(s)");
@@ -197,7 +205,6 @@ public class FlightBookingController {
     @FXML
     void confirmBooking(ActionEvent event) {
         try {
-            // Vérifier si le client et le vol sont définis
             if (currentClient == null) {
                 showAlert(Alert.AlertType.ERROR, "Erreur", "Aucun client connecté",
                         "Veuillez vous connecter pour effectuer une réservation.");
@@ -208,14 +215,20 @@ public class FlightBookingController {
                         "Veuillez sélectionner un vol pour continuer.");
                 return;
             }
-            // Vérifier les sièges disponibles
             if (selectedFlight.getAvailable_seats() < requiredPassengers) {
                 showAlert(Alert.AlertType.ERROR, "Erreur", "Sièges insuffisants",
                         "Le nombre de sièges disponibles est insuffisant pour votre réservation.");
                 return;
             }
+            if (selectedSeats.size() != requiredPassengers) {
+                showAlert(Alert.AlertType.ERROR, "Erreur", "Sièges non sélectionnés",
+                        "Veuillez sélectionner exactement " + requiredPassengers + " siège(s) avant de confirmer.");
+                return;
+            }
 
-            // Créer une réservation
+            // Convert selectedSeats list to a comma-separated string
+            String selectedSeatsString = String.join(",", selectedSeats);
+
             ServiceReservationVol reservationService = new ServiceReservationVol();
             java.sql.Date currentDate = new java.sql.Date(System.currentTimeMillis());
             ReservationVol reservation = new ReservationVol(
@@ -224,22 +237,18 @@ public class FlightBookingController {
                     currentDate,
                     selectedFlight.getPrice() * requiredPassengers,
                     currentClient.getPrenom() + " " + currentClient.getNom(),
-                    selectedFlight.getFlight_id()
+                    selectedFlight.getFlight_id(),
+                    selectedSeatsString // Include selected seats in the reservation
             );
 
-            // Ajouter la réservation à la base de données
             reservationService.ajouter(reservation);
-
-            // Mettre à jour le nombre de sièges disponibles
             ServiceFlight flightService = new ServiceFlight();
             selectedFlight.setAvailable_seats(selectedFlight.getAvailable_seats() - requiredPassengers);
             flightService.modifier(selectedFlight);
 
-            // Afficher une alerte de succès
             showAlert(Alert.AlertType.INFORMATION, "Succès", "Réservation confirmée",
-                    "Votre réservation a été ajoutée avec succès !");
+                    "Votre réservation a été ajoutée avec succès ! Sièges sélectionnés : " + selectedSeats.toString());
 
-            // Rediriger vers le tableau de bord
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/UserDashboard.fxml"));
             Parent root = loader.load();
             UserDashboardController controller = loader.getController();
@@ -258,6 +267,92 @@ public class FlightBookingController {
                     "Impossible de retourner au tableau de bord: " + e.getMessage());
             e.printStackTrace();
         }
+    }
+
+    @FXML
+    void openSeatSelection(ActionEvent event) {
+        Stage seatSelectionStage = new Stage();
+        seatSelectionStage.initModality(Modality.APPLICATION_MODAL);
+        seatSelectionStage.setTitle("Sélection des sièges");
+
+        GridPane seatGrid = new GridPane();
+        seatGrid.setHgap(5);
+        seatGrid.setVgap(5);
+        seatGrid.setPadding(new javafx.geometry.Insets(10));
+
+        List<String> occupiedSeats = new ArrayList<>();
+        Random random = new Random();
+        int totalSeats = selectedFlight.getAvailable_seats() + 20;
+        while (occupiedSeats.size() < 20 && occupiedSeats.size() < totalSeats) {
+            int row = random.nextInt(10) + 1;
+            int col = random.nextInt(10) + 1;
+            String seat = row + "-" + col;
+            if (!occupiedSeats.contains(seat)) {
+                occupiedSeats.add(seat);
+            }
+        }
+
+        List<Button> seatButtons = new ArrayList<>();
+        List<String> tempSelectedSeats = new ArrayList<>(selectedSeats);
+
+        for (int row = 1; row <= 10; row++) {
+            for (int col = 1; col <= 10; col++) {
+                String seat = row + "-" + col;
+                Button seatButton = new Button();
+                seatButton.setPrefSize(30, 30);
+
+                if (occupiedSeats.contains(seat)) {
+                    seatButton.setStyle("-fx-background-color: white; -fx-border-color: blue; -fx-border-width: 2;");
+                    seatButton.setDisable(true);
+                } else if (tempSelectedSeats.contains(seat)) {
+                    seatButton.setStyle("-fx-background-color: yellow;");
+                } else {
+                    seatButton.setStyle("-fx-background-color: gray;");
+                }
+
+                seatButton.setOnAction(e -> {
+                    if (tempSelectedSeats.contains(seat)) {
+                        tempSelectedSeats.remove(seat);
+                        seatButton.setStyle("-fx-background-color: gray;");
+                    } else if (tempSelectedSeats.size() < requiredPassengers) {
+                        tempSelectedSeats.add(seat);
+                        seatButton.setStyle("-fx-background-color: yellow;");
+                    } else {
+                        showAlert(Alert.AlertType.WARNING, "Attention", "Limite atteinte",
+                                "Vous ne pouvez sélectionner que " + requiredPassengers + " siège(s).");
+                    }
+                });
+
+                seatGrid.add(seatButton, col - 1, row - 1);
+                seatButtons.add(seatButton);
+            }
+        }
+
+        Button confirmButton = new Button("Select Seats");
+        confirmButton.setStyle("-fx-background-color: #FFD700; -fx-text-fill: black;");
+        confirmButton.setOnAction(e -> {
+            if (tempSelectedSeats.size() != requiredPassengers) {
+                showAlert(Alert.AlertType.ERROR, "Erreur", "Nombre de sièges incorrect",
+                        "Veuillez sélectionner exactement " + requiredPassengers + " siège(s).");
+            } else {
+                selectedSeats.clear();
+                selectedSeats.addAll(tempSelectedSeats);
+                seatSelectionStage.close();
+            }
+        });
+
+        for (int row = 1; row <= 10; row++) {
+            Label rowLabel = new Label(String.valueOf(row));
+            seatGrid.add(rowLabel, 10, row - 1);
+        }
+
+        VBox layout = new VBox(10);
+        layout.setPadding(new javafx.geometry.Insets(10));
+        layout.getChildren().addAll(new Label("Choisissez vos sièges (" + requiredPassengers + " requis)"), seatGrid, confirmButton);
+
+        Scene scene = new Scene(layout);
+        seatSelectionStage.setScene(scene);
+        seatSelectionStage.showAndWait();
     }
 
     private void showAlert(Alert.AlertType type, String title, String header, String content) {

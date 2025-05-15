@@ -33,7 +33,7 @@
         <HBox alignment="CENTER_RIGHT" layoutX="600.0" layoutY="20.0" spacing="20.0">
             <children>
                 <Button fx:id="btnWeather" mnemonicParsing="false" onAction="#showWeather" prefHeight="40.0" prefWidth="180.0" style="-fx-background-color: transparent; -fx-text-fill: white; -fx-border-color: white; -fx-border-radius: 5; -fx-border-width: 1;" text="Weather in Tunis" />
-                <Button fx:id="btnRealTimeFlights" mnemonicParsing="false" onAction="#showRealTimeFlights" prefHeight="40.0" prefWidth="180.0" style="-fx-background-color: transparent; -fx-text-fill: white; -fx-border-color: white; -fx-border-radius: 5; -fx-border-width: 1;" text="Real-Time Tunis Flights" />
+                <Button fx:id="btnRealTimeFlights" mnemonicParsing="false" onAction="#showRealTimeFlights" prefHeight="40.0" prefWidth="180.0" style="-fx-background-color: transparent; -fx-text-fill: white; -fx-border-color: white; -fx-border-radius: 5; -fx-border-width: 1;" text="Real-Time  Flights" />
                 <Button fx:id="btnmyreservations" mnemonicParsing="false" onAction="#showMyReservations" prefHeight="40.0" prefWidth="180.0" style="-fx-background-color: #FF6B6B; -fx-background-radius: 5; -fx-text-fill: white;" text="My Reservations" />
             </children>
         </HBox>
