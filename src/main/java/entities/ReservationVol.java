@@ -5,16 +5,18 @@ public class ReservationVol {
     private String status,passenger_name;
     private Date reservationvol_date;
     private Double price;
+    private String selectedSeats;
 
-    public ReservationVol(int client_id, String status, Date reservationvol_date, Double price, String passenger_name,int flight_id ) {
+    public ReservationVol(int client_id, String status, Date reservationvol_date, Double price, String passenger_name,int flight_id,String selectedSeats ) {
         this.client_id = client_id;
         this.status = status;
         this.reservationvol_date = reservationvol_date;
         this.price = price;
         this.passenger_name = passenger_name;
         this.flight_id = flight_id;
+        this.selectedSeats = selectedSeats;
     }
-    public ReservationVol(int reservationvol_id, int client_id, String status, Date reservationvol_date, Double price, String passenger_name,int flight_id ) {
+    public ReservationVol(int reservationvol_id, int client_id, String status, Date reservationvol_date, Double price, String passenger_name,int flight_id,String selectedSeats ) {
         this.reservationvol_id = reservationvol_id;
         this.client_id = client_id;
         this.status = status;
@@ -22,6 +24,7 @@ public class ReservationVol {
         this.price = price;
         this.passenger_name = passenger_name;
         this.flight_id = flight_id;
+        this.selectedSeats = selectedSeats;
     }
 
     public int getReservationvol_id() {
@@ -80,6 +83,15 @@ public class ReservationVol {
         this.price = price;
     }
 
+
+
+    public void setSelectedSeats(String selectedSeats) {
+        this.selectedSeats = selectedSeats;
+    }
+    public String getSelectedSeats() {
+        return selectedSeats;
+    }
+
     @Override
     public String toString() {
         return "ReservationVol{" +
@@ -89,7 +101,7 @@ public class ReservationVol {
                 ", status='" + status + '\'' +
                 ", passenger_name='" + passenger_name + '\'' +
                 ", reservationvol_date=" + reservationvol_date +
-                ", price=" + price +
+                ", price=" + price +", selectedSeats='" + selectedSeats + '\'' +
                 '}';
     }
 }

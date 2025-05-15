@@ -6,15 +6,15 @@
 <?import javafx.scene.layout.FlowPane?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane prefHeight="100.0" prefWidth="1201.0" style="-fx-background-color: transparent;" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controllers.AfficherVolsController">
+<AnchorPane prefHeight="600.0" prefWidth="800.0" style="-fx-background-color: transparent;" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controllers.AfficherVolsController">
     <children>
         <!-- Vue principale de la liste des vols -->
-        <AnchorPane fx:id="mainPane" layoutX="-34.0" layoutY="-7.0" prefHeight="100.0" prefWidth="1402.0" style="-fx-background-color: #a0dfe3; -fx-background-radius: 0;">
+        <AnchorPane fx:id="mainPane" layoutY="-7.0" prefHeight="100.0" prefWidth="100.0" style="-fx-background-color: #a0dfe3; -fx-background-radius: 0;">
             <children>
-                <ScrollPane fitToWidth="true" layoutX="63.0" layoutY="104.0" prefHeight="600.0" prefWidth="1314.0" style="-fx-background-color: transparent; -fx-border-radius: 5;">
+                <ScrollPane fitToWidth="true" layoutX="-7.0" layoutY="98.0" prefHeight="600.0" prefWidth="1239.0" style="-fx-background-color: transparent; -fx-border-radius: 5;">
                     <content>
                         <!-- Utilisation de FlowPane pour organiser les vols horizontalement et automatiquement -->
-                        <FlowPane fx:id="flightsContainer" alignment="TOP_CENTER" hgap="20.0" prefWidth="1051.0" style="-fx-background-color: #a0dfe3; -fx-padding: 15;" vgap="20.0">
+                        <FlowPane fx:id="flightsContainer" alignment="TOP_CENTER" hgap="20.0" prefWidth="1051.0" style="-fx-background-color: transparent; -fx-padding: 15;" vgap="20.0">
                             <!-- Les vols seront ajoutés ici dynamiquement -->
                         </FlowPane>
                     </content>

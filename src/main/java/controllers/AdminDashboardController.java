@@ -71,6 +71,7 @@ public class AdminDashboardController implements Initializable {
         setupClientListView();
         loadClients();
 
+
         // Add search functionality
         if (searchField != null) {
             searchField.textProperty().addListener((observable, oldValue, newValue) -> {

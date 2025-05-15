@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.shape.Rectangle?>
+<?import javafx.scene.image.*?>
+
+<AnchorPane xmlns:fx="http://javafx.com/fxml/1"
+            fx:controller="controllers.ListeHotelsController">
+    <children>
+        <VBox AnchorPane.topAnchor="0" AnchorPane.bottomAnchor="0"
+              AnchorPane.leftAnchor="0" AnchorPane.rightAnchor="0"
+              spacing="20">
+            <HBox spacing="20">
+                <padding>
+                    <Insets top="20" right="20" bottom="0" left="20"/>
+                </padding>
+                <StackPane prefWidth="400" prefHeight="300">
+                    <ImageView fx:id="selectedImage"
+                               fitWidth="400" fitHeight="300"
+                               preserveRatio="false">
+                        <clip>
+                            <Rectangle width="400" height="300" arcWidth="30" arcHeight="30"/>
+                        </clip>
+                    </ImageView>
+                </StackPane>
+                <VBox spacing="10">
+                    <Label fx:id="selectedTitle"
+                           wrapText="true"/>
+                    <Label fx:id="selectedDetails"
+                           wrapText="true"
+                           maxWidth="400"/>
+                    <HBox fx:id="ratingBox" spacing="5"/>
+                    <HBox spacing="10">
+                        <Button text="Modifier" onAction="#goToEditHotel" HBox.hgrow="ALWAYS"
+                                style="-fx-background-color: linear-gradient(to right, #f7971e, #ffd200); -fx-text-fill: white; -fx-background-radius: 15; -fx-font-weight: bold; -fx-cursor: hand;"/>
+                        <Button onAction="#onDeleteHotel" HBox.hgrow="ALWAYS" style="-fx-background-color: #e74c3c; -fx-background-radius: 8; -fx-cursor: hand;">
+                            <graphic>
+                                <ImageView fitHeight="16" fitWidth="16">
+                                    <image>
+                                        <Image url="@/images/trash.png"/>
+                                    </image>
+                                </ImageView>
+                            </graphic>
+                        </Button>
+                    </HBox>
+                </VBox>
+            </HBox>
+
+            <ScrollPane fx:id="carouselScroll"
+                        fitToWidth="false"
+                        fitToHeight="true"
+                        prefViewportWidth="200"
+                        vbarPolicy="NEVER">
+                <content>
+                    <HBox fx:id="carousel" spacing="10">
+                        <padding>
+                            <Insets top="10" right="10" bottom="10" left="10"/>
+                        </padding>
+                    </HBox>
+                </content>
+            </ScrollPane>
+            <Button fx:id="ajoutHotel"
+                    prefWidth="250" prefHeight="50"
+                    text="Ajouter Hôtel"
+                    onAction="#goToAddHotel"
+                    style="-fx-background-color: linear-gradient(to right, #ff416c, #ff4b2b); -fx-text-fill: white; -fx-background-radius: 15; -fx-font-weight: bold; -fx-cursor: hand; -fx-font-size: 16px; -fx-alignment: center; -fx-margin-left: 200px;"
+                    HBox.hgrow="ALWAYS"/>
+
+        </VBox>
+    </children>
+</AnchorPane>

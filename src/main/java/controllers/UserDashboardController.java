@@ -18,6 +18,7 @@ import services.ServiceClient;
 
 import java.io.IOException;
 import java.net.URL;
+import java.sql.SQLException;
 import java.util.ResourceBundle;
 
 public class UserDashboardController implements Initializable {
@@ -97,19 +98,23 @@ public class UserDashboardController implements Initializable {
     @FXML
     void reserveHotel(ActionEvent event) {
         try {
-            // Placeholder pour une fonctionnalité future - charger l'écran de réservation d'hôtel
-            contentArea.getChildren().clear();
-            Label label = new Label("Réservation d'hôtel");
-            label.setLayoutX(200);
-            label.setLayoutY(200);
-            label.setStyle("-fx-font-size: 20px; -fx-font-weight: bold;");
-            contentArea.getChildren().add(label);
-        } catch (Exception e) {
+            System.out.println("Reserve Hotel");
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/hotesHome.fxml"));
+            Parent hotelsView = loader.load();
+
+            // Get and configure the controller
+            ListeHotelsReservationController controller = loader.getController();
+            controller.setClient(currentClient);
+
+            // Use the loadContentToArea method for consistency
+            loadContentToArea(hotelsView);
+            
+        } catch (IOException e) {
             showAlert(Alert.AlertType.ERROR, "Erreur", "Erreur de chargement",
-                    "Impossible de charger la réservation d'hôtel: " + e.getMessage());
+                    "Impossible de charger la gestion des hotels: " + e.getMessage());
+            e.printStackTrace();
         }
     }
-
     @FXML
     void reserveTransport(ActionEvent event) {
         try {
@@ -125,6 +130,7 @@ public class UserDashboardController implements Initializable {
                     "Impossible de charger la réservation de transport: " + e.getMessage());
         }
     }
+
 
     @FXML
     void showProfile(ActionEvent event) {
@@ -143,6 +149,8 @@ public class UserDashboardController implements Initializable {
         }
     }
 
+
+
     @FXML
     void showReservations(ActionEvent event) {
         try {
@@ -157,6 +165,62 @@ public class UserDashboardController implements Initializable {
         } catch (IOException e) {
             showAlert(Alert.AlertType.ERROR, "Erreur", "Erreur de chargement",
                     "Impossible de charger les réservations: " + e.getMessage());
+        }
+    }
+    @FXML
+    void showReservationsH(ActionEvent event) {
+        // This method is now replaced by the submenu, but kept for backward compatibility
+        contentArea.getChildren().clear();
+        Label label = new Label("Vos réservations seront affichées ici");
+        label.setLayoutX(200);
+        label.setLayoutY(200);
+        contentArea.getChildren().add(label);
+    }
+    @FXML
+    void historiqueReservartionsHotel(ActionEvent event) {
+        try {
+            // Check if client is logged in
+            if (currentClient == null) {
+                showAlert(Alert.AlertType.WARNING, "Attention", "Session expirée", 
+                        "Veuillez vous reconnecter pour accéder à cette fonctionnalité.");
+                return;
+            }
+            
+            // Load the FXML file
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/HistoriqueReservationsHotel.fxml"));
+            if (loader.getLocation() == null) {
+                showAlert(Alert.AlertType.ERROR, "Erreur", "Fichier introuvable", 
+                        "Le fichier HistoriqueReservationsHotel.fxml n'a pas été trouvé.");
+                return;
+            }
+            
+            Parent historiqueView = loader.load();
+            
+            // Get and configure the controller
+            HistoriqueReservationsHotelController controller = loader.getController();
+            if (controller == null) {
+                showAlert(Alert.AlertType.ERROR, "Erreur", "Contrôleur non initialisé", 
+                        "Impossible d'initialiser le contrôleur de l'historique des réservations.");
+                return;
+            }
+            
+            controller.setClientId(currentClient.getId_client());
+            
+            // Display the view
+            loadContentToArea(historiqueView);
+            
+        } catch (IOException e) {
+            showAlert(Alert.AlertType.ERROR, "Erreur", "Erreur de chargement",
+                    "Impossible de charger l'historique des réservations: " + e.getMessage());
+            e.printStackTrace();
+        } catch (SQLException e) {
+            showAlert(Alert.AlertType.ERROR, "Erreur", "Erreur de base de données",
+                    "Impossible de récupérer les réservations: " + e.getMessage());
+            e.printStackTrace();
+        } catch (Exception e) {
+            showAlert(Alert.AlertType.ERROR, "Erreur", "Erreur inattendue",
+                    "Une erreur inattendue s'est produite: " + e.getMessage());
+            e.printStackTrace();
         }
     }
 
