@@ -10,11 +10,11 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Text?>
 
-<VBox alignment="CENTER" styleClass="form-pane" xmlns="http://javafx.com/javafx/21.0.2" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controllers.ReservationFormController">
+<VBox alignment="CENTER" prefHeight="690.0" prefWidth="399.0" styleClass="form-pane" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controllers.ReservationFormController">
     <padding>
         <Insets bottom="20" left="20" right="20" top="20" />
     </padding>
-    <ScrollPane fitToWidth="true" pannable="true" vbarPolicy="AS_NEEDED" hbarPolicy="NEVER" styleClass="scroll-pane">
+    <ScrollPane fitToWidth="true" hbarPolicy="NEVER" pannable="true" styleClass="scroll-pane" vbarPolicy="AS_NEEDED">
         <content>
             <VBox spacing="15" styleClass="form-container" VBox.vgrow="ALWAYS">
                 <children>
@@ -45,7 +45,7 @@
                     <TextField fx:id="addressField" promptText="Enter your address" styleClass="form-field" />
 
                     <Label styleClass="form-label" text="Pickup Location:" />
-                    <TextField fx:id="pickupPlaceField" promptText="Enter pickup location" styleClass="form-field" />
+                    <TextField fx:id="pickupPlaceField" prefHeight="0.0" prefWidth="344.0" promptText="Enter pickup location" styleClass="form-field" />
 
                     <Label styleClass="form-label" text="Return Location:" />
                     <TextField fx:id="returnPlaceField" promptText="Enter return location" styleClass="form-field" />

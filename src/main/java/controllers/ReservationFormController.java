@@ -175,9 +175,18 @@ public class ReservationFormController {
             long days = ChronoUnit.DAYS.between(startDate, endDate);
             double totalPrice = days * vehicle.getPrix();
 
-            Client client = new Client(0, name.split(" ")[0],
-                    name.contains(" ") ? name.substring(name.indexOf(" ") + 1) : "",
-                    email, Integer.parseInt(phone), null, address);
+            Client client = new Client(
+                    0,                                   // id_client
+                    name.split(" ")[0],                  // nom
+                    name.contains(" ") ? name.substring(name.indexOf(" ") + 1) : "", // prenom
+                    email,                               // email
+                    Integer.parseInt(phone),             // numero_telephone
+                    "01/01/2000",                       // date_de_naissance (provide a default valid date)
+                    "defaultPassword",                   // mot_de_passe (can't be null)
+                    null,                                // profilePicture (will default to "/images/default_profile.png")
+                    "USER",                              // role (required, default to "USER")
+                    null                                 // gender
+            );
             clientService.ajouter(client);
 
             Integer clientId = clientService.getClientIdByEmail(email);
