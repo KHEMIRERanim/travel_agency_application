@@ -15,10 +15,11 @@ import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 import services.ServiceClient;
-
+import java.sql.SQLException;
 import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
+
 
 public class UserDashboardController implements Initializable {
     private ServiceClient serviceClient = new ServiceClient();
@@ -94,19 +95,28 @@ public class UserDashboardController implements Initializable {
         }
     }
 
+
     @FXML
     void reserveHotel(ActionEvent event) {
         try {
-            // Placeholder pour une fonctionnalité future - charger l'écran de réservation d'hôtel
-            contentArea.getChildren().clear();
-            Label label = new Label("Réservation d'hôtel");
-            label.setLayoutX(200);
-            label.setLayoutY(200);
-            label.setStyle("-fx-font-size: 20px; -fx-font-weight: bold;");
-            contentArea.getChildren().add(label);
-        } catch (Exception e) {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/ListeHotelsReservation.fxml"));
+            Parent hotelsView = loader.load();
+
+            ListeHotelsReservationController controller = loader.getController();
+            controller.setClient(currentClient);
+
+            if (contentArea != null) {
+                contentArea.getChildren().clear();
+                contentArea.getChildren().add(hotelsView);
+            } else {
+                Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
+                stage.setScene(new Scene(hotelsView));
+                stage.show();
+            }
+        } catch (IOException e) {
             showAlert(Alert.AlertType.ERROR, "Erreur", "Erreur de chargement",
-                    "Impossible de charger la réservation d'hôtel: " + e.getMessage());
+                    "Impossible de charger la gestion des hotels: " + e.getMessage());
+            e.printStackTrace();
         }
     }
     @FXML
@@ -188,6 +198,31 @@ public class UserDashboardController implements Initializable {
         label.setLayoutX(200);
         label.setLayoutY(200);
         contentArea.getChildren().add(label);
+    }
+    @FXML
+    void historiqueReservartionsHotel(ActionEvent event) {
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/HistoriqueReservationsHotel.fxml"));
+            Parent historiqueView = loader.load();
+
+            HistoriqueReservationsHotelController controller = loader.getController();
+            controller.setClientId(currentClient.getId_client());
+
+            if (contentArea != null) {
+                contentArea.getChildren().clear();
+                contentArea.getChildren().add(historiqueView);
+            } else {
+                Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
+                stage.setScene(new Scene(historiqueView));
+                stage.show();
+            }
+        } catch (IOException e) {
+            showAlert(Alert.AlertType.ERROR, "Erreur", "Erreur de chargement",
+                    "Impossible de charger la gestion des hotels: " + e.getMessage());
+            e.printStackTrace();
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     @FXML
