@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.image.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
+<AnchorPane prefWidth="600.0" prefHeight="400.0" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controllers.homeController" style="-fx-background-color: linear-gradient(to bottom right, #f0f4f8, #d9e2ec); -fx-padding: 20;">
+
+
+    <ScrollPane fx:id="carouselScroll" layoutX="27.0" layoutY="230.0" prefWidth="360.0" prefHeight="120.0" hbarPolicy="ALWAYS" vbarPolicy="NEVER" style="-fx-background-color: transparent; -fx-border-color: transparent;">
+        <content>
+            <HBox fx:id="carousel" spacing="10" />
+        </content>
+    </ScrollPane>
+
+
+    <ImageView fx:id="selectedImage" fitWidth="320.0" fitHeight="200.0" layoutX="27.0" layoutY="11.0" pickOnBounds="true" style="-fx-effect: dropshadow(gaussian, rgba(0,0,0,0.2), 10, 0, 0, 4);" />
+
+
+    <VBox layoutX="393.0" layoutY="44.0" spacing="5">
+        <Label fx:id="selectedTitle" text="Hotel Name" style="-fx-font-size: 20px; -fx-font-weight: bold; -fx-text-fill: #2c3e50;" />
+        <Label fx:id="selectedDetails" text="Destination: ..." wrapText="true" prefWidth="187.0" style="-fx-font-size: 12px; -fx-text-fill: #34495e;" />
+        <VBox layoutX="393.0" layoutY="44.0" spacing="5">
+
+
+
+            <HBox fx:id="ratingBox" spacing="2" />
+
+
+            <HBox spacing="10">
+
+            </HBox>
+        </VBox>
+
+        <HBox spacing="10">
+        <Button fx:id="editHotelButton"
+                layoutX="424.0" layoutY="356.0"
+                prefWidth="145.0" prefHeight="30.0"
+                text="Modifier Hôtel"
+                onAction="#goToEditHotel"
+                style="-fx-background-color: linear-gradient(to right, #f7971e, #ffd200);
+                       -fx-text-fill: white;
+                       -fx-background-radius: 15;
+                       -fx-font-weight: bold;
+                       -fx-cursor: hand;" />
+
+        <Button fx:id="deleteButton"
+                onAction="#onDeleteHotel"
+                style="-fx-background-color: #e74c3c; -fx-background-radius: 8; -fx-cursor: hand;"
+                prefHeight="30" prefWidth="30">
+            <graphic>
+                <ImageView fitHeight="16" fitWidth="16">
+                    <image>
+                        <Image url="@/images/trash.png"/>
+                    </image>
+                </ImageView>
+            </graphic>
+        </Button>
+
+    </HBox>
+
+    </VBox>
+
+
+    <Button fx:id="loginButton" layoutX="424.0" layoutY="253.0" prefWidth="145.0" prefHeight="30.0" text="Login" onAction="#loginButtonOnAction" style="-fx-background-color: linear-gradient(to right, #6a11cb, #2575fc); -fx-text-fill: white; -fx-background-radius: 15; -fx-font-weight: bold; -fx-cursor: hand;" />
+
+
+    <Button fx:id="registerButton" layoutX="424.0" layoutY="296.0" prefWidth="145.0" prefHeight="30.0" text="Register" onAction="#registerButtonOnAction" style="-fx-background-color: linear-gradient(to right, #11998e, #38ef7d); -fx-text-fill: white; -fx-background-radius: 15; -fx-font-weight: bold; -fx-cursor: hand;" />
+
+
+    <Button fx:id="ajoutHotel" layoutX="424.0" layoutY="336.0" prefWidth="145.0" prefHeight="30.0" text="Ajouter Hôtel" onAction="#goToAddHotel" style="-fx-background-color: linear-gradient(to right, #ff416c, #ff4b2b); -fx-text-fill: white; -fx-background-radius: 15; -fx-font-weight: bold; -fx-cursor: hand;" />
+
+
+    <ImageView fx:id="logoHotel" layoutX="547.0" layoutY="3.0" fitWidth="50.0" fitHeight="80.0" preserveRatio="true" pickOnBounds="true" style="-fx-effect: dropshadow(gaussian, rgba(0,0,0,0.15), 10, 0, 0, 4);">
+        <image><Image url="@/images/logo2.png" /></image>
+    </ImageView>
+
+    <Button fx:id="cancelButton" layoutX="544.0" layoutY="373.0" text="Quitter" onAction="#cancelButtonOnAction" style="-fx-background-color: #bdc3c7; -fx-text-fill: white; -fx-background-radius: 15; -fx-font-weight: bold; -fx-cursor: hand;" />
+
+</AnchorPane>

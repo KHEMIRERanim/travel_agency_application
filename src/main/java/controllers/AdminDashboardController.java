@@ -12,6 +12,10 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.image.ImageView;
+import javafx.scene.control.Alert;
+import javafx.scene.control.ListCell;
+import javafx.scene.control.ListView;
+import javafx.scene.control.TextField;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Priority;
@@ -19,6 +23,7 @@ import javafx.scene.layout.VBox;
 import javafx.scene.text.Text;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
+import javafx.stage.StageStyle;
 import javafx.util.Callback;
 import services.ServiceClient;
 import javafx.geometry.Insets;
@@ -29,6 +34,13 @@ import java.net.URL;
 import java.sql.SQLException;
 import java.util.ResourceBundle;
 import java.util.stream.Collectors;
+import javafx.scene.control.Button;
+import javafx.scene.control.ButtonType;
+import java.util.ResourceBundle;
+import java.util.stream.Collectors;
+import javafx.scene.control.Button;
+import javafx.scene.control.ButtonType;
+import javafx.scene.Node;
 
 public class AdminDashboardController implements Initializable {
     private ServiceClient serviceClient = new ServiceClient();
@@ -305,22 +317,30 @@ public class AdminDashboardController implements Initializable {
     @FXML
     void addNewClient(ActionEvent event) {
         try {
+            // Load the FXML
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/AddClientPopup.fxml"));
             Parent root = loader.load();
 
+            // Get the controller
             AddClientPopupController controller = loader.getController();
+
+            // Set the refresh callback
             controller.setRefreshCallback(this::loadClients);
 
+            // Create a new stage for the popup
             Stage popupStage = new Stage();
             popupStage.initModality(Modality.APPLICATION_MODAL);
             popupStage.initOwner(((Node)event.getSource()).getScene().getWindow());
             popupStage.setTitle("Ajouter un client");
 
+            // Apply stylesheets
             Scene scene = new Scene(root);
             scene.getStylesheets().add(getClass().getResource("/styles/admin-common.css").toExternalForm());
+
             popupStage.setScene(scene);
             popupStage.setResizable(false);
             popupStage.showAndWait();
+
         } catch (IOException e) {
             showAlert(Alert.AlertType.ERROR, "Erreur", "Erreur de chargement",
                     "Impossible de charger le formulaire d'ajout: " + e.getMessage());
@@ -398,7 +418,24 @@ public class AdminDashboardController implements Initializable {
 
     @FXML
     void showHotels(ActionEvent event) {
-        showEmptyModuleAlert("Gestion des hôtels", "Le module de gestion des hôtels n'est pas encore disponible.");
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/ListeHotels.fxml"));
+            Parent hotelsView = loader.load();
+
+            if (contentArea != null) {
+                contentArea.getChildren().clear();
+                contentArea.getChildren().add(hotelsView);
+            } else {
+                Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
+                stage.setScene(new Scene(hotelsView));
+                stage.setTitle("Gestion des hotels");
+                stage.show();
+            }
+        } catch (IOException e) {
+            showAlert(Alert.AlertType.ERROR, "Erreur", "Erreur de chargement",
+                    "Impossible de charger la gestion des hotels: " + e.getMessage());
+            e.printStackTrace();
+        }
     }
 
     @FXML
