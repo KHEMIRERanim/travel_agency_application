@@ -6,20 +6,20 @@
 <?import javafx.scene.layout.FlowPane?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane prefHeight="100.0" prefWidth="1201.0" style="-fx-background-color: transparent;" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controllers.AfficherVolsController">
+<AnchorPane prefHeight="600.0" prefWidth="912.0" style="-fx-background-color: transparent;" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controllers.AfficherVolsController">
     <children>
         <!-- Vue principale de la liste des vols -->
-        <AnchorPane fx:id="mainPane" layoutX="-34.0" layoutY="7.0" prefHeight="808.0" prefWidth="1066.0" style="-fx-background-color: #a0dfe3; -fx-background-radius: 0;">
+        <AnchorPane fx:id="mainPane" layoutX="42.0" prefHeight="600.0" prefWidth="1259.0" style="-fx-background-color: white; -fx-background-radius: 10;" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="42.0" AnchorPane.rightAnchor="-389.0" AnchorPane.topAnchor="0.0">
             <children>
-                <ScrollPane fitToWidth="true" layoutX="63.0" layoutY="104.0" prefHeight="600.0" prefWidth="1314.0" style="-fx-background-color: transparent; -fx-border-radius: 5;">
+                <ScrollPane fitToWidth="true" layoutX="14.0" layoutY="14.0" prefHeight="540.0" prefWidth="822.0" style="-fx-background-color: transparent; -fx-border-radius: 5;" AnchorPane.bottomAnchor="46.799999999999955" AnchorPane.leftAnchor="14.0" AnchorPane.rightAnchor="30.799999999999955" AnchorPane.topAnchor="14.0">
                     <content>
                         <!-- Utilisation de FlowPane pour organiser les vols horizontalement et automatiquement -->
-                        <FlowPane fx:id="flightsContainer" alignment="TOP_CENTER" hgap="20.0" prefWidth="1051.0" style="-fx-background-color: #a0dfe3; -fx-padding: 15;" vgap="20.0">
+                        <FlowPane fx:id="flightsContainer" alignment="TOP_CENTER" hgap="20.0" prefWidth="720.0" style="-fx-background-color: white; -fx-padding: 15;" vgap="20.0">
                             <!-- Les vols seront ajoutés ici dynamiquement -->
                         </FlowPane>
                     </content>
                 </ScrollPane>
-                <Label fx:id="statusLabel" alignment="CENTER" layoutX="400.0" layoutY="788.0" prefHeight="20.0" prefWidth="400.0" textAlignment="CENTER" textFill="#039BE5">
+                <Label fx:id="statusLabel" alignment="CENTER" textAlignment="CENTER" textFill="#039BE5" AnchorPane.bottomAnchor="10.0" AnchorPane.leftAnchor="180.0" AnchorPane.rightAnchor="180.0">
                     <font>
                         <Font size="14.0" />
                     </font>
@@ -28,7 +28,7 @@
         </AnchorPane>
 
         <!-- Vue du formulaire de modification - initialement cachée -->
-        <AnchorPane fx:id="editPane" prefHeight="793.0" prefWidth="1134.0" style="-fx-background-color: #ffebfb; -fx-background-radius: 10;" visible="false">
+        <AnchorPane fx:id="editPane" style="-fx-background-color: white; -fx-background-radius: 10;" visible="false" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
             <!-- Le contenu du formulaire de modification sera chargé dynamiquement ici -->
         </AnchorPane>
     </children>

@@ -7,7 +7,7 @@
 <?import javafx.scene.layout.ColumnConstraints?>
 <?import javafx.scene.layout.GridPane?>
 
-<AnchorPane fx:id="root" prefHeight="811.0" prefWidth="1321.0" style="-fx-background-color: #a0dfe3;" styleClass="root" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controllers.MyReservationsController">
+<AnchorPane fx:id="root" prefHeight="697.0" prefWidth="1161.0" style="-fx-background-color: #a0dfe3;" styleClass="root" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controllers.MyReservationsController">
     <stylesheets>
         <URL value="@flightstyle.css" />
     </stylesheets>

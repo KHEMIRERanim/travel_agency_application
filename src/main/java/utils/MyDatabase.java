@@ -9,21 +9,22 @@ public class MyDatabase {
     private final String URL = "jdbc:mysql://localhost:3306/travel";
     private final String USERNAME = "root";
     private final String PASSWORD = "";
-    private Connection cnx ;
+    private Connection cnx;
     private static MyDatabase instance;
 
     private MyDatabase() {
         try {
-            cnx = DriverManager.getConnection(URL,USERNAME,PASSWORD);
+            cnx = DriverManager.getConnection(URL, USERNAME, PASSWORD);
             System.out.println("Connected to database");
         } catch (SQLException e) {
             System.out.println(e.getMessage());
         }
-
     }
-    public static MyDatabase getInstance(){
-        if(instance == null)
+
+    public static MyDatabase getInstance() {
+        if (instance == null) {
             instance = new MyDatabase();
+        }
         return instance;
     }
 
