@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import java.net.URL?>
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.DatePicker?>
@@ -12,15 +13,14 @@
 <?import javafx.scene.shape.Rectangle?>
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
-<?import java.net.URL?>
 
-<AnchorPane prefHeight="799.0" prefWidth="1289.0" style="-fx-background-color: #FFFFFF;" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controllers.ChercherVolController">
+<AnchorPane prefHeight="799.0" prefWidth="1315.0" style="-fx-background-color: #FFFFFF;" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controllers.ChercherVolController">
     <stylesheets>
         <URL value="@flightstyle.css" />
     </stylesheets>
     <children>
         <!-- Header with gradient background -->
-        <Rectangle arcHeight="0.0" arcWidth="0.0" fill="#1a2b47" height="81.0" layoutX="0.0" layoutY="2.0" stroke="TRANSPARENT" strokeType="INSIDE" width="1354.0" />
+        <Rectangle arcHeight="0.0" arcWidth="0.0" fill="#1a2b47" height="81.0" layoutX="36.0" layoutY="2.0" stroke="TRANSPARENT" strokeType="INSIDE" width="1318.0" />
 
         <!-- Logo or Title Area -->
         <Text fill="WHITE" layoutX="30.0" layoutY="50.0" strokeType="OUTSIDE" strokeWidth="0.0">
@@ -39,7 +39,7 @@
         </HBox>
 
         <!-- Main content area -->
-        <AnchorPane layoutY="80.0" prefHeight="728.0" prefWidth="1354.0" style="-fx-background-color: #a0dfe3;">
+        <AnchorPane layoutX="36.0" layoutY="80.0" prefHeight="718.0" prefWidth="1318.0" style="-fx-background-color: #a0dfe3;">
             <children>
                 <!-- Main Banner Area -->
                 <Rectangle arcHeight="10.0" arcWidth="10.0" fill="#FFFFFF" height="280.0" layoutX="54.0" layoutY="48.0" stroke="#E0E0E0" strokeType="INSIDE" strokeWidth="1.0" width="700.0" />
