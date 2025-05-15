@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.DatePicker?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ScrollPane?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Text?>
+
+<VBox alignment="CENTER" styleClass="form-pane" xmlns="http://javafx.com/javafx/21.0.2" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controllers.ReservationFormController">
+    <padding>
+        <Insets bottom="20" left="20" right="20" top="20" />
+    </padding>
+    <ScrollPane fitToWidth="true" pannable="true" vbarPolicy="AS_NEEDED" hbarPolicy="NEVER" styleClass="scroll-pane">
+        <content>
+            <VBox spacing="15" styleClass="form-container" VBox.vgrow="ALWAYS">
+                <children>
+                    <Label styleClass="form-title" text="Reservation Form" />
+
+                    <Label styleClass="form-label" text="Vehicle:" />
+                    <Label fx:id="vehicleLabel" styleClass="form-label" text="Vehicle Type" />
+
+                    <Label styleClass="form-label" text="Price per Day:" />
+                    <Label fx:id="pricePerDayLabel" styleClass="form-label" text="0.00 TND" />
+
+                    <Label styleClass="form-label" text="Duration:" />
+                    <Label fx:id="durationLabel" styleClass="form-label" text="0 jour(s)" />
+
+                    <Label styleClass="form-label" text="Total Price:" />
+                    <Label fx:id="totalPriceLabel" styleClass="form-label" text="0.00 TND" />
+
+                    <Label styleClass="form-label" text="Name:" />
+                    <TextField fx:id="nameField" promptText="Enter your name" styleClass="form-field" />
+
+                    <Label styleClass="form-label" text="Email:" />
+                    <TextField fx:id="emailField" promptText="Enter your email" styleClass="form-field" />
+
+                    <Label styleClass="form-label" text="Phone:" />
+                    <TextField fx:id="phoneField" promptText="Enter your phone number" styleClass="form-field" />
+
+                    <Label styleClass="form-label" text="Address:" />
+                    <TextField fx:id="addressField" promptText="Enter your address" styleClass="form-field" />
+
+                    <Label styleClass="form-label" text="Pickup Location:" />
+                    <TextField fx:id="pickupPlaceField" promptText="Enter pickup location" styleClass="form-field" />
+
+                    <Label styleClass="form-label" text="Return Location:" />
+                    <TextField fx:id="returnPlaceField" promptText="Enter return location" styleClass="form-field" />
+
+                    <Label styleClass="form-label" text="Start Date:" />
+                    <DatePicker fx:id="startDatePicker" promptText="Select start date" styleClass="form-field" />
+
+                    <Label styleClass="form-label" text="End Date:" />
+                    <DatePicker fx:id="endDatePicker" promptText="Select end date" styleClass="form-field" />
+
+                    <Text fx:id="validationText" style="-fx-fill: #e74c3c;" visible="false" />
+
+                    <HBox alignment="CENTER" spacing="10">
+                        <children>
+                            <Button fx:id="submitButton" onAction="#handleSubmit" styleClass="button" text="Submit" />
+                            <Button fx:id="cancelButton" onAction="#handleCancel" styleClass="button-cancel" text="Cancel" />
+                        </children>
+                    </HBox>
+                </children>
+            </VBox>
+        </content>
+    </ScrollPane>
+</VBox>

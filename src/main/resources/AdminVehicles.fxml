@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ListView?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.control.TabPane?>
+<?import javafx.scene.control.Tab?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
+
+<AnchorPane prefHeight="600.0" prefWidth="800.0" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controllers.AdminVehiclesController">
+    <children>
+        <VBox spacing="15.0">
+            <children>
+                <!-- Header Section -->
+                <HBox alignment="CENTER_LEFT" spacing="10.0">
+                    <children>
+                        <Label text="Gestion des Véhicules et Réservations" styleClass="header-label" />
+                    </children>
+                    <padding>
+                        <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+                    </padding>
+                </HBox>
+
+                <!-- Tab Pane for Vehicles and Reservations -->
+                <TabPane fx:id="tabPane" tabClosingPolicy="UNAVAILABLE">
+                    <tabs>
+                        <Tab text="Véhicules">
+                            <content>
+                                <VBox spacing="15.0">
+                                    <children>
+                                        <HBox alignment="CENTER_LEFT" spacing="10.0">
+                                            <children>
+                                                <TextField fx:id="vehicleSearchField" promptText="Rechercher un véhicule..." prefWidth="200.0" />
+                                                <Button fx:id="vehicleRefreshButton" onAction="#refreshVehicleList" text="Actualiser" styleClass="button,button-primary" />
+                                                <Button fx:id="vehicleAddButton" onAction="#addNewVehicle" text="Ajouter un Véhicule" styleClass="button,button-success" />
+                                            </children>
+                                            <padding>
+                                                <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+                                            </padding>
+                                        </HBox>
+                                        <ListView fx:id="vehicleListView" prefHeight="400.0" prefWidth="780.0" styleClass="list-view" />
+                                    </children>
+                                </VBox>
+                            </content>
+                        </Tab>
+                        <Tab text="Réservations">
+                            <content>
+                                <VBox spacing="15.0">
+                                    <children>
+                                        <HBox alignment="CENTER_LEFT" spacing="10.0">
+                                            <children>
+                                                <TextField fx:id="reservationSearchField" promptText="Rechercher une réservation..." prefWidth="200.0" />
+                                                <Button fx:id="reservationRefreshButton" onAction="#refreshReservationList" text="Actualiser" styleClass="button,button-primary" />
+                                                <Button fx:id="reservationAddButton" onAction="#addNewReservation" text="Ajouter une Réservation" styleClass="button,button-success" />
+                                            </children>
+                                            <padding>
+                                                <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+                                            </padding>
+                                        </HBox>
+                                        <ListView fx:id="reservationListView" prefHeight="400.0" prefWidth="780.0" styleClass="list-view" />
+                                    </children>
+                                </VBox>
+                            </content>
+                        </Tab>
+                    </tabs>
+                </TabPane>
+            </children>
+            <padding>
+                <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+            </padding>
+        </VBox>
+    </children>
+</AnchorPane>
