@@ -4,12 +4,14 @@
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.DatePicker?>
 <?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ScrollPane?>
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.effect.DropShadow?>
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
 <?import javafx.scene.paint.Color?>
 <?import javafx.scene.paint.LinearGradient?>
 <?import javafx.scene.paint.Stop?>
@@ -17,10 +19,10 @@
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
-<AnchorPane prefHeight="793.0" prefWidth="911.0" style="-fx-background-color: #a0dfe3;" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controllers.ModifierVolController">
+<AnchorPane prefHeight="700.0" prefWidth="760.0" style="-fx-background-color: #a0dfe3;" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controllers.ModifierVolController">
     <children>
         <!-- Fond principal avec effet d'ombre -->
-        <Rectangle arcHeight="30.0" arcWidth="30.0" height="737.0" layoutX="80.0" layoutY="16.0" stroke="transparent" strokeType="INSIDE" width="774.0">
+        <Rectangle arcHeight="30.0" arcWidth="30.0" height="650.0" layoutX="20.0" layoutY="20.0" stroke="transparent" strokeType="INSIDE" width="720.0">
             <effect>
                 <DropShadow color="#00000066" height="20" radius="9.5" width="20" />
             </effect>
@@ -42,169 +44,166 @@
             </fill>
         </Rectangle>
 
-        <!-- En-tête du formulaire -->
-        <HBox alignment="CENTER" layoutX="80.0" layoutY="17.0" prefHeight="79.0" prefWidth="774.0" style="-fx-background-color: #c4377c; -fx-background-radius: 30 30 0 0;">
-            <children>
-                <ImageView fitHeight="40.0" fitWidth="40.0" preserveRatio="true">
-                    <image>
-                        <Image url="@../resources/images/airplane_icon.png" />
-                    </image>
-                </ImageView>
-                <Label text="MODIFIER UN VOL" textFill="WHITE">
-                    <font>
-                        <Font name="System Bold" size="24.0" />
-                    </font>
-                    <HBox.margin>
-                        <Insets left="15.0" />
-                    </HBox.margin>
-                </Label>
-            </children>
-        </HBox>
+        <ScrollPane fitToWidth="true" style="-fx-background-color: transparent;" AnchorPane.bottomAnchor="20.0" AnchorPane.leftAnchor="20.0" AnchorPane.rightAnchor="20.0" AnchorPane.topAnchor="20.0">
+            <content>
+                <VBox spacing="20.0" style="-fx-padding: 20;">
+                    <!-- En-tête du formulaire -->
+                    <HBox alignment="CENTER" style="-fx-background-color: #c4377c; -fx-background-radius: 30 30 0 0; -fx-padding: 15;">
+                        <children>
+                            <ImageView fitHeight="40.0" fitWidth="40.0" preserveRatio="true">
+                                <image>
+                                    <Image url="@../resources/images/airplane_icon.png" />
+                                </image>
+                            </ImageView>
+                            <Label text="MODIFIER UN VOL" textFill="WHITE">
+                                <font>
+                                    <Font name="System Bold" size="24.0" />
+                                </font>
+                                <HBox.margin>
+                                    <Insets left="15.0" />
+                                </HBox.margin>
+                            </Label>
+                        </children>
+                    </HBox>
 
-        <!-- Champs du formulaire avec style amélioré -->
-        <TextField fx:id="editFlightNumber" layoutX="169.0" layoutY="164.0" prefHeight="40.0" prefWidth="300.0" promptText="Ex: AF1234" style="-fx-background-color: #F5F5F5; -fx-border-color: #D1C4E9; -fx-border-radius: 5; -fx-background-radius: 5;">
-            <font>
-                <Font size="14.0" />
-            </font>
-        </TextField>
+                    <!-- Champs du formulaire -->
+                    <HBox spacing="20.0">
+                        <VBox spacing="15.0" HBox.hgrow="ALWAYS">
+                            <Text text="Numéro de vol">
+                                <font>
+                                    <Font name="System Bold" size="14.0" />
+                                </font>
+                            </Text>
+                            <TextField fx:id="editFlightNumber" prefHeight="40.0" prefWidth="300.0" promptText="Ex: AF1234" style="-fx-background-color: #F5F5F5; -fx-border-color: #D1C4E9; -fx-border-radius: 5; -fx-background-radius: 5;">
+                                <font>
+                                    <Font size="14.0" />
+                                </font>
+                            </TextField>
 
-        <Text layoutX="169.0" layoutY="154.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Numéro de vol">
-            <font>
-                <Font name="System Bold" size="14.0" />
-            </font>
-        </Text>
+                            <Text text="Départ">
+                                <font>
+                                    <Font name="System Bold" size="14.0" />
+                                </font>
+                            </Text>
+                            <TextField fx:id="editDeparture" prefHeight="40.0" prefWidth="300.0" promptText="Ex: Paris (CDG)" style="-fx-background-color: #F5F5F5; -fx-border-color: #D1C4E9; -fx-border-radius: 5; -fx-background-radius: 5;">
+                                <font>
+                                    <Font size="14.0" />
+                                </font>
+                            </TextField>
 
-        <TextField fx:id="editDeparture" layoutX="169.0" layoutY="234.0" prefHeight="40.0" prefWidth="300.0" promptText="Ex: Paris (CDG)" style="-fx-background-color: #F5F5F5; -fx-border-color: #D1C4E9; -fx-border-radius: 5; -fx-background-radius: 5;">
-            <font>
-                <Font size="14.0" />
-            </font>
-        </TextField>
+                            <Text text="Heure d'arrivée">
+                                <font>
+                                    <Font name="System Bold" size="14.0" />
+                                </font>
+                            </Text>
+                            <TextField fx:id="editArrivalTime" prefHeight="40.0" prefWidth="300.0" promptText="Ex: 14:30" style="-fx-background-color: #F5F5F5; -fx-border-color: #D1C4E9; -fx-border-radius: 5; -fx-background-radius: 5;">
+                                <font>
+                                    <Font size="14.0" />
+                                </font>
+                            </TextField>
 
-        <Text layoutX="169.0" layoutY="224.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Départ">
-            <font>
-                <Font name="System Bold" size="14.0" />
-            </font>
-        </Text>
+                            <Text text="Date du vol">
+                                <font>
+                                    <Font name="System Bold" size="14.0" />
+                                </font>
+                            </Text>
+                            <DatePicker fx:id="editFlightDate" prefHeight="40.0" prefWidth="300.0" promptText="JJ/MM/AAAA" style="-fx-background-color: #F5F5F5; -fx-border-color: #D1C4E9; -fx-border-radius: 5; -fx-background-radius: 5;" />
 
-        <TextField fx:id="editArrivalTime" layoutX="169.0" layoutY="304.0" prefHeight="40.0" prefWidth="300.0" promptText="Ex: 14:30" style="-fx-background-color: #F5F5F5; -fx-border-color: #D1C4E9; -fx-border-radius: 5; -fx-background-radius: 5;">
-            <font>
-                <Font size="14.0" />
-            </font>
-        </TextField>
+                            <Text text="Compagnie aérienne">
+                                <font>
+                                    <Font name="System Bold" size="14.0" />
+                                </font>
+                            </Text>
+                            <TextField fx:id="editAirline" prefHeight="40.0" prefWidth="300.0" promptText="Ex: Air France" style="-fx-background-color: #F5F5F5; -fx-border-color: #D1C4E9; -fx-border-radius: 5; -fx-background-radius: 5;">
+                                <font>
+                                    <Font size="14.0" />
+                                </font>
+                            </TextField>
+                        </VBox>
 
-        <Text layoutX="169.0" layoutY="294.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Heure d'arrivée">
-            <font>
-                <Font name="System Bold" size="14.0" />
-            </font>
-        </Text>
+                        <VBox spacing="15.0" HBox.hgrow="ALWAYS">
+                            <Text text="Destination">
+                                <font>
+                                    <Font name="System Bold" size="14.0" />
+                                </font>
+                            </Text>
+                            <TextField fx:id="editDestination" prefHeight="40.0" prefWidth="300.0" promptText="Ex: New York (JFK)" style="-fx-background-color: #F5F5F5; -fx-border-color: #D1C4E9; -fx-border-radius: 5; -fx-background-radius: 5;">
+                                <font>
+                                    <Font size="14.0" />
+                                </font>
+                            </TextField>
 
-        <DatePicker fx:id="editFlightDate" layoutX="169.0" layoutY="374.0" prefHeight="40.0" prefWidth="300.0" promptText="JJ/MM/AAAA" style="-fx-background-color: #F5F5F5; -fx-border-color: #D1C4E9; -fx-border-radius: 5; -fx-background-radius: 5;">
-            <effect>
-                <DropShadow color="#00000022" height="5" radius="2" width="5" />
-            </effect>
-        </DatePicker>
+                            <Text text="Heure de départ">
+                                <font>
+                                    <Font name="System Bold" size="14.0" />
+                                </font>
+                            </Text>
+                            <TextField fx:id="editDepartureTime" prefHeight="40.0" prefWidth="300.0" promptText="Ex: 09:45" style="-fx-background-color: #F5F5F5; -fx-border-color: #D1C4E9; -fx-border-radius: 5; -fx-background-radius: 5;">
+                                <font>
+                                    <Font size="14.0" />
+                                </font>
+                            </TextField>
 
-        <Text layoutX="169.0" layoutY="364.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Date du vol">
-            <font>
-                <Font name="System Bold" size="14.0" />
-            </font>
-        </Text>
+                            <Text text="Durée du vol">
+                                <font>
+                                    <Font name="System Bold" size="14.0" />
+                                </font>
+                            </Text>
+                            <TextField fx:id="editFlightDuration" prefHeight="40.0" prefWidth="300.0" promptText="Ex: 05:45" style="-fx-background-color: #F5F5F5; -fx-border-color: #D1C4E9; -fx-border-radius: 5; -fx-background-radius: 5;">
+                                <font>
+                                    <Font size="14.0" />
+                                </font>
+                            </TextField>
 
-        <TextField fx:id="editDestination" layoutX="519.0" layoutY="164.0" prefHeight="40.0" prefWidth="300.0" promptText="Ex: New York (JFK)" style="-fx-background-color: #F5F5F5; -fx-border-color: #D1C4E9; -fx-border-radius: 5; -fx-background-radius: 5;">
-            <font>
-                <Font size="14.0" />
-            </font>
-        </TextField>
+                            <Text text="Sièges disponibles">
+                                <font>
+                                    <Font name="System Bold" size="14.0" />
+                                </font>
+                            </Text>
+                            <TextField fx:id="editAvailableSeats" prefHeight="40.0" prefWidth="300.0" promptText="Ex: 120" style="-fx-background-color: #F5F5F5; -fx-border-color: #D1C4E9; -fx-border-radius: 5; -fx-background-radius: 5;">
+                                <font>
+                                    <Font size="14.0" />
+                                </font>
+                            </TextField>
 
-        <Text layoutX="519.0" layoutY="154.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Destination">
-            <font>
-                <Font name="System Bold" size="14.0" />
-            </font>
-        </Text>
+                            <Text text="Prix (€)">
+                                <font>
+                                    <Font name="System Bold" size="14.0" />
+                                </font>
+                            </Text>
+                            <TextField fx:id="editPrice" prefHeight="40.0" prefWidth="300.0" promptText="Ex: 450.00" style="-fx-background-color: #F5F5F5; -fx-border-color: #D1C4E9; -fx-border-radius: 5; -fx-background-radius: 5;">
+                                <font>
+                                    <Font size="14.0" />
+                                </font>
+                            </TextField>
+                        </VBox>
+                    </HBox>
 
-        <TextField fx:id="editDepartureTime" layoutX="519.0" layoutY="234.0" prefHeight="40.0" prefWidth="300.0" promptText="Ex: 09:45" style="-fx-background-color: #F5F5F5; -fx-border-color: #D1C4E9; -fx-border-radius: 5; -fx-background-radius: 5;">
-            <font>
-                <Font size="14.0" />
-            </font>
-        </TextField>
+                    <!-- Section pour l'image -->
+                    <VBox spacing="10.0" style="-fx-background-color: #F5F7FF; -fx-padding: 15; -fx-background-radius: 10;">
+                        <Text text="Image actuelle">
+                            <font>
+                                <Font name="System Bold" size="14.0" />
+                            </font>
+                        </Text>
+                        <Label fx:id="lblCurrentImage" alignment="CENTER" prefHeight="30.0" prefWidth="450.0" style="-fx-border-color: #D1C4E9; -fx-border-radius: 5; -fx-padding: 5; -fx-background-color: white; -fx-background-radius: 5;" text="Image du vol" />
+                    </VBox>
 
-        <Text layoutX="519.0" layoutY="224.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Heure de départ">
-            <font>
-                <Font name="System Bold" size="14.0" />
-            </font>
-        </Text>
+                    <!-- Bouton de modification -->
+                    <Button fx:id="btnModify" onAction="#modifyFlight" prefHeight="50.0" prefWidth="300.0" style="-fx-background-color: #FF5722; -fx-background-radius: 25; -fx-font-weight: bold; -fx-font-size: 16px;" text="ENREGISTRER LES MODIFICATIONS" textFill="WHITE">
+                        <effect>
+                            <DropShadow color="#00000060" height="15" radius="7" width="15" />
+                        </effect>
+                    </Button>
 
-        <TextField fx:id="editFlightDuration" layoutX="519.0" layoutY="304.0" prefHeight="40.0" prefWidth="300.0" promptText="Ex: 05:45" style="-fx-background-color: #F5F5F5; -fx-border-color: #D1C4E9; -fx-border-radius: 5; -fx-background-radius: 5;">
-            <font>
-                <Font size="14.0" />
-            </font>
-        </TextField>
-
-        <Text layoutX="519.0" layoutY="294.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Durée du vol">
-            <font>
-                <Font name="System Bold" size="14.0" />
-            </font>
-        </Text>
-
-        <TextField fx:id="editAvailableSeats" layoutX="519.0" layoutY="374.0" prefHeight="40.0" prefWidth="300.0" promptText="Ex: 120" style="-fx-background-color: #F5F5F5; -fx-border-color: #D1C4E9; -fx-border-radius: 5; -fx-background-radius: 5;">
-            <font>
-                <Font size="14.0" />
-            </font>
-        </TextField>
-
-        <Text layoutX="519.0" layoutY="364.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Sièges disponibles">
-            <font>
-                <Font name="System Bold" size="14.0" />
-            </font>
-        </Text>
-
-        <TextField fx:id="editAirline" layoutX="169.0" layoutY="444.0" prefHeight="40.0" prefWidth="300.0" promptText="Ex: Air France" style="-fx-background-color: #F5F5F5; -fx-border-color: #D1C4E9; -fx-border-radius: 5; -fx-background-radius: 5;">
-            <font>
-                <Font size="14.0" />
-            </font>
-        </TextField>
-
-        <Text layoutX="169.0" layoutY="434.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Compagnie aérienne">
-            <font>
-                <Font name="System Bold" size="14.0" />
-            </font>
-        </Text>
-
-        <TextField fx:id="editPrice" layoutX="519.0" layoutY="444.0" prefHeight="40.0" prefWidth="300.0" promptText="Ex: 450.00" style="-fx-background-color: #F5F5F5; -fx-border-color: #D1C4E9; -fx-border-radius: 5; -fx-background-radius: 5;">
-            <font>
-                <Font size="14.0" />
-            </font>
-        </TextField>
-
-        <Text layoutX="519.0" layoutY="434.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Prix (€)">
-            <font>
-                <Font name="System Bold" size="14.0" />
-            </font>
-        </Text>
-
-        <!-- Section pour l'image -->
-        <Rectangle arcHeight="15.0" arcWidth="15.0" fill="#F5F7FF" height="120.0" layoutX="219.0" layoutY="514.0" stroke="#D1C4E9" strokeType="INSIDE" width="528.0" />
-
-        <Text layoutX="219.0" layoutY="504.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Image actuelle">
-            <font>
-                <Font name="System Bold" size="14.0" />
-            </font>
-        </Text>
-
-        <Label fx:id="lblCurrentImage" alignment="CENTER" layoutX="269.0" layoutY="559.0" prefHeight="30.0" prefWidth="450.0" style="-fx-border-color: #D1C4E9; -fx-border-radius: 5; -fx-padding: 5; -fx-background-color: white; -fx-background-radius: 5;" text="Image du vol" />
-
-        <!-- Bouton de modification -->
-        <Button fx:id="btnModify" layoutX="333.0" layoutY="662.0" mnemonicParsing="false" onAction="#modifyFlight" prefHeight="50.0" prefWidth="300.0" style="-fx-background-color: #FF5722; -fx-background-radius: 25; -fx-font-weight: bold; -fx-font-size: 16px;" text="ENREGISTRER LES MODIFICATIONS" textFill="WHITE">
-            <effect>
-                <DropShadow color="#00000060" height="15" radius="7" width="15" />
-            </effect>
-        </Button>
-
-        <!-- Label pour afficher les messages de status -->
-        <Label fx:id="statusLabel" alignment="CENTER" layoutX="219.0" layoutY="725.0" prefHeight="30.0" prefWidth="528.0" textAlignment="CENTER" textFill="#c4377c">
-            <font>
-                <Font size="14.0" />
-            </font>
-        </Label>
+                    <!-- Label pour afficher les messages de status -->
+                    <Label fx:id="statusLabel" alignment="CENTER" prefHeight="30.0" prefWidth="528.0" textAlignment="CENTER" textFill="#c4377c">
+                        <font>
+                            <Font size="14.0" />
+                        </font>
+                    </Label>
+                </VBox>
+            </content>
+        </ScrollPane>
     </children>
 </AnchorPane>
