@@ -191,20 +191,36 @@ public class AdminDashboardController implements Initializable {
                             ((Text)((VBox)detailsBox.getChildren().get(4)).getChildren().get(1)).setText(client.getRole());
                             ((Text)((VBox)detailsBox.getChildren().get(5)).getChildren().get(1)).setText(client.getGender());
 
-                            // Main admin logic
+                            // Logic for admin accounts
                             if (client.getEmail().equalsIgnoreCase("admin@gmail.com")) {
-                                deleteButton.setDisable(true);
-                                deleteButton.setVisible(false);
-                                // Only allow edit if this is the logged-in admin
-                                if (currentLoggedInClient != null && currentLoggedInClient.getEmail().equalsIgnoreCase("admin@gmail.com") &&
-                                    client.getEmail().equalsIgnoreCase(currentLoggedInClient.getEmail())) {
+                                // For the main admin account (admin@gmail.com)
+                                // Allow editing only if the logged-in user is this admin
+                                if (currentLoggedInClient != null && currentLoggedInClient.getEmail().equalsIgnoreCase("admin@gmail.com")) {
                                     editButton.setDisable(false);
                                     editButton.setVisible(true);
                                 } else {
                                     editButton.setDisable(true);
                                     editButton.setVisible(false);
                                 }
+                                // Never allow deletion of the main admin account
+                                deleteButton.setDisable(true);
+                                deleteButton.setVisible(false);
+                            } else if (client.getRole() != null && client.getRole().equalsIgnoreCase("admin")) {
+                                // For other admin accounts
+                                // Only the main admin can modify or delete other admins
+                                if (currentLoggedInClient != null && currentLoggedInClient.getEmail().equalsIgnoreCase("admin@gmail.com")) {
+                                    editButton.setDisable(false);
+                                    editButton.setVisible(true);
+                                    deleteButton.setDisable(false);
+                                    deleteButton.setVisible(true);
+                                } else {
+                                    editButton.setDisable(true);
+                                    editButton.setVisible(false);
+                                    deleteButton.setDisable(true);
+                                    deleteButton.setVisible(false);
+                                }
                             } else {
+                                // For regular users, any admin can edit or delete
                                 deleteButton.setDisable(false);
                                 deleteButton.setVisible(true);
                                 editButton.setDisable(false);
@@ -391,7 +407,7 @@ public class AdminDashboardController implements Initializable {
         }
     }
 
-@FXML
+    @FXML
     void showVols(ActionEvent event) {
         try {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/MenuPrincipale.fxml"));
